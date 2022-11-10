@@ -91,7 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
     //AwesomeNotifications().actionSink.close();
     //AwesomeNotifications().createdSink.close();
     super.dispose();
-  }  
+  }
 
   List<AssetImage> icons = const [
     AssetImage('assets/icons/menu/passivo/perfil.png'),
@@ -802,14 +802,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                       sairDialog();
                                     }
                                     else{
-                                      //Identidade bloquada!
-                                      if (!context.mounted) return;
-                                      Navigator.pushReplacement(
-                                        context, 
-                                        MaterialPageRoute(
-                                          builder: (context) => const LoginScreen()
-                                        )
-                                      );
+                                      //Identidade bloquada!                                      
+                                      mudancaTela(const LoginScreen());
                                       retornarErro(t.errPHP20);
                                     }
                                   }
@@ -969,6 +963,10 @@ class _HomeScreenState extends State<HomeScreen> {
     http.Response data = await http.get(url);
     bool displayNotification = (data.statusCode == 204);
 
+    bool condicaoMostrarNotificacoes(){
+      return AwesomeNotificationService.showDialogRequestNotification(context);
+    }
+
     //Verifica o estado da notificação
     switch(settings.authorizationStatus){
       case AuthorizationStatus.authorized:
@@ -977,9 +975,9 @@ class _HomeScreenState extends State<HomeScreen> {
       break;
 
       case AuthorizationStatus.denied:
-      if (!context.mounted) return;
+
       if(displayNotification){
-        bool condicao = AwesomeNotificationService.showDialogRequestNotification(context);
+        bool condicao = condicaoMostrarNotificacoes();
         definicoesFirebase(idDispositivo ?? '', condicao);
       }
       else{
@@ -990,9 +988,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
       //O Usuário ainda não escolheu conceder a permissão
       case AuthorizationStatus.notDetermined:
-      if (!context.mounted) return;
+
       if(displayNotification){
-        bool condicao = AwesomeNotificationService.showDialogRequestNotification(context);
+        bool condicao = condicaoMostrarNotificacoes();
         definicoesFirebase(idDispositivo ?? '', condicao);
       }
       else{
@@ -1132,5 +1130,14 @@ class _HomeScreenState extends State<HomeScreen> {
       }
       //mytimer.cancel() //Para cancelar este timer
     });
+  }
+  
+  void mudancaTela(var loginScreen) {
+    Navigator.pushReplacement(
+      context, 
+      MaterialPageRoute(
+        builder: (context) => loginScreen
+      )
+    );
   }
 }

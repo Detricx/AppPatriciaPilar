@@ -378,12 +378,15 @@ class _ParceriasScreenState extends State<ParceriasScreen> {
     Uri urlParceria = Uri.parse("http://192.168.26.146/projects/flutter/drh_project/recursosHumanos/parceria/parcerias.php?ctb=$ctb");
     http.Response dataParceria = await http.get(urlParceria);
     Map<String, dynamic> respostaParceria = jsonDecode(dataParceria.body);
-
+    
+    String recolherLinguaTeclado(){
+      return AppLocalizations.of(context)!.localeName;
+    }
     //Verifica o estado do erro
     switch (dataParceria.statusCode){
       case 200:
-        if(!context.mounted){}
-        String lingua = AppLocalizations.of(context)!.localeName;
+
+        String lingua = recolherLinguaTeclado();
 
         //Recolhe todos os dados das parcerias
         dadosParceria = respostaParceria["data"];

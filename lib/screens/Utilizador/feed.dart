@@ -81,12 +81,14 @@ class _FeedScreenState extends State<FeedScreen> {
     http.Response data = await http.get(url);
     Map<String, dynamic> resposta = jsonDecode(data.body);
 
+    String recolherLinguaTeclado(){
+      return AppLocalizations.of(context)!.localeName;
+    }
+
     //Retornou uma lista de noticias
     if(data.statusCode == 200){
       List noticia = resposta["data"];
-
-      if (!context.mounted){}
-      String lingua = AppLocalizations.of(context)!.localeName;
+      String lingua = recolherLinguaTeclado();
       
       //Recolher os dados todos e coloca-lo numa listagem
       if(lingua == 'pt'){

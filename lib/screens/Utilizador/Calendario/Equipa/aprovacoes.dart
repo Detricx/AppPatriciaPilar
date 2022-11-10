@@ -536,7 +536,6 @@ class _AprovacoesScreenState extends State<AprovacoesScreen> {
             }).then((value) =>  Navigator.pop(tela));
           }
           else{
-            if (!context.mounted) return;
             showDialog(barrierDismissible: true, context: context, builder: (tela){
               Navigator.pop(context);
               return dialogBox(tela, t.errErro, t.errPHP23, 230, Icons.thumb_up);

@@ -76,8 +76,7 @@ class _RefeitorioScreenState extends State<RefeitorioScreen> {
                 backgroundColor: Colors.brown[900],
                 onPressed: () async{
                   await buscarEmentaSemana(diasMes); 
-                  if (!context.mounted) return;
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => MarcarEmentaScreen(nif: widget.nif, diasMes: diasMes, ementa: ementa))).then((value){setState((){});});
+                  alterarTelaAtual();
                 }
               ),
             ),
@@ -237,5 +236,9 @@ class _RefeitorioScreenState extends State<RefeitorioScreen> {
     else{
       return true;
     }
+  }
+  
+  void alterarTelaAtual() {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => MarcarEmentaScreen(nif: widget.nif, diasMes: diasMes, ementa: ementa))).then((value){setState((){});});
   }
 }

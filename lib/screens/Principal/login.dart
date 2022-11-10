@@ -179,7 +179,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             color:Colors.black,
                             fontSize: 17.0,  
                           ),
-                          inputFormatters: [
+                          inputFormatters: [ 
                             LengthLimitingTextInputFormatter(9),
                           ],
                           decoration: InputDecoration(
@@ -686,7 +686,15 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void impressaoDigital(AppLocalizations t) async{
     bool isAuthenticated = await AuthService.authenticateUser();
-                                       
+
+    void mostrarErroScaffold(){
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(t.avisImpressaoDigital),
+        ),
+      );
+    }
+
     //Verifico se correu tudo bem
     if(isAuthenticated) {
       //Refresh ao token de acesso 
@@ -706,12 +714,7 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     } 
     else{
-      if (!context.mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(t.avisImpressaoDigital),
-        ),
-      );
+      mostrarErroScaffold();
     }
   }
  

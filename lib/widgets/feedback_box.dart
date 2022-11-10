@@ -16,6 +16,10 @@ Widget feedbackBox(BuildContext context, String ctb, List items){
   FocusNode focus = FocusNode();
   focus.requestFocus();
 
+  carregarPagina(){
+    Navigator.of(context).pop();
+  }
+
   return StatefulBuilder(
     builder: (context, setState) {
       return Dialog(
@@ -196,8 +200,7 @@ Widget feedbackBox(BuildContext context, String ctb, List items){
                                 //Remover o fundo
                                 if(feedback.isNotEmpty){
                                   if(await storeFeedbackInDataBase(ctb, feedback, ranking, selected!, condicao)){
-                                    if (!context.mounted) return;
-                                    Navigator.of(context).pop();
+                                    carregarPagina();
                                   }
                                 }
                                 else{
