@@ -1,0 +1,3 @@
+arb-dir: lib/l10n #Indica onde irei colocar os ficheiros de tradução
+template-arb-file: app_en.arb #Expecífica qual linguagem vai estar no local por defeito
+output-localization-file: app_localizations.dart #O que vai gerar a tradução para os ficheiros .dart

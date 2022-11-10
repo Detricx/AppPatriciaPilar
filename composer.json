@@ -1,0 +1,5 @@
+{
+    "require": {
+        "web-token/jwt-core": "^3.0"
+    }
+}

@@ -1,0 +1,285 @@
+{
+    "avisPressiona" : "Pressione novamente para sair",
+    "avisImpressaoDigital" : "Não conseguiu finalizar o processo",
+    "avisInesperado" : "Ocurreu algo inesperado",
+    "escolhaSubmeter" : "Submeter",
+    "escolhaVoltar" : "Voltar",
+    "sim" : "Sim",
+    "nao" : "Não",
+    "escolhaVoltarLogin" : "Voltar para o Login",
+
+    "errCampoVazio": "{count,plural, =0{Campo Vazio} other{Campos Vazios}",
+    "@errCampoVazio": {
+        "placeholders": {
+            "count": {}
+        }
+    },
+    
+    "txtCampoVazio": "{count,plural, =0{Preencha o campo em falta} other{Detetamos falta de informação, por favor preencha todos os campos}",
+    "@txtCampoVazio": {
+        "placeholders": {
+            "count": {}
+        }
+    },
+
+    "errPHP1" : "Erro de ligação",
+    "errPHP2" : "Comunicação interrompida, comunique com o setor informático",
+    "errPHP3" : "Ausência de parâmetros",
+    "errPHP4" : "Houve falta de dados para o pedido, comunique com o setor informático",
+    "errPHP5" : "Requisição errada",
+    "errPHP6" : "Para proceder ao processo deve apresentar a requisição correta, comunique com o setor informático",
+    "errPHP7" : "Sucesso",
+    "errPHP8" : "Ficheiro Inválido",
+    "errPHP9" : "Apenas é aceite ficheiros como. jpg e png",
+    "errPHP10" : "Caminho incorreto",
+    "errPHP11" : "Verifique se o ficheiro que quer usar está na pasta origem que o tirou",
+    "errPHP12" : "Processo encerrado",
+    "errPHP13" : "Algo correu mal na exportação do ficheiro, comunique com o setor infomático",
+    "errPHP14" : "Algo correu mal a eliminar o ficheiro, comunique com o setor informático",
+    "errPHP15" : "Autenticação inválida",
+    "errPHP16" : "Necessita validar a sua conta para acessar a estes dados",
+    "errPHP17" : "Informação inválida",
+    "errPHP18" : "A requesição feita não retornou dados",
+    "errPHP19" : "Contribuinte não está registado na empresa, comunique com os recursos humanos",
+    "errPHP20" : "Identidade bloqueada",
+    "errPHP21" : "Ao que os nossos dados mostram, perdeu o acesso a este serviço",
+    "errPHP22" : "Erro interno",
+    "errPHP23" : "Algo correu mal, contacte o departamento informático",
+    "errPHP24" : "Algo inesperado aconteceu",
+    "errPHP25" : "Lista Vazia",
+    "errPHP26" : "Não apresenta documentos associados",
+    "errPHP27" : "A conta não está configurada",
+    "errPHP28" : "Entre em contacto com o drh para resolver o problema",
+    "errPHP29" : "Validar perfil",
+    "errPHP30" : "Necessita inserir a sua chave para confirmar a sua identidade",
+
+    "labelMenuPerfil" : "Perfil",
+    "labelMenuCalendarios" : "Calendários",
+    "labelMenuDocumentos" : "Documentos",
+    "labelMenuNoticias" : "Noticias",
+    "labelMenuParceria" : "Parcerias",
+    "labelMenuRefeitorio" : "Refeitorio",
+    "labelMenuEquipa" : "Equipa",
+    "labelMenuEventos" : "Eventos",
+    "labelMenuAjuda" : "Ajuda",
+    "labelMenuFeedback" : "Feedback",
+    "labelMenuSairApp" : "Sair da App",
+    
+    "avisLogOut" : "Sair da Conta",
+    "avisPasswordIncorreta" : "Password Incorreta...",
+    "avisPasswordPorPreencher" : "Preencha o campo da password para continuar",
+
+
+
+    "lbtitulo" : "Página Principal",
+    "lbDificuldades" : "Dificuldades a entrar ? ",
+    "lbContacto" : "Contacte-nos",
+    "lbDevtech" : "Desenvolvido pela Devtech©",
+    "tbNumeroContribuinte" : "Número Contribuinte",
+    "tbConfirmarPassword" : "Confirmar Passowrd",
+    "btValidar" : "Validar",
+    "btConfirmar" : "Confirmar",
+    "btCancelar" : "Cancelar",
+    "btEntrar" : "Entrar",
+    "rbGuardar" : "Manter-se ligado",
+    "errBemVindo" : "Bem-vindo",
+    "errFormato" : "Formato Errado",
+    "errErro" : "Erro",
+    "errProcessoIncompleto" : "Processo Incompleto",
+    "errPass" : "Password Errada",
+    "txtBemVindo" : "Para iniciar a sua experiência nesta aplicação deverá inserir uma palavra chave para entrar na sua conta",
+    "txtFormato" : "Verifique se o NIF tem o formato correto",
+    "txtErroChave" : "As duas chaves não são iguais, por favor verifique novamente",
+    "txtPass" : "A chave que inseriu não coincide com a chave guardada",
+    "tituloMenu" : "Menu",
+    "txtCertezaLogOut" : "Tem mesmo a a certeza que deseja encerrar a sua conta?",
+
+
+
+    "txtDefinicaoFotografia" : "Definições de Fotografia",
+    "txtAcaoFotografia" : "Escolha uma ação para ser executada na sua fotografia",
+    "txtEliminarFotografia" : "Tem mesmo a certeza que quer eliminar a fotografia apresentada no perfil",
+    "txtAdicionarFotografia" : "Tem mesmo a certeza que quer guardar esta fotografia como foto de perfil",
+    "btRemover" : "Remover",
+    "btCamara" : "Câmara",
+    "btGaleria" : "Galeria",
+
+    "avsCoordenador" : "Você é um {area}",
+    "@avsCoordenador": {
+        "placeholders": {
+            "area": {
+            "type": "String"
+            }
+        }
+    },
+
+    "tituloConfirmacao" : "Confirmação",
+
+    
+    "smnSegunda" : "Segunda-Feira",
+    "smnTerca" : "Terça-Feira",
+    "smnQuarta" : "Quarta-Feira",
+    "smnQuinta" : "Quinta-Feira",
+    "smnSexta" : "Sexta-Feira",
+    "ptSopa" : "Sopa: ",
+    "ptPeixe" : "Peixe: ",
+    "ptCarne" : "Carne: ",
+    "ptOutro" : "Outro: ",
+
+    "feedErroTexto" : "Deve escrever algo para dar a sua avaliação",
+    "feedBackTexto" : "Dê uma recomendação, ideia ou reclame de algo que possa ser mudado na empresa.",
+    "feedBackEscolha": "{count,plural, =0{Comentário Público} other{Comentário Anônimo}",
+    "@feedBackEscolha": {
+        "placeholders": {
+            "count": {
+                "type": "double"
+            }
+        }
+    },
+
+    "menuAusencia" : "Ausências",
+    "menuFeria" : "Férias",
+    "menuRecusacao" : "Recusações",
+    "menuHistorico" : "Histórico",
+    "menuAprovacoes" : "Aprovações",
+
+    "menuAusencia1" : "Marcar Ausências",
+    "menuFeria2" : "Marcar Férias",
+    "menuHistorico3" : "Visionar Histórico",
+    "menuAprovacoes4" : "Visionar Aprovações",
+
+    "ausCasamento" : "Casamento",
+    "ausFalecimento" : "Falecimento",
+    "ausProvas" : "Provas de Avaliação",
+    "ausSaude" : "Saúde",
+    "ausAcidente" : "Acidente",
+    "ausMotivosPessoais" : "Motivos Pessoais",
+    "ausAssistencia" : "Assistência Familiar",
+    "ausReuniao" : "Reunião com Enc. Educação",
+    "ausOutro" : "Outro",
+
+    "ausBanco" : "Banco de Horas",
+    "ausOrdenando" : "Ordenado",
+
+    "ausCondicao" : "Selecione a sua Condição",
+    "ausDescontar" : "Onde quer descontar este tempo?",
+    "ausMotivo" : "Diga-nos o seu Motivo (Opcional)",
+    "ausIntervalo" : "Definir Intervalo",
+    "ausIncompleto" : "Período de Tempo Incompleto",
+    "ausDefina" : "Defina as datas corretamente para avançar",
+    "ausAprovacao" : "A sua ausência foi para a aprovação!",
+    "ausDocuments" : "Ausência de Documentos",
+    "ausDeseja" : "Deseja prosseguir mesmo sem documentos? Caso queira, lembre-se que para uma falta ficar justificada, é necessário mostrar documentos.",
+    "ausPeriodo" : "Período: ",
+    "ausPeriodoInicial" : "Período Inicial",
+    "ausPeriodoFinal" : "Período Final",
+    "ausGaleria" : "Galeria de Documentos",
+
+    "feriasTotal" : " - Total",
+    "feriasDisponivel" : " - Diponíveis",
+    "feriasUtilizados" : " - Utilizados",
+    "feriasSelecione" : "Selecione um período",
+    "feriasInsuficiente" : "Dados Insuficientes",
+    "feriasInsufExplicao" : "Precisa de selecionar os dias que deseja tirar férias para avançar com o processo",
+    "feriasSubmeterExplic" : "Deseja submeter o intervalo selecionado?",
+    "feriasTotalUltrapassado" : "Total de Férias Ultrapassado",
+    "feriasAprovacao" : "As suas férias foram para a aprovação!",
+    "feriasUltrapassou": "Selecionou {total} dia/dias, mas apenas tem {tirarDias} dia/dias, deseja alterar para a data {fimFormat} finalizando as férias que tem?",
+    "@feriasUltrapassou": {
+        "placeholders": {
+            "total": {},
+            "tirarDias": {},
+            "fimFormat": {
+                "type": "String"
+            }
+        }
+    },
+
+    "aprovaSalva" : "O seu registo foi salvo",
+    "aprovaNaoMotivo" : "Não apresenta motivo",
+    "aprovaAusencia" : "Sobre a Ausência",
+    "aprovaCategoria" : "Categoria: ",
+    "aprovaDesconto" : "Desconto: ",
+    "aprovaMotivo" : "Motivo",
+    "aprovaDocs": "{count,plural, =0{Sem Documentos} =1{1 Documento} other{{num} Documentos}",
+    "@aprovaDocs": {
+        "placeholders": {
+        "count": {
+            "type": "double"
+        },
+        "num": {}
+        }
+    },
+    "aprovaSemRegisto": "Sem {titulo} por Aprovar!",
+    "@aprovaSemRegisto": {
+        "placeholders": {
+            "titulo": {
+                "type": "String"
+            }
+        }
+    },
+    "aprovaSemRegistoExplic" : "De momento não tem nenhuma aprovação que possa fazer",
+    "aprovaAtualizar" : "Atualizar",
+    "aprovaDias": "{count,plural, =0{Sem Dias} =1{1 Dia} other{{num} Dias}",
+    "@aprovaDias": {
+        "placeholders": {
+        "count": {
+            "type": "double"
+        },
+        "num": {}
+        }
+    },
+    "aprovaAprovar" : "Aprovar?",
+    "aprovaRecusar" : "Recusar?",
+    "aprovaFeriasUtilizador": "Tem mesmo a certeza que deseja submeter as férias do/a {nome}",
+    "@aprovaFeriasUtilizador": {
+        "placeholders": {
+            "nome": {
+                "type": "String"
+            }
+        }
+    },
+    "aprovaMarcarNovo": "Quer mesmo que o/a ${nome} marque um novo período de férias?",
+    "@aprovaMarcarNovo": {
+        "placeholders": {
+            "nome": {
+                "type": "String"
+            }
+        }
+    },
+
+
+    "historicoPendente" : "Pendentes",
+    "historicoConfirmado" : "Confirmadas",
+    "historicoRecusado" : "Recusadas",
+
+    "historicoAusencia" : "Ausencia",
+    "historicoFerias" : "Férias",
+    "historicoPeriodo" : "Período entre datas",
+    "historicoEliminar" : "Eliminar registo",
+    "historicoEliminarPergunta" : "Tem mesmo a certeza que quer eliminar o registo?",
+
+    "parCartao" : "Crt. de Colaborador",
+    "parColaborador" : "Nº Colaborador: ",
+    "parContribuinte" : "NIF: ",
+    "parCondicao" : "ESTE CARTÃO É PESSOAL E INSTRASMISSÍVEL",
+
+    "explicAusec" : "Neste layout será possível notificar os recursos humanos de alguma falta que tenha, ou que vá ser efetuada. Lembrando que para a sua falta ficar justificada na nossa base de dados, necessita incorporar uma foto do documento que seja possível para o visionamento dessa justificação e ainda que tenha de passar pela aprovação do coordenador e dos próprios recursos humanos. O original deverá ser entregue no DRH (Ps: Caso não tenha coordenador a sua aprovação apenas passa pelos RH).",
+    "explicFerias" : "Poderá marcar as suas férias de forma simples e eficaz. Nesta tela será exibida o total de dias que tem para tirar deste ano, os que ainda tem disponíveis e os que já usufruiu.",
+    "explicHist" : "Poderá acessar as suas ausências e férias que estejam por confirmar, que já foram confirmadas e as que foram recusadas",
+    "explicAprov" : "Esta categoria apenas é exibida para coordenadores onde têm a responsabilidade de validar tanto as férias como as ausências dos seus responsáveis.",
+    
+    "explicCartao" : "Este cartão serve como identificação para as nossas parcerias",
+    "showcard" : "Mostrar cartão de colaborador",
+    "explicacao" : "Explicação",
+
+    "loginServidor" : "Servidor",
+    "loginExpliServ" : "Erro no servidor, informe o departamento informático",
+    "loginPermissao" : "Permissões",
+    "loginPermisServ" : "Você não tem acesso ao nosso conteúdo, caso o queira ter, informe os recursos humanos",
+    "loginIncorreto" : "Incorreto",
+    "loginIncorrServr" : "Certifique-se que o seu contribuinte está válido",
+
+    "reciboVenc" : "R. Vencimento",
+    "reciboIRS" : "Documentos IRS"
+}

@@ -1,0 +1,276 @@
+{
+    "avisPressiona" : "Press again to exit",
+    "avisImpressaoDigital" : "Unable to finalise the process",
+    "avisInesperado" : "Something unexpected occurred",
+    "escolhaSubmeter" : "Submit",
+    "escolhaVoltar" : "Back",
+    "sim" : "Yes",
+    "nao" : "No",
+    "escolhaVoltarLogin" : "Return to Login",
+
+    "errCampoVazio": "{count,plural, =0{Empty Field} other{Empty Fields}",
+    "@errCampoVazio": {
+        "placeholders": {
+        "count": {}
+        }
+    },
+    
+    "txtCampoVazio": "{count,plural, =0{Fill the missing field} other{We have detected some missing information, please fill all fields}",
+    "@txtCampoVazio": {
+        "placeholders": {
+        "count": {}
+        }
+    },
+
+    "errPHP1" : "Connection error",
+    "errPHP2" : "Communication interrupted, please contact the IT department",
+    "errPHP3" : "Absence of parameters",
+    "errPHP4" : "There was a lack of data for the application, please contact the IT sector",
+    "errPHP5" : "Wrong request",
+    "errPHP6" : "To proceed with the process you must present the correct requisition, please contact the IT sector",
+    "errPHP7" : "Sucess",
+    "errPHP8" : "Invalid file",
+    "errPHP9" : "Only files such as .jpg and png are accepted",
+    "errPHP10" : "Incorrect path",
+    "errPHP11" : "Check that the file you want to use is in the source folder you took it from",
+    "errPHP12" : "Case closed",
+    "errPHP13" : "Something went wrong when exporting the file, please contact the IT department",
+    "errPHP14" : "Something went wrong when deleting the file, please contact the IT department",
+    "errPHP15" : "Invalid authentication",
+    "errPHP16" : "You need to validate your account to access this data",
+    "errPHP17" : "Invalid information",
+    "errPHP18" : "The request made did not return any data",
+    "errPHP19" : "Taxpayer is not registered with the company, communicate with human resources",
+    "errPHP20" : "Identity blocked",
+    "errPHP21" : "As far as our data shows, you have lost access to this service",
+    "errPHP22" : "Internal error",
+    "errPHP23" : "Contact IT services that there is an internal error",
+    "errPHP24" : "Something unexpected happened",
+    "errPHP25" : "Empty List",
+    "errPHP26" : "Unassociated documents",
+    "errPHP27" : "The account is not configured",
+    "errPHP28" : "Contact drh to solve the problem",
+    "errPHP29" : "Profile Validation",
+    "errPHP30" : "You need to put your password to confirm your identity",
+
+    "labelMenuPerfil" : "Profile",
+    "labelMenuCalendarios" : "Calendars",
+    "labelMenuDocumentos" : "Documents",
+    "labelMenuNoticias" : "News",
+    "labelMenuRefeitorio" : "Cafeteria",
+    "labelMenuParceria" : "Partnerships",
+    "labelMenuEquipa" : "Team",
+    "labelMenuEventos" : "Events",
+    "labelMenuAjuda" : "Help",
+    "labelMenuFeedback" : "Feedback",
+    "labelMenuSairApp" : "Close the app",
+
+    "avisLogOut" : "Exit Account",
+    "avisPasswordIncorreta" : "Incorrect Password...",
+    "avisPasswordPorPreencher" : "Fill the password field to continue",
+
+
+    "lbtitulo" : "Main Page",
+    "lbDificuldades" : "Difficulties entering ? ",
+    "lbContacto" : "Contact us",
+    "lbDevtech" : "Developed by Devtech©",
+    "tbNumeroContribuinte" : "Contributor Number",
+    "tbConfirmarPassword" : "Confirm Passowrd",
+    "btValidar" : "Validate",
+    "btConfirmar" : "Confirm",
+    "btCancelar" : "Cancel",
+    "btEntrar" : "Enter",
+    "rbGuardar" : "Stay assign",
+    "errBemVindo" : "Welcome",
+    "errFormato" : "Wrong format",
+    "errErro" : "Error",
+    "errProcessoIncompleto" : "Incomplete Process",
+    "errPass" : "Incorrect Password",
+    "txtBemVindo" : "To start your experience in this application you must enter a password to log into your account",
+    "txtFormato" : "Check that the TIN has the correct format",
+    "txtErroChave" : "The two keys are not the same, please check again",
+    "txtPass" : "The key you entered does not match the saved key",
+    "tituloMenu" : "Menu",
+    "txtCertezaLogOut" : "Are you really sure you want to close your account?",
+
+
+
+    "txtDefinicaoFotografia" : "Photo Settings",
+    "txtAcaoFotografia" : "Choose an action to be performed on your photo",
+    "txtEliminarFotografia" : "Are you sure you want to delete your profile picture",
+    "txtAdicionarFotografia" : "Are you sure you want to keep this photo as your profile picture",
+    "btRemover" : "Remove",
+    "btCamara" : "Camera",
+    "btGaleria" : "Gallery",
+
+    "avsCoordenador" : "You are a {area}",
+    "@avsCoordenador": {
+        "placeholders": {
+            "area": {
+            "type": "String"
+            }
+        }
+    },
+
+    "tituloConfirmacao" : "Confirmation",
+    "smnSegunda" : "Monday",
+    "smnTerca" : "Tuesday",
+    "smnQuarta" : "Wednesday",
+    "smnQuinta" : "Thursday",
+    "smnSexta" : "Friday",
+    "ptSopa" : "Soup: ",
+    "ptPeixe" : "Fish: ",
+    "ptCarne" : "Meat: ",
+    "ptOutro" : "Other: ",
+
+    "feedErroTexto" : "You should write something to give your assessment",
+    "feedBackTexto" : "Give a recommendation, idea or complain about something that could be changed in the company.",
+    "feedBackEscolha": "{count,plural, =0{Public Comment} other{Anonymous Comment}",
+    "@feedBackEscolha": {
+        "placeholders": {
+        "count": {}
+        }
+    },
+
+    "menuAusencia" : "Absences",
+    "menuFeria" : "Holidays",
+    "menuRecusacao" : "Rejections",
+    "menuHistorico" : "History",
+    "menuAprovacoes" : "Approvals",
+
+    "menuAusencia1" : "Mark Absences",
+    "menuFeria2" : "Mark Holidays",
+    "menuHistorico3" : "See History",
+    "menuAprovacoes4" : "See Approvals",
+
+    "ausCasamento" : "Wedding",
+    "ausFalecimento" : "Death",
+    "ausProvas" : "Assessment Tests",
+    "ausSaude" : "Health",
+    "ausAcidente" : "Accident",
+    "ausMotivosPessoais" : "Personal Motives",
+    "ausReuniao" : "Meeting with Enc.",
+    "ausOutro" : "Another",
+
+    "ausBanco" : "Bank of Hours",
+    "ausOrdenando" : "Salary",
+
+    "ausCondicao" : "Select your Condition",
+    "ausDescontar" : "Where do you want to cash in this time?",
+    "ausMotivo" : "Tell us your Reason (Optional)",
+    "ausIntervalo" : "Set Range",
+    "ausIncompleto" : "Set Incomplete Time Period",
+    "ausDefina" : "Set the dates correctly to move forward",
+    "ausAprovacao" : "Your absence was for approval!",
+    "ausDocuments" : "Absence of Documents",
+    "ausDeseja" : "Do you wish to proceed even without documents? If you do, remember that for an absence to be justified, it is necessary to show documents.",
+    "ausPeriodo" : "Period: ",
+    "ausPeriodoInicial" : "Initial Period",
+    "ausPeriodoFinal" : "Final Period",
+    "ausGaleria" : "Document Gallery",
+
+    "feriasTotal" : " - Total",
+    "feriasDisponivel" : " - Available",
+    "feriasUtilizados" : " - Used",
+    "feriasSelecione" : "Select a period",
+    "feriasInsuficiente" : "Insufficient Data",
+    "feriasInsufExplicao" : "You need to select the days you wish to take holiday to proceed with the process",
+    "feriasSubmeterExplic" : "Would you like to submit the selected range?",
+    "feriasTotalUltrapassado" : "Total Holidays Exceeded",
+    "feriasAprovacao" : "Your holiday was for approval!",
+    "feriasUltrapassou": "You have selected {total} day/days, but only have {tirarDias} day/days, do you want to change this to the {fimFormat} date ending holiday you have?",
+    "@feriasUltrapassou": {
+        "placeholders": {
+            "total": {},
+            "tirarDias": {},
+            "fimFormat": {
+                "type": "String"
+            }
+        }
+    },
+
+    "aprovaSalva" : "Your registration has been saved",
+    "aprovaNaoMotivo" : "No reason",
+    "aprovaAusencia" : "About Absence",
+    "aprovaCategoria" : "Category: ",
+    "aprovaDesconto" : "Discount: ",
+    "aprovaMotivo" : "Motive",
+    "aprovaDocs": "{count,plural, =0{No documents} =1{1 Document} other{{num} Documents}",
+    "@aprovaDocs": {
+        "placeholders": {
+        "count": {},
+        "num": {}
+        }
+    },
+    "aprovaSemRegisto": "No {titulo} for Approve!",
+    "@aprovaSemRegisto": {
+        "placeholders": {
+            "titulo": {
+                "type": "String"
+            }
+        }
+    },
+    "aprovaSemRegistoExplic" : "At the moment you have no approval that you can make",
+    "aprovaAtualizar" : "Update",
+    "aprovaDias": "{count,plural, =0{Without days} =1{1 Day} other{{num} Days}",
+    "@aprovaDias": {
+        "placeholders": {
+        "count": {},
+        "num": {}
+        }
+    },
+    "aprovaAprovar" : "Approve?",
+    "aprovaRecusar" : "Refuse?",
+
+    "aprovaFeriasUtilizador": "Are you really sure you want to submit {nome}'s holiday",
+    "@aprovaFeriasUtilizador": {
+        "placeholders": {
+            "nome": {
+                "type": "String"
+            }
+        }
+    },
+
+    "aprovaMarcarNovo": "Do you really want ${nome} to book a new holiday period?",
+    "@aprovaMarcarNovo": {
+        "placeholders": {
+            "nome": {
+                "type": "String"
+            }
+        }
+    },
+
+    "historicoPendente" : "Pending",
+    "historicoConfirmado" : "Confirmed",
+    "historicoRecusado" : "Denied",
+
+    "historicoAusencia" : "Absence",
+    "historicoFerias" : "Holidays",
+    "historicoPeriodo" : "Period between dates",
+    "historicoEliminar" : "Delete record",
+    "historicoEliminarPergunta" : "Are you really sure you want to delete the registration?",
+
+    "parCartao" : "Employee Card",
+    "parColaborador" : "Nº Collaborator: ",
+    "parContribuinte" : "NIF: ",
+    "parCondicao" : "THIS CARD IS PERSONAL AND NON-TRANSMISSIBLE",
+
+    "explicAusec" : "In this layout you will be able to notify human resources of any absence that you have, or are going to have. Remembering that for your absence to be justified in our database, you need to incorporate a photo of the document that is possible for the viewing of that justification and still have to pass through the approval of the coordinator and the human resources themselves. The original should be delivered to the HRD (Ps: If you do not have a coordinator your approval only goes through HR).",
+    "explicFerias" : "You can schedule your holidays in a simple and effective way. This screen will display the total number of days you have to take off this year, the ones you still have available and the ones you have already taken.",
+    "explicHist" : "You can access your absences and leave that are to be confirmed, that have already been confirmed and those that have been refused.",
+    "explicAprov" : "This category is only displayed for coordinators where they have responsibility for validating both holidays and absences of their carers.",
+    
+    "explicCartao" : "This card serves as identification for our partnerships",
+    "showcard" : "Show employee card",
+    "explicacao" : "Explanation",
+
+    "loginServidor" : "Server",
+    "loginExpliServ" : "Server error, please inform the IT department",
+    "loginPermissao" : "Permissions",
+    "loginPermisServ" : "You do not have access to our content, if you wish to have it, please inform Human Resources",
+    "loginIncorreto" : "Incorrect",
+    "loginIncorrServr" : "Make sure your membership number is valid",
+
+    "reciboVenc" : "Salary Receipt",
+    "reciboIRS" : "IRS Documents"
+}

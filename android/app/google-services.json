@@ -1,0 +1,83 @@
+{
+  "project_info": {
+    "project_number": "378620393841",
+    "firebase_url": "https://drhproject-4e044-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "drhproject-4e044",
+    "storage_bucket": "drhproject-4e044.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:378620393841:android:5db762c8d7bf86e6239ed0",
+        "android_client_info": {
+          "package_name": "com.example.desktop_drh_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "378620393841-1233d1tgjarcen5lj3h4cpmj7agbqqk9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3XGcnB6JtFb4R1yz_cxMZTonr-ac9Slw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "378620393841-1233d1tgjarcen5lj3h4cpmj7agbqqk9.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "378620393841-nqooe31k9k695btnn8708j8853vtni8c.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.drhProject"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:378620393841:android:012773a1e481baf6239ed0",
+        "android_client_info": {
+          "package_name": "com.example.drh_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "378620393841-1233d1tgjarcen5lj3h4cpmj7agbqqk9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3XGcnB6JtFb4R1yz_cxMZTonr-ac9Slw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "378620393841-1233d1tgjarcen5lj3h4cpmj7agbqqk9.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "378620393841-nqooe31k9k695btnn8708j8853vtni8c.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.drhProject"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
