@@ -5,7 +5,7 @@ Um projeto que envolve uma série de funcionalidades com o objetivo de otimizar 
 ## Introdução 😵‍💫
 
 Isto foi o meu primeiro projeto desenvolvido em flutter com uma grande variedade de funcionalidades instaladas, entre elas:
-- Tabelas de visionamento de informação
+- ### Tabelas de visionamento de informação
 - Alertas personalizados
 - Animações entre telas
 - Calendarização de dados
