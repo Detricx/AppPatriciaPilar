@@ -1,16 +1,21 @@
 # drh_project
 
-A new Flutter project.
+Um projeto que envolve uma série de funcionalidades com o objetivo de otimizar o departamento de recursos humanos de a empresa Patrícia Pilar
 
-## Getting Started
+## Introdução
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Isto foi o meu primeiro projeto desenvolvido em flutter com uma grande variedade de funcionalidades instaladas, entre elas:
+- Tabelas de visionamento de informação
+- Alertas personalizados
+- Animações entre telas
+- Calendarização de dados
+- Leitura de API's
+- Criptografia de palavras
+- Leitura de dados biométricos
+- Telas de loading
+- Temporizadores
+- Captura de imagens via câmara / álbum
+- Leitura de PDF's
+- Sistema de feedback
+- Download e partilha de documentos
+- Firebase Messaging
