@@ -97,19 +97,34 @@ Neste projeto encontrarás as seguintes funções:
 ## 3. DESCRIÇÃO DO PROJETO
 
 <p align="justify">
-  Este foi o meu <b>Primeiro Projeto</b> realizado em flutter/dart com o objetivo de otimizar os serviços dos recursos humanos da Patrícia Pilar
+  Este foi o meu <b>Primeiro Projeto</b> realizado em flutter/dart com o objetivo de otimizar os serviços dos recursos humanos da Patrícia Pilar. Este projeto tem desde o mais básico ao avançado que o meu conhecimento pelo flutter chegou.
 </p>
+
+<br>
 
 ## 4. BASE DE DADOS
 
-Explique com mais detalhes como a sua aplicação poderia ser utilizada. O uso de **gifs** aqui seria bem interessante. 
+A linguagem de consulta estruturada que usei foi o "SQL" com o ambiente integrado "Microsoft SQL Server Management Studio". Este projeto foi criado juntamente com uma base de dados a acessar dados da principal da empresa.
 
-Exemplo: Caso a sua aplicação tenha alguma funcionalidade de login apresente neste tópico os dados necessários para acessá-la.
+<br>
 
 ## 5. LINGUAGENS E DEPENDÊNCIAS
 
-- [React](https://pt-br.reactjs.org/docs/create-a-new-react-app.html)
-- [React PDF](https://react-pdf.org/)
+- Linguagenns de Programação
+  - Dart
+  - PHP
+  - SQL
+  - Ruby
+ 
+- Frameworks
+  - Flutter
+  
+- Ferramentas
+  - Visual Code
+  - PostMan
+  - Xampp
+
+<br>
 
 ## 6. TAREFAS EM ABERTO
 
@@ -121,4 +136,6 @@ Se for o caso, liste tarefas/funcionalidades que ainda precisam ser implementada
 
 :memo: Tarefa 3 
 
-Copyright :copyright: 2022 - DRH_project
+<br>
+
+> Copyright :copyright: 2022 - DRH_project
