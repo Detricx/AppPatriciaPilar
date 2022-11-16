@@ -114,7 +114,6 @@ A linguagem de consulta estruturada que usei foi o "SQL" com o ambiente integrad
   - Dart
   - PHP
   - SQL
-  - Ruby
  
 - Frameworks
   - Flutter
