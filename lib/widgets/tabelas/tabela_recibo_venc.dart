@@ -11,9 +11,9 @@ import 'package:http/http.dart' as http;
 
 //Classe que servirá para converter dados para "DataGridSource"
 class DocsFuncionarioRV extends DataGridSource{
-  final String nif, nifEmpresa;
+  final String nifEmpresa;
   final List lista; //Esta lista pode ser tanto um erro como uma listagem de documentos (Ps: A listagem de erro só coloquei por ser um campo obrigatório)
-  DocsFuncionarioRV({required this.nif, required this.lista, required this.nifEmpresa});
+  DocsFuncionarioRV({required this.lista, required this.nifEmpresa});
 
   @override
   List<DataGridRow> get rows => lista
@@ -39,7 +39,7 @@ class DocsFuncionarioRV extends DataGridSource{
                     foregroundColor: Colors.white, backgroundColor: Colors.brown[800]
                   ),
                   onPressed: () async{
-                    ReciboVenc documento = await getDataFromDocument(nif, dataCell.value) as ReciboVenc;
+                    ReciboVenc documento = await getDataFromDocument(dataCell.value) as ReciboVenc;
 
                     // ignore: use_build_context_synchronously
                     Navigator.push(context, 
@@ -67,9 +67,9 @@ class DocsFuncionarioRV extends DataGridSource{
   }
 
   //Sacar a data toda a cerca do documento clicado
-  Future<Object> getDataFromDocument(String ctb, dynamic tempo) async{
+  Future<Object> getDataFromDocument(dynamic tempo) async{
     
-    Uri url = definirUrl('rv/recibo_data.php', ctb, campo2: tempo.replaceAll('.', '-'));
+    Uri url = definirUriGET('rv/recibo_data.php', campo1: tempo.replaceAll('.', '-'));
     http.Response data = await http.get(url);
     Map<String, dynamic> resposta = jsonDecode(data.body);
     

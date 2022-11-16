@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:drh_project/services/definir_url.dart';
+import 'package:drh_project/services/http_connections.dart';
 import 'package:drh_project/widgets/app_bar.dart';
 import 'package:drh_project/widgets/decision_box.dart';
 import 'package:drh_project/widgets/dialog_box.dart';
@@ -14,8 +15,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FeriasScreen extends StatefulWidget {
-  final String ctb;
-  const FeriasScreen({Key? key, required this.ctb}) : super(key: key);
+  const FeriasScreen({Key? key}) : super(key: key);
 
   @override
   State<FeriasScreen> createState() => _FeriasScreenState();
@@ -25,7 +25,7 @@ class _FeriasScreenState extends State<FeriasScreen> {
   
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) async => carregarDiasFerias(widget.ctb));
+    WidgetsBinding.instance.addPostFrameCallback((_) async => carregarDiasFerias());
     super.initState();
   }
 
@@ -307,7 +307,7 @@ class _FeriasScreenState extends State<FeriasScreen> {
     if(total <= tirarDias) {
       titulo = t.escolhaSubmeter;
       msgErro = t.feriasSubmeterExplic;
-      mostrarShowDialog(inicio, fim, 240, Icons.help, t);
+      mostrarShowDialog(inicio, fim, 240, Icons.help, );
     }
     else {
       //Coloco dentro de outra variável para não o afetar
@@ -323,11 +323,11 @@ class _FeriasScreenState extends State<FeriasScreen> {
       msgErro = t.feriasUltrapassou(total, tirarDias, fimFormat);
       titulo = t.feriasTotalUltrapassado;
 
-      mostrarShowDialog(inicio, fim, 330, Icons.help, t);
+      mostrarShowDialog(inicio, fim, 330, Icons.help);
     }
   }
 
-  void mostrarShowDialog(DateTime inicio, DateTime fim, double tamanhoLayout, IconData icon, AppLocalizations t){
+  void mostrarShowDialog(DateTime inicio, DateTime fim, double tamanhoLayout, IconData icon){
     showDialog(barrierDismissible: true, context: context, builder: (telaAtual){
       nao = (){
         Navigator.pop(telaAtual);
@@ -337,7 +337,7 @@ class _FeriasScreenState extends State<FeriasScreen> {
         // ano-mes-dia ano-mes-dia
         Navigator.pop(telaAtual);
         String data = '${inicio.year}-${inicio.month}-${inicio.day} ${fim.year}-${fim.month}-${fim.day}';
-        armazenarDadosFerias(data, t);
+        HttpServicesProject.armazenarDadosFerias(data, context);
       };
 
       return decisionBox(
@@ -348,7 +348,6 @@ class _FeriasScreenState extends State<FeriasScreen> {
         icon, 
         sim, 
         nao,
-        t
       );
     });
   }
@@ -387,41 +386,10 @@ class _FeriasScreenState extends State<FeriasScreen> {
     return result;
   }
   
-  void armazenarDadosFerias(String periodo, AppLocalizations t) async{
-    try{
-      var url = Uri.parse("http://192.168.26.146/projects/flutter/drh_project/ausencias/save_ferias.php");
-
-      Map<String, String> data = {
-        "ctb" : widget.ctb,
-        "categoria" : 'Férias',
-        "desconto" : 'Férias',
-        "data": periodo, 
-      };
-      
-      http.Response response = await http.post(url, body:data);
-      Map<String, dynamic> resposta = jsonDecode(response.body);
-
-      if(response.statusCode == 200){
-        showDialog(barrierDismissible: true, context: context, builder: (context){
-          return dialogBox(context, t.errPHP7, t.feriasAprovacao, 180, Icons.warning);
-        }).then((value) => Navigator.pop(context));
-      }
-      else{
-        showDialog(barrierDismissible: true, context: context, builder: (context){
-          return dialogBox(context, resposta['type'], resposta['message'], 500, Icons.warning);
-        });
-      } 
-    }
-    catch(e){
-      showDialog(barrierDismissible: true, context: context, builder: (context){
-        return dialogBox(context, t.avisInesperado, 'Detahes: $e',500, Icons.warning);
-      });
-    }
-  }
   
-  void carregarDiasFerias(String nif) async{
+  void carregarDiasFerias() async{
     int ano = DateTime.now().year;
-    Uri url = definirUrl('rf/get_ementa_week.php', nif, campo2: ano.toString());
+    Uri url = definirUriGET('ausencias/get_days_ferias.php', campo1: ano.toString());
     
     http.Response data = await http.get(url);
     Map<String, dynamic> resposta = jsonDecode(data.body);
@@ -431,8 +399,8 @@ class _FeriasScreenState extends State<FeriasScreen> {
       List data = resposta["data"];
       if(data.isNotEmpty){
         total = data[0];
-        totalDisponiveis = data[2];
-        totalUsadas = data[1];
+        totalDisponiveis = double.parse(data[2]).round();
+        totalUsadas = double.parse(data[1]).round();
       }
       else{
         total = 10;

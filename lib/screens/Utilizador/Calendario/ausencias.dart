@@ -12,15 +12,14 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as p;
 import 'package:http/http.dart' as http;
+import 'package:drh_project/services/globals.dart' as globals;
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AusenciasScreen extends StatefulWidget {
-  final String nif;
   final Ausencia? ausencia;
-  
-  const AusenciasScreen({Key? key, required this.nif, required this.ausencia}) : super(key: key);
+  const AusenciasScreen({Key? key, required this.ausencia}) : super(key: key);
   
   @override
   State<AusenciasScreen> createState() => _AusenciasScreenState();
@@ -479,7 +478,7 @@ class _AusenciasScreenState extends State<AusenciasScreen> {
                                   }
                                   else{
                                     showDialog(barrierDismissible: false, context: context, builder: (primeiraTela){
-                                      return decisionBox(primeiraTela, t.ausDocuments, t.ausDeseja, 350, Icons.warning, repondeuSim(primeiraTela, t, ausencia: widget.ausencia), respondeuNao(primeiraTela), t);
+                                      return decisionBox(primeiraTela, t.ausDocuments, t.ausDeseja, 350, Icons.warning, repondeuSim(primeiraTela, t, ausencia: widget.ausencia), respondeuNao(primeiraTela));
                                     });
                                   }
                                 }
@@ -964,7 +963,7 @@ class _AusenciasScreenState extends State<AusenciasScreen> {
     try{
       documentos = documentos ?? [];
       Map<String, dynamic> data = {
-        "ctb" : widget.nif,
+        "ctb" : globals.nif,
         "categoria" : categoriaAtualizada,
         "desconto" : descontoStringAtualizada,
         "motivo" : motivo,
@@ -991,7 +990,7 @@ class _AusenciasScreenState extends State<AusenciasScreen> {
       if(ausencia != null){
         data.addAll({"idAusencia": '${ausencia.id}'});
 
-        var url = Uri.parse("http://192.168.26.146/projects/flutter/drh_project/ausencias/change_ausencia.php");
+        var url = Uri.parse("http://${globals.ip}/projects/flutter/drh_project/ausencias/change_ausencia.php");
         http.Response response = await http.post(url, body:data);
         Map<String, dynamic> resposta = jsonDecode(response.body);
         
@@ -1001,7 +1000,7 @@ class _AusenciasScreenState extends State<AusenciasScreen> {
         return response.statusCode == 200 ? true : false;
       }
       else{
-        var url = Uri.parse("http://192.168.26.146/projects/flutter/drh_project/ausencias/save_ausencia.php");
+        var url = Uri.parse("http://${globals.ip}/projects/flutter/drh_project/ausencias/save_ausencia.php");
         http.Response response = await http.post(url, body:data);
         Map<String, dynamic> resposta = jsonDecode(response.body);
         

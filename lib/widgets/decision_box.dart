@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-Widget decisionBox(BuildContext context, String titulo, String msg, double largura, IconData icon, VoidCallback sim, VoidCallback nao, AppLocalizations t){
+Widget decisionBox(BuildContext context, String titulo, String msg, double largura, IconData icon, VoidCallback sim, VoidCallback nao){
+  var t = AppLocalizations.of(context)!;
+  
   return Dialog(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(25.0)

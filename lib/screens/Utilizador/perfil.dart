@@ -1,18 +1,16 @@
-import 'dart:convert';
-import 'dart:io';
+import 'package:drh_project/services/http_connections.dart';
 import 'package:drh_project/widgets/fundo_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 class PerfilScreen extends StatefulWidget {
-  final String nome, profissao, ctb;
+  final String nome, profissao;
   final String? cargo;
   final String nifEmpresa;
-  const PerfilScreen(this.nifEmpresa, { Key? key, required this.cargo, required this.nome, required this.profissao, required this.ctb }) : super(key: key);
+  const PerfilScreen(this.nifEmpresa, { Key? key, required this.cargo, required this.nome, required this.profissao }) : super(key: key);
   
   
   @override
@@ -21,7 +19,7 @@ class PerfilScreen extends StatefulWidget {
 
 class _PerfilScreenState extends State<PerfilScreen> {
 
-  String nome = '', profissao = '', ctb = '', url = '';
+  String nome = '', profissao = '', ctb = '';
   String? tituloErro, erro, area;
   late XFile documento;
   DefaultCacheManager manager = DefaultCacheManager();
@@ -30,10 +28,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
   void initState() {
     nome = widget.nome;
     profissao = widget.profissao;
-    ctb = widget.ctb;
     area = widget.cargo;
-    url = 'http://192.168.26.146/projects/flutter/drh_project/images/app/pessoal/$ctb.jpg';
-
     super.initState();
   }
 
@@ -64,7 +59,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
                     InkWell(
                       child: ClipOval(
                         child: Image.network(
-                          url,
+                          HttpServicesProject.urlNif,
                           key: UniqueKey(),
                           fit: BoxFit.cover,
                           width: 250.0,
@@ -402,14 +397,14 @@ class _PerfilScreenState extends State<PerfilScreen> {
                             onPressed: () { 
                               //Adicionar uma fotografia
                               if(tipo == 1){
-                                storeImageSystem(ctb, caminhoFoto).then((value) {
+                                HttpServicesProject.storeImageSystem(ctb, caminhoFoto).then((value) {
                                   clearCache();
                                   Navigator.of(context).pop();
                                 });
                               }
                               //Apagar fotografia
                               else{
-                                deleteImageSystem(ctb).then((value) {
+                                HttpServicesProject.deleteImageSystem(ctb).then((value) {
                                   clearCache();
                                   Navigator.of(context).pop();
                                 });
@@ -463,47 +458,6 @@ class _PerfilScreenState extends State<PerfilScreen> {
     ); 
   }
 
-  Future<bool> storeImageSystem(String titulo, String imagem) async{
-    DefaultCacheManager().emptyCache();
-    File ficheiro = File(imagem);
-    List<int> imageBytes = ficheiro.readAsBytesSync();
-    String baseImage = base64Encode(imageBytes);
-    
-    try{
-      var url = Uri.parse("http://192.168.26.146/projects/flutter/drh_project/recursosHumanos/files/simple_image.php");
-      var headers = {'Content-Type': 'application/x-www-form-urlencoded'};
-      var request = http.Request('POST', url);
-
-      request.bodyFields = {
-        "ctb" : ctb,
-        "imagem" : baseImage,
-      };
-
-      request.headers.addAll(headers);
-      http.StreamedResponse response = await request.send();
-
-      return response.statusCode == 200 ? true : false;
-    }
-    catch(e){
-      return false;
-    }
-  }
-
-  Future<bool> deleteImageSystem(String titulo) async{ 
-    DefaultCacheManager().emptyCache();
-    try{
-      var url = Uri.parse("http://192.168.26.146/projects/flutter/drh_project/recursosHumanos/files/delete_image.php?ctb=$ctb");
-      var request = http.Request('DELETE', url);
-
-      http.StreamedResponse response = await request.send();
-
-      return response.statusCode == 200 ? true : false;
-    }
-    catch(e){
-      return false;
-    }
-  }
-  
   void clearCache() {
     imageCache.clear();
     imageCache.clearLiveImages();

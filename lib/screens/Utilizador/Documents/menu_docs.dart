@@ -5,9 +5,8 @@ import 'package:drh_project/widgets/fundo_app.dart';
 import 'package:flutter/material.dart';
 
 class DocsScreen extends StatefulWidget {
-  final String nif;
   final String nifEmpresa;
-  const DocsScreen(this.nifEmpresa, { Key? key, required this.nif}) : super(key: key);
+  const DocsScreen(this.nifEmpresa, { Key? key }) : super(key: key);
   
   @override
   State<DocsScreen> createState() => _DocsScreenState();
@@ -54,8 +53,8 @@ class _DocsScreenState extends State<DocsScreen> {
                 Expanded(
                   child: TabBarView(
                     children: [
-                      ReciboVencimentoMenuScreen(nif: widget.nif, nifEmpresa: widget.nifEmpresa),
-                      IrsMenuScreen(nif: widget.nif, nifEmpresa: widget.nifEmpresa),
+                      ReciboVencimentoMenuScreen(nifEmpresa: widget.nifEmpresa),
+                      IrsMenuScreen(nifEmpresa: widget.nifEmpresa),
                     ],
                   ),
                 )

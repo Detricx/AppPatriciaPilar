@@ -6,11 +6,11 @@ import 'package:drh_project/widgets/dialog_box.dart';
 import 'package:drh_project/widgets/fundo_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:drh_project/services/globals.dart' as globals;
 import 'package:http/http.dart' as http;
 
 class RefeitorioScreen extends StatefulWidget {
-  final String nif;
-  const RefeitorioScreen({ Key? key, required this.nif }) : super(key: key);
+  const RefeitorioScreen({Key? key}) : super(key: key);
   
   @override
   State<RefeitorioScreen> createState() => _RefeitorioScreenState();
@@ -62,7 +62,7 @@ class _RefeitorioScreenState extends State<RefeitorioScreen> {
         child: Column(
           children: [ 
             Visibility(
-              visible: widget.nif == '288941837',
+              visible: globals.nif == '288941837',
               child: FloatingActionButton.extended(
                 heroTag: null,
                 label: const Text(
@@ -205,7 +205,7 @@ class _RefeitorioScreenState extends State<RefeitorioScreen> {
     String primeiroDia = periodo.first.toIso8601String();
     String ultimoDia = periodo.last.add(const Duration(days: 14)).toIso8601String();
 
-    Uri url = definirUrl('rf/get_ementa_week.php', widget.nif, campo2: primeiroDia, campo3: ultimoDia);
+    Uri url = definirUriGET('rf/get_ementa_week.php', campo1: primeiroDia, campo2: ultimoDia);
     http.Response data = await http.get(url);
     Map<String, dynamic> resposta =jsonDecode(data.body);
 
@@ -239,6 +239,6 @@ class _RefeitorioScreenState extends State<RefeitorioScreen> {
   }
   
   void alterarTelaAtual() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => MarcarEmentaScreen(nif: widget.nif, diasMes: diasMes, ementa: ementa))).then((value){setState((){});});
+    Navigator.push(context, MaterialPageRoute(builder: (context) => MarcarEmentaScreen(nif: globals.nif, diasMes: diasMes, ementa: ementa))).then((value){setState((){});});
   }
 }

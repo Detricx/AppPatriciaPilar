@@ -1,4 +1,5 @@
 import 'package:drh_project/models/funcionario.dart';
+import 'package:drh_project/services/globals.dart' as globals;
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:flutter/material.dart';
 
@@ -35,7 +36,7 @@ class ListagemFuncionarios extends DataGridSource{
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Image.network(
-                      'http://192.168.26.146/projects/flutter/drh_project/images/app/pessoal/${dataCell.value}.jpg',
+                      'http://${globals.ip}/projects/flutter/drh_project/images/app/pessoal/${dataCell.value}.jpg',
                       key: UniqueKey(),
                       fit: BoxFit.cover,
                       width: 200.0,

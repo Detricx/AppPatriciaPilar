@@ -247,6 +247,7 @@
     "historicoAusencia" : "Absence",
     "historicoFerias" : "Holidays",
     "historicoPeriodo" : "Period between dates",
+    "historicoFeria" : "Just a day",
     "historicoEliminar" : "Delete record",
     "historicoEliminarPergunta" : "Are you really sure you want to delete the registration?",
 

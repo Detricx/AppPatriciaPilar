@@ -1,8 +1,8 @@
+import 'package:drh_project/services/http_connections.dart';
 import 'package:drh_project/widgets/app_bar.dart';
 import 'package:drh_project/widgets/dialog_box.dart';
 import 'package:drh_project/widgets/fundo_app.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 class MarcarEmentaScreen extends StatefulWidget {
   final String nif;
@@ -232,7 +232,7 @@ class _MarcarEmentaScreenState extends State<MarcarEmentaScreen> {
                                       List<TextEditingController> lista = controladorSemana[pagina][index];
                                       List<String> ementaSemana = [lista[0].text, lista[1].text, lista[2].text, lista[3].text];
                                       DateTime dia = diasMes[index];
-                                      if(await updateEmenta(dia, ementaSemana)){
+                                      if(await HttpServicesProject.updateEmenta(dia, ementaSemana)){
                                         showDialog(barrierDismissible: true, context: context, builder: (context){
                                           return dialogBox(context, 'Sucesso', 'Dia ${dia.day} / ${dia.month} com ementa!', 170, Icons.thumb_up);
                                         });
@@ -268,40 +268,6 @@ class _MarcarEmentaScreenState extends State<MarcarEmentaScreen> {
         )
       )
     );
-  }
-  
-  //Fazer o update da ementa quando salvar / fechar a aba
-  Future<bool> updateEmenta(DateTime diasMes, List<String> ementa) async{
-    String dia = diasMes.toIso8601String();
-
-    Uri url = Uri.parse("http://192.168.26.146/projects/flutter/drh_project/rf/update_ementa.php");
-    var headers = {'Content-Type': 'application/x-www-form-urlencoded'};
-    var request = http.Request('POST', url);
-    
-    request.bodyFields = {
-      "ctb" : widget.nif,
-      "dia" : dia,
-      "sopa" : ementa[0],
-      "carne" : ementa[1],
-      "peixe" : ementa[2],
-      "outro" : ementa[3],
-    };
-
-    request.headers.addAll(headers);
-    http.StreamedResponse response = await request.send();
-    await response.stream.bytesToString();
-
-    //Retornou a lista da semana atual
-    if(response.statusCode == 200){
-      return true;
-    }
-    else{
-      return false;
-    }
-  }
-  
-  clearEmenta(List<DateTime> diasMes) {
-
   }
 }
 

@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'dart:ui';
-
+import 'package:drh_project/services/globals.dart' as globals;
 import 'package:another_flushbar/flushbar.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:badges/badges.dart';
@@ -15,6 +15,7 @@ import 'package:drh_project/screens/Principal/login.dart';
 import 'package:drh_project/screens/Utilizador/Documents/menu_docs.dart';
 import 'package:drh_project/services/auth_bio.dart';
 import 'package:drh_project/services/awesome_notification.dart';
+import 'package:drh_project/services/http_connections.dart';
 import 'package:drh_project/services/shared_preferences.dart';
 
 import 'package:drh_project/widgets/app_bar.dart';
@@ -316,7 +317,7 @@ class _HomeScreenState extends State<HomeScreen> {
   //Recolher os dados do Utilizador associados ao contribuinte
   Future<bool> recolherDadosUtilizador() async {
     try{
-      Uri url = definirUrl('ctb_func.php', nif);
+      Uri url = definirUriGET('ctb_func.php');
       http.Response data = await http.get(url);
 
       //Apenas verifico se está tudo a correr bem com o token
@@ -369,12 +370,12 @@ class _HomeScreenState extends State<HomeScreen> {
       '/': (BuildContext context) {
         return [
           //! Colocar todas as variáveis necessárias
-          PerfilScreen(info.empresa, nome: info.nome, cargo: info.area, profissao: info.profissao, ctb: nif),
-          MenuScreen(cargo: info.area, nif: nif),
-          DocsScreen(info.empresa, nif: nif),
-          FeedScreen(nif: nif),
-          ParceriasScreen(info.empresa, nif: nif, nome: info.nome, numeroFuncionario: info.no.toString()),
-          RefeitorioScreen(nif: nif),
+          PerfilScreen(info.empresa, nome: info.nome, cargo: info.area, profissao: info.profissao),
+          MenuScreen(cargo: info.area),
+          DocsScreen(info.empresa),
+          const FeedScreen(),
+          ParceriasScreen(info.empresa, nome: info.nome, numeroFuncionario: info.no.toString()),
+          const RefeitorioScreen(),
         ].elementAt(index);
       },
     };
@@ -478,7 +479,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           padding: const EdgeInsets.only(top:25, bottom: 0),
                           child: ClipOval(
                             child: Image.network(
-                              'http://192.168.26.146/projects/flutter/drh_project/images/app/pessoal/$nif.jpg',
+                              HttpServicesProject.urlNif,
                               key: UniqueKey(),
                               fit: BoxFit.cover,
                               width: 200.0,
@@ -608,7 +609,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     }
                                     */
                                     case 1: {
-                                      List categorias = await capturarCategorias(t);
+                                      List categorias = await HttpServicesProject.capturarCategorias(t);
                                       showDialog(barrierDismissible: true, context: context, useRootNavigator: true, builder: (tela){
                                         return Scaffold(
                                           resizeToAvoidBottomInset: false,
@@ -626,7 +627,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     }
                                     case 2:{
                                       showDialog(barrierDismissible: true, context: context, builder: (context){
-                                        return decisionBox(context, t.avisLogOut, t.txtCertezaLogOut,  240, Icons.help, decisionBoxsim(), decisionBoxnao(), t);
+                                        return decisionBox(context, t.avisLogOut, t.txtCertezaLogOut,  240, Icons.help, decisionBoxsim(), decisionBoxnao());
                                       });
                                       break;
                                     }
@@ -654,7 +655,7 @@ class _HomeScreenState extends State<HomeScreen> {
     //Verifico se correu tudo bem
     if (isAuthenticated) {
       //Refresh ao token de acesso 
-      Uri url = definirUrl('token/refresh_token.php', nif);
+      Uri url = definirUriGET('token/refresh_token.php');
       http.Response data = await http.get(url);
       Map<String, dynamic> resposta = jsonDecode(data.body);
 
@@ -790,7 +791,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 if(password.isNotEmpty){
                                   if(senha == password){
                                     //Refresh ao token de acesso 
-                                    Uri url = Uri.parse("http://192.168.26.146/projects/flutter/drh_project/token/refresh_token.php?ctb=$nif&key=$password");
+                                    Uri url = Uri.parse("http://${globals.ip}/projects/flutter/drh_project/token/refresh_token.php?ctb=$nif&key=$password");
                                     http.Response data = await http.get(url);
                                     if(data.statusCode == 200){
                                       setState((){
@@ -892,35 +893,6 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     );
   }
-  
-  Future<List> capturarCategorias(AppLocalizations t) async{
-    List categorias = [];
-    
-    Uri url = Uri.parse("http://192.168.26.146/projects/flutter/drh_project/feedback/feedback_cat.php");
-    http.Response data = await http.get(url);
-    Map<String, dynamic> resposta = jsonDecode(data.body);
-
-    if(data.statusCode == 200){
-      var dados = resposta["data"];
-      if(t.localeName == 'pt'){
-        for(int i = 0; i <= dados.length - 1; i++){
-          String cat = resposta["data"][i][0];
-          categorias.add(cat);  
-        }
-      }
-      else{
-        for(int i = 0; i <= dados.length - 1; i++){
-          String cat = resposta["data"][i][1];
-          categorias.add(cat);  
-        }
-      }
-      
-      return categorias;
-    }
-    else{
-      return [resposta["type"], resposta["message"]]; 
-    }
-  }
 
   //Instânciar ferramentas do Firebase
   void requestAndRegisterNotification() async{
@@ -959,7 +931,7 @@ class _HomeScreenState extends State<HomeScreen> {
       break;
     }
 
-    Uri url = definirUrl("state_notification.php", nif, campo2: idDispositivo ?? '');
+    Uri url = definirUriGET("state_notification.php", campo1: idDispositivo ?? '');
     http.Response data = await http.get(url);
     bool displayNotification = (data.statusCode == 204);
 
@@ -1007,8 +979,10 @@ class _HomeScreenState extends State<HomeScreen> {
   }
   
   void definicoesFirebase(String idDispositivo, bool permissao) {
+    var t = AppLocalizations.of(context)!;
+
     //Salvar token e ID do dispositivo na BD
-    saveDataFromDevice(idDispositivo, permissao);
+    HttpServicesProject.saveDataFromDevice(idDispositivo, permissao, t);
 
     //Criação dos canais caso não os tenha
     AwesomeNotificationService.initialize();
@@ -1044,37 +1018,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
     FirebaseMessaging.instance.onTokenRefresh
     .listen((fcmToken) {
-      saveDataFromDevice(idDispositivo, permissao);
+      HttpServicesProject.saveDataFromDevice(idDispositivo, permissao, t);
     })
     .onError((err) {
       debugPrint(err);
     });
   }
 
-  //Armazeno o token do dispositivo
-  void saveDataFromDevice(String idDispositivo, bool permissao) async{
-    var t = AppLocalizations.of(context)!;
-
-    String? token = await messaging.getToken();
-
-    Uri url = Uri.parse("http://192.168.26.146/projects/flutter/drh_project/save_serial_number.php");
-    var headers = {'Content-Type': 'application/x-www-form-urlencoded'};
-    var request = http.Request('POST', url);
-    
-    request.bodyFields = {
-      "ctb" : nif,
-      "serialNumber" : idDispositivo,
-      "token" : token ?? '',
-      "lingua" : t.localeName,
-      "not" : permissao ? '1' : '0',
-    };
-
-    request.headers.addAll(headers);
-
-    http.StreamedResponse response = await request.send();
-    await response.stream.bytesToString();
-  }
-  
   VoidCallback decisionBoxnao() {
     return (){
       Navigator.of(context).pop();
@@ -1102,7 +1052,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<bool> verificarToken(String nif, {String? key}) async{
-    Uri url = Uri.parse("http://192.168.26.146/projects/flutter/drh_project/token/refresh_token.php?ctb=$nif&key=");
+    Uri url = Uri.parse("http://${globals.ip}/projects/flutter/drh_project/token/refresh_token.php?ctb=$nif&key=");
     http.Response data = await http.get(url);
     
     if(data.statusCode == 200){

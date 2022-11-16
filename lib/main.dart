@@ -52,7 +52,7 @@ Future main() async{
       GlobalCupertinoLocalizations.delegate,
     ],
 
-    routes: Routes.roteamentoDeTelas('', '', '', ''),
+    routes: Routes.roteamentoDeTelas('', '', ''),
     initialRoute: Routes.initial,
     navigatorKey: Routes.navigatorKey,
   )));

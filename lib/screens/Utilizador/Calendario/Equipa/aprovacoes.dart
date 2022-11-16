@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:drh_project/models/ausencia.dart';
 import 'package:drh_project/models/funcionario.dart';
 import 'package:drh_project/services/definir_url.dart';
+import 'package:drh_project/services/http_connections.dart';
 import 'package:drh_project/widgets/app_bar.dart';
 import 'package:drh_project/widgets/decision_box.dart';
 import 'package:drh_project/widgets/dialog_box.dart';
@@ -18,9 +19,8 @@ import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AprovacoesScreen extends StatefulWidget {
-  final String nif;
   final List<DateTime> feriados;
-  const AprovacoesScreen({Key? key, required this.nif, required this.feriados}) : super(key: key);
+  const AprovacoesScreen({Key? key, required this.feriados}) : super(key: key);
 
   @override
   State<AprovacoesScreen> createState() => _AprovacoesScreenState();
@@ -140,21 +140,21 @@ class _AprovacoesScreenState extends State<AprovacoesScreen> {
                                     equipaFerias.isNotEmpty ?
                                     RefreshIndicator(
                                       onRefresh: swipeup,
-                                      child: aprovaFalta(equipaFerias, widget.feriados, nifchefe: widget.nif)
+                                      child: aprovaFalta(equipaFerias, widget.feriados)
                                     ) : 
                                     naoApresentaDados(t.menuFeria, t),
 
                                     equipaAusencias.isNotEmpty ?
                                     RefreshIndicator(
                                       onRefresh: swipeup,
-                                      child: aprovaFalta(equipaAusencias, widget.feriados, nifchefe: widget.nif)
+                                      child: aprovaFalta(equipaAusencias, widget.feriados)
                                     ) :
                                     naoApresentaDados(t.menuAusencia, t),
 
                                     equipaRecusacoes.isNotEmpty ?
                                     RefreshIndicator(
                                       onRefresh: swipeup,
-                                      child: aprovaFalta(equipaRecusacoes, widget.feriados, nifchefe: widget.nif)
+                                      child: aprovaFalta(equipaRecusacoes, widget.feriados)
                                     ) : 
                                     naoApresentaDados('Recusações', t),
                                   ],
@@ -203,7 +203,7 @@ class _AprovacoesScreenState extends State<AprovacoesScreen> {
     equipaRecusacoes.clear();
     
     //Vai retornar uma lista de aprovações que ainda não passou por aprovação
-    Uri url = definirUrl('ausencias/aprovacoes.php', widget.nif);
+    Uri url = definirUriGET('ausencias/aprovacoes.php');
     http.Response data = await http.get(url);
     
     //Retornou utilizadores que precisam que lhes validem férias
@@ -419,7 +419,7 @@ class _AprovacoesScreenState extends State<AprovacoesScreen> {
     );
   }
   
-  aprovaFalta(List<Funcionario> equipaFerias, List<DateTime> feriados, {required String nifchefe}) {
+  aprovaFalta(List<Funcionario> equipaFerias, List<DateTime> feriados) {
     
     int diasParaTirar(PickerDateRange periodo) {
       DateTime inicio = periodo.startDate!;
@@ -470,7 +470,7 @@ class _AprovacoesScreenState extends State<AprovacoesScreen> {
                       child: FlipCard(
                         direction: FlipDirection.HORIZONTAL,
                         flipOnTouch: false,
-                        front: cartaoFrente(funcionario, diasParaTirar(periodo), periodoAusencias, j, nifchefe, t),
+                        front: cartaoFrente(funcionario, diasParaTirar(periodo), periodoAusencias, j, t),
                         back: cartaoTraz(),
                       ),
                     );
@@ -485,7 +485,7 @@ class _AprovacoesScreenState extends State<AprovacoesScreen> {
     ); 
   }
   
-  Widget cartaoFrente(Funcionario funcionario, int diasParaTirar, Ausencia periodoAusencias, int index, String nifchefe, AppLocalizations t) {
+  Widget cartaoFrente(Funcionario funcionario, int diasParaTirar, Ausencia periodoAusencias, int index, AppLocalizations t) {
 
     String periodoTempoString = '';
     bool temHoras = false;
@@ -501,7 +501,7 @@ class _AprovacoesScreenState extends State<AprovacoesScreen> {
       periodoTempoString = '${startDate.day}-${startDate.month}-${startDate.year} ${endDate.day}-${endDate.month}-${endDate.year}';   
     }
 
-    VoidCallback funcaoSim(String nif, int id, int nivel, AppLocalizations t, BuildContext tela, int nivelAusencia){
+    VoidCallback funcaoSim(int id, int nivel, AppLocalizations t, BuildContext tela, int nivelAusencia){
       //Mudar o nível da aprovação para o próximo (2)
       return () async{
         try{
@@ -510,19 +510,19 @@ class _AprovacoesScreenState extends State<AprovacoesScreen> {
           if(nivelAusencia == 1){
             //O pedido foi recusado
             if(nivel == 0){
-              url = definirUrl('ausencias/alter_nivel.php', nif, campo2: '$id', campo3: '$nivel');
+              url = definirUriGET('ausencias/alter_nivel.php', campo1: '$id', campo2: '$nivel');
             }
             else{
-              url = definirUrl('ausencias/alter_nivel.php', nif, campo2: '$id', campo3: '2');
+              url = definirUriGET('ausencias/alter_nivel.php', campo1: '$id', campo2: '2');
             }
           }
           //No caso de estar a confirmar uma recusação
           else{ 
             if(nivel == 0){
-              url = definirUrl('ausencias/alter_nivel.php', nif, campo2: '$id', campo3: '7');
+              url = definirUriGET('ausencias/alter_nivel.php', campo1: '$id', campo2: '7');
             }
             else{
-              url = definirUrl('ausencias/alter_nivel.php', nif, campo2: '$id', campo3: '5');
+              url = definirUriGET('ausencias/alter_nivel.php', campo1: '$id', campo2: '5');
             }
           }
           
@@ -991,7 +991,7 @@ class _AprovacoesScreenState extends State<AprovacoesScreen> {
                     flex: 2,
                     child: ClipOval(
                       child: Image.network(
-                        'http://192.168.26.146/projects/flutter/drh_project/images/app/pessoal/${funcionario.nif}.jpg',
+                        HttpServicesProject.urlNif,
                         key: UniqueKey(),
                         fit: BoxFit.cover,
                         width: 250.0,
@@ -1068,7 +1068,7 @@ class _AprovacoesScreenState extends State<AprovacoesScreen> {
                                   backgroundColor: Colors.brown[800],
                                   onPressed: (){
                                     showDialog(barrierDismissible: true, context: context, builder: (context){
-                                      return decisionBox(context, t.aprovaAprovar, t.aprovaFeriasUtilizador(funcionario.nome), 280, Icons.help, funcaoSim(nifchefe, funcionario.periodoAusencias![index].id, 2, t, context, funcionario.periodoAusencias![index].nivel), funcaoNao(context), t);
+                                      return decisionBox(context, t.aprovaAprovar, t.aprovaFeriasUtilizador(funcionario.nome), 280, Icons.help, funcaoSim(funcionario.periodoAusencias![index].id, 2, t, context, funcionario.periodoAusencias![index].nivel), funcaoNao(context));
                                     }).then((value) => setState((){}));
                                   },
                                   child: const Icon(Icons.done)
@@ -1083,7 +1083,7 @@ class _AprovacoesScreenState extends State<AprovacoesScreen> {
                                   backgroundColor: Colors.brown[800],
                                   onPressed: (){
                                     showDialog(barrierDismissible: true, context: context, builder: (context){
-                                      return decisionBox(context, t.aprovaRecusar, t.aprovaMarcarNovo(funcionario.nome), 280, Icons.help, funcaoSim(nifchefe, funcionario.periodoAusencias![index].id, 0, t, context, funcionario.periodoAusencias![index].nivel), funcaoNao(context), t);
+                                      return decisionBox(context, t.aprovaRecusar, t.aprovaMarcarNovo(funcionario.nome), 280, Icons.help, funcaoSim(funcionario.periodoAusencias![index].id, 0, t, context, funcionario.periodoAusencias![index].nivel), funcaoNao(context));
                                     }).then((value) => setState((){}));
                                   },
                                   child: const Icon(Icons.close)

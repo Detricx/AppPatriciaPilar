@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 
 //Classe que servirá para converter dados para "DataGridSource"
 class DocsFuncionarioIRS extends DataGridSource{
-  final String nif, nifEmpresa;
+  final String nifEmpresa;
   final List lista; //Esta lista pode ser tanto um erro como uma listagem de documentos (Ps: A listagem de erro só coloquei por ser um campo obrigatório)
-  DocsFuncionarioIRS(this.nifEmpresa, {required this.nif, required this.lista});
+  DocsFuncionarioIRS(this.nifEmpresa, {required this.lista});
 
   @override
   List<DataGridRow> get rows => lista

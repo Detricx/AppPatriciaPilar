@@ -1,6 +1,6 @@
+import 'package:drh_project/services/http_connections.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:http/http.dart' as http;
 import 'package:list_tile_switch/list_tile_switch.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -199,7 +199,7 @@ Widget feedbackBox(BuildContext context, String ctb, List items){
                               onPressed: () async{ 
                                 //Remover o fundo
                                 if(feedback.isNotEmpty){
-                                  if(await storeFeedbackInDataBase(ctb, feedback, ranking, selected!, condicao)){
+                                  if(await HttpServicesProject.storeFeedbackInDataBase(ctb, feedback, ranking, selected!, condicao)){
                                     carregarPagina();
                                   }
                                 }
@@ -260,30 +260,4 @@ Widget feedbackBox(BuildContext context, String ctb, List items){
       );
     }
   );
-}
-
-Future<bool> storeFeedbackInDataBase(String nif, String msg, int ranking, String categoria, bool condicao) async{
-  try{
-    var url = Uri.parse("http://192.168.26.146/projects/flutter/drh_project/feedback/feedback_add.php");
-    var headers = {'Content-Type': 'application/x-www-form-urlencoded'};
-    var request = http.Request('POST', url);
-    
-    request.bodyFields = {
-      "ctb" : nif,
-      "campo1" : msg,
-      "campo2" : ranking.toString(),
-      "campo3": categoria,
-      "campo4": condicao ? nif : '',
-    };
-    request.headers.addAll(headers);
-
-    http.StreamedResponse response = await request.send();
-    //String resultado = await response.stream.bytesToString();
-    //Map<String, dynamic> resposta = jsonDecode(resultado); 
-
-    return response.statusCode == 200 ? true : false;
-  }
-  catch(e){
-    return false;
-  }
 }

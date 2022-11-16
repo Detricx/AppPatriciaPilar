@@ -9,11 +9,12 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
+import 'package:drh_project/services/globals.dart' as globals;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ParceriasScreen extends StatefulWidget {
-  final String nif, nifEmpresa, nome, numeroFuncionario;
-  const ParceriasScreen(this.nifEmpresa, {Key? key, required this.nif, required this.nome, required this.numeroFuncionario}) : super(key: key);
+  final String nifEmpresa, nome, numeroFuncionario;
+  const ParceriasScreen(this.nifEmpresa, {Key? key, required this.nome, required this.numeroFuncionario}) : super(key: key);
   
   @override
   State<ParceriasScreen> createState() => _ParceriasScreenState();
@@ -30,7 +31,7 @@ class _ParceriasScreenState extends State<ParceriasScreen> {
 
   @override
   void initState() {
-    dataFuture = carregarParcerias(widget.nif);
+    dataFuture = carregarParcerias();
     super.initState();
   }
 
@@ -183,7 +184,7 @@ class _ParceriasScreenState extends State<ParceriasScreen> {
                                                       ),
                                                       children: [
                                                         TextSpan(
-                                                          text: widget.nif,
+                                                          text: globals.nif,
                                                           style: TextStyle(
                                                             fontSize: 15, 
                                                             color: Colors.green[600],
@@ -371,11 +372,11 @@ class _ParceriasScreenState extends State<ParceriasScreen> {
     );    
   }
   
-  Future<bool> carregarParcerias(String ctb) async{
+  Future<bool> carregarParcerias() async{
     parcerias.clear();
 
     //Vai buscar dados das parcerias
-    Uri urlParceria = Uri.parse("http://192.168.26.146/projects/flutter/drh_project/recursosHumanos/parceria/parcerias.php?ctb=$ctb");
+    Uri urlParceria = Uri.parse("http://${globals.ip}/projects/flutter/drh_project/recursosHumanos/parceria/parcerias.php?ctb=${globals.nif}");
     http.Response dataParceria = await http.get(urlParceria);
     Map<String, dynamic> respostaParceria = jsonDecode(dataParceria.body);
     
@@ -392,7 +393,7 @@ class _ParceriasScreenState extends State<ParceriasScreen> {
         dadosParceria = respostaParceria["data"];
         for(int i = 0; i <= dadosParceria.length - 1; i++){
           int id = respostaParceria["data"][i][0];
-          String? logo = 'http://192.168.26.146/projects/flutter/drh_project/images/app/feed/parcerias/${respostaParceria["data"][i][1]}';
+          String? logo = 'http://${globals.ip}/projects/flutter/drh_project/images/app/feed/parcerias/${respostaParceria["data"][i][1]}';
           bool estado = (respostaParceria["data"][i][2] == 1);
           String nome = respostaParceria["data"][i][3];
           String morada = respostaParceria["data"][i][4];
@@ -411,7 +412,7 @@ class _ParceriasScreenState extends State<ParceriasScreen> {
           }
           
           //Faz outro ciclo para capturar todos os descontos das parcerias
-          Uri urlDesconto = Uri.parse("http://192.168.26.146/projects/flutter/drh_project/recursosHumanos/parceria/descontos.php?ctb=$ctb&id=$id");
+          Uri urlDesconto = Uri.parse("http://${globals.ip}/projects/flutter/drh_project/recursosHumanos/parceria/descontos.php?ctb=${globals.nif}&id=$id");
           http.Response dataDesconto = await http.get(urlDesconto);
 
           switch(dataDesconto.statusCode){

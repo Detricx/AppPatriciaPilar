@@ -11,8 +11,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FeedScreen extends StatefulWidget {
-  final String nif;
-  const FeedScreen({ Key? key, required this.nif }) : super(key: key);
+  const FeedScreen({ Key? key }) : super(key: key);
   
   @override
   State<FeedScreen> createState() => _FeedScreenState();
@@ -32,7 +31,7 @@ class _FeedScreenState extends State<FeedScreen> {
 
   @override
   void initState() {
-    dataFuture = retornarNoticias(widget.nif);
+    dataFuture = retornarNoticias();
     super.initState();
   }
 
@@ -76,8 +75,8 @@ class _FeedScreenState extends State<FeedScreen> {
     );
   }
 
-  Future<bool?> retornarNoticias(String ctb) async{
-    Uri url = definirUrl('recursosHumanos/noticia/noticias.php', ctb);
+  Future<bool?> retornarNoticias() async{
+    Uri url = definirUriGET('recursosHumanos/noticia/noticias.php');
     http.Response data = await http.get(url);
     Map<String, dynamic> resposta = jsonDecode(data.body);
 
@@ -219,7 +218,7 @@ class _FeedScreenState extends State<FeedScreen> {
 
   Future swipeup() async{
     noticias.clear();
-    retornarNoticias(widget.nif);
+    retornarNoticias();
   }
   
   Widget displayImage(String imagem) {

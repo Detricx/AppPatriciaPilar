@@ -10,9 +10,8 @@ import 'package:page_transition/page_transition.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MenuScreen extends StatefulWidget {
-  final String nif; 
   final String? cargo;
-  const MenuScreen({ Key? key, required this.cargo, required this.nif}) : super(key: key);
+  const MenuScreen({ Key? key, required this.cargo}) : super(key: key);
 
   @override
   State<MenuScreen> createState() => _MenuScreenState();
@@ -248,10 +247,10 @@ class _MenuScreenState extends State<MenuScreen> {
     int duracao = 500;
 
     List<Widget> tela = [
-      AusenciasScreen(nif: widget.nif, ausencia: null),
-      FeriasScreen(ctb: widget.nif),
-      HistoricoScreen(widget.nif),
-      AprovacoesScreen(nif: widget.nif, feriados: const []),
+      const AusenciasScreen(ausencia: null),
+      const FeriasScreen(),
+      const HistoricoScreen(),
+      const AprovacoesScreen(feriados: []),
     ];
 
     return PageTransition(

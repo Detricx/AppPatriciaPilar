@@ -30,7 +30,6 @@ class _EquipaScreenState extends State<EquipaScreen > {
 
   @override
   void initState() {
-    
     super.initState();
   }
   
@@ -45,7 +44,7 @@ class _EquipaScreenState extends State<EquipaScreen > {
         (widget.condicaoAppBar ? 60 : 40),
         Expanded(
           child: FutureBuilder(
-            future: descarregaEquipaFuncionarios(widget.nif),
+            future: descarregaEquipaFuncionarios(),
             builder: (context, snapshot) {
               if(!snapshot.hasData){
                 return Center(
@@ -124,9 +123,9 @@ class _EquipaScreenState extends State<EquipaScreen > {
     );
   }
   
-  Future<bool> descarregaEquipaFuncionarios(String nif) async{
+  Future<bool> descarregaEquipaFuncionarios() async{
     colaboradores.clear();
-    Uri url = definirUrl('recursosHumanos/utilizador/equipa.php', nif);
+    Uri url = definirUriGET('recursosHumanos/utilizador/equipa.php');
     http.Response data = await http.get(url);
     Map<String, dynamic> resposta = jsonDecode(data.body);
 

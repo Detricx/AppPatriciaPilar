@@ -256,6 +256,7 @@
     "historicoAusencia" : "Ausencia",
     "historicoFerias" : "Férias",
     "historicoPeriodo" : "Período entre datas",
+    "historicoFeria" : "Apenas um dia",
     "historicoEliminar" : "Eliminar registo",
     "historicoEliminarPergunta" : "Tem mesmo a certeza que quer eliminar o registo?",
 

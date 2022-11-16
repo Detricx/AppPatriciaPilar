@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:drh_project/models/ausencia.dart';
 import 'package:drh_project/screens/Utilizador/calendario/ausencias.dart';
 import 'package:drh_project/services/definir_url.dart';
+import 'package:drh_project/services/http_connections.dart';
 import 'package:drh_project/widgets/app_bar.dart';
 import 'package:drh_project/widgets/decision_box.dart';
 import 'package:drh_project/widgets/dialog_box.dart';
@@ -15,8 +16,7 @@ import 'package:path/path.dart' as p;
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class HistoricoScreen extends StatefulWidget {
-  final String nif;
-  const HistoricoScreen(this.nif, { Key? key }) : super(key: key);
+  const HistoricoScreen({ Key? key }) : super(key: key);
   
   @override
   State<HistoricoScreen> createState() => _HistoricoScreenState();
@@ -31,7 +31,6 @@ class _HistoricoScreenState extends State<HistoricoScreen> {
   List<String> meses = ['JAN', 'FEV', 'MAR', 'ABR', 'MAI', 'JUN', 'JUL', 'AGO', 'SET', 'OUT', 'NOV', 'DEZ'];
   late TextEditingController controllerMotivo;
   late VoidCallback sim, nao;
-  late String type, msg;
   String descontoString = '';
   String categoriaHistorico = '';
 
@@ -51,7 +50,7 @@ class _HistoricoScreenState extends State<HistoricoScreen> {
             60,
             Expanded(
               child: FutureBuilder(
-                future: preencherListas(widget.nif),
+                future: preencherListas(),
                 builder: (context, snapshot){
                   if(snapshot.hasData){
                     return Column(
@@ -78,13 +77,13 @@ class _HistoricoScreenState extends State<HistoricoScreen> {
                               /// 6- Recusamento Aprovado
 
                               //Aprovações em Espera no nível para os coordenadores
-                              estadoHistorico(ausencias.where((element) => (element.nivel == 1 || element.nivel == 4 )).toList(), widget.nif, t),
+                              estadoHistorico(ausencias.where((element) => (element.nivel == 1 || element.nivel == 4 )).toList(), t),
 
                               //Aprovações confirmadas
-                              estadoHistorico(ausencias.where((element) => (element.nivel == 3 || element.nivel == 6)).toList(), widget.nif, t),
+                              estadoHistorico(ausencias.where((element) => (element.nivel == 3 || element.nivel == 6)).toList(), t),
                               
                               //Aprovações recusadas
-                              estadoHistorico(ausencias.where((element) => (element.nivel == 0 || element.nivel == 7)).toList(), widget.nif, t),
+                              estadoHistorico(ausencias.where((element) => (element.nivel == 0 || element.nivel == 7)).toList(), t),
                             ],
                           ),
                         )
@@ -117,10 +116,10 @@ class _HistoricoScreenState extends State<HistoricoScreen> {
     );
   }
   
-  Future<bool> preencherListas(String nif) async{
+  Future<bool> preencherListas() async{
     ausencias.clear();
     try{
-      Uri url = definirUrl('recursosHumanos/utilizador/historico.php', nif);
+      Uri url = definirUriGET('recursosHumanos/utilizador/historico.php');
     
       http.Response data = await http.get(url);
       
@@ -161,7 +160,7 @@ class _HistoricoScreenState extends State<HistoricoScreen> {
     
   }
   
-  Widget estadoHistorico(List<Ausencia> ausencias, String nif, AppLocalizations t) {
+  Widget estadoHistorico(List<Ausencia> ausencias, AppLocalizations t) {
 
     Widget mostrarDocuments(List documentos, BuildContext context, AppLocalizations t) {
       return StatefulBuilder(
@@ -376,25 +375,6 @@ class _HistoricoScreenState extends State<HistoricoScreen> {
       );
     }
 
-    Future<bool> recusaAusencia(Ausencia ausencia, AppLocalizations t, int nivel) async{
-      try{
-        var url = Uri.parse("http://192.168.26.146/projects/flutter/drh_project/ausencias/delete_ausencia.php?ctb=${widget.nif}&idAusencia=${ausencia.id}&nivel=$nivel");
-        var request = http.Request('DELETE', url);
-
-        http.StreamedResponse response = await request.send();
-        String resultado = await response.stream.bytesToString();
-        
-        Map<String, dynamic> resposta = jsonDecode(resultado);
-        type = resposta["type"];
-        msg = resposta ["message"];
-
-        return response.statusCode == 200 ? true : false;
-      }
-      catch(e){
-        return false;
-      }
-    }
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -516,7 +496,7 @@ class _HistoricoScreenState extends State<HistoricoScreen> {
                                   ),
                                   const SizedBox(height: 5),
                                   Text(
-                                    horas ?  periodohoras : t.historicoPeriodo,
+                                    horas ? ausencia.categoria != 'Férias' ? periodohoras : t.historicoFeria : t.historicoPeriodo,
                                     style: const TextStyle(
                                       fontFamily: 'Gantari',
                                       fontSize: 12,
@@ -676,7 +656,7 @@ class _HistoricoScreenState extends State<HistoricoScreen> {
                                           onPressed: (){
                                             Navigator.push(context,
                                               MaterialPageRoute(
-                                                builder: (context) => AusenciasScreen(nif: widget.nif, ausencia: ausencia)
+                                                builder: (context) => AusenciasScreen(ausencia: ausencia)
                                               )
                                             ).then((value) => setState((){}));
                                           },
@@ -716,7 +696,7 @@ class _HistoricoScreenState extends State<HistoricoScreen> {
                                                 sim = () async{
                                                   // ano-mes-dia ano-mes-dia
                                                   Navigator.pop(context);
-                                                  recusaAusencia(ausencia, t, 4);
+                                                  HttpServicesProject.recusaAusencia(ausencia, t, 4);
                                                 };
                                               }
                                               // Está no processo de cancelamento e volta para o nível 3
@@ -727,7 +707,7 @@ class _HistoricoScreenState extends State<HistoricoScreen> {
                                                 sim = () async{
                                                   // ano-mes-dia ano-mes-dia
                                                   Navigator.pop(context);
-                                                  recusaAusencia(ausencia, t, 3);
+                                                  HttpServicesProject.recusaAusencia(ausencia, t, 3);
                                                 };
                                               }
                                               // A ausência não foi aprovada (0- 1 - 2)
@@ -738,11 +718,11 @@ class _HistoricoScreenState extends State<HistoricoScreen> {
                                                 sim = () async{
                                                   // ano-mes-dia ano-mes-dia
                                                   Navigator.pop(context);
-                                                  recusaAusencia(ausencia, t, 0);
+                                                  HttpServicesProject.recusaAusencia(ausencia, t, 0);
                                                 };
                                               }
                     
-                                              return decisionBox(context, titulo, msg, 250, Icons.warning, sim, nao, t);
+                                              return decisionBox(context, titulo, msg, 250, Icons.warning, sim, nao);
                                             }).then((value) => setState((){}));
                                           },
                                         ),

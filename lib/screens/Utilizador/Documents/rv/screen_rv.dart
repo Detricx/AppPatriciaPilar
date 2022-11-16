@@ -9,9 +9,8 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ReciboVencimentoMenuScreen extends StatefulWidget {
-  final String nif;
   final String nifEmpresa;
-  const ReciboVencimentoMenuScreen({ Key? key, required this.nif, required this.nifEmpresa }) : super(key: key);
+  const ReciboVencimentoMenuScreen({ Key? key, required this.nifEmpresa }) : super(key: key);
   
   @override
   State<ReciboVencimentoMenuScreen> createState() => _ReciboVencimentoMenuScreenState();
@@ -50,7 +49,7 @@ class _ReciboVencimentoMenuScreenState extends State<ReciboVencimentoMenuScreen>
       children: [
         Expanded(
           child: FutureBuilder(
-            future: getDocuments(widget.nif, t.localeName, widget.nifEmpresa),
+            future: getDocuments(t.localeName, widget.nifEmpresa),
             builder: (context, snapshot) {
               if(!snapshot.hasData){
                 return Center(
@@ -186,14 +185,14 @@ class _ReciboVencimentoMenuScreenState extends State<ReciboVencimentoMenuScreen>
   }
   
   //Sacar ID's e recibos que o Utilizador tenha
-  Future<bool> getDocuments(String ctb, String lingua, String nifEmpresa) async{
-    Uri url = definirUrl('rv/recibos.php', ctb, campo2: (lingua == 'pt') ? 'pt-pt' : 'en-us');
+  Future<bool> getDocuments(String lingua, String nifEmpresa) async{
+    Uri url = definirUriGET('rv/recibos.php', campo1: (lingua == 'pt') ? 'pt-pt' : 'en-us');
     http.Response data = await http.get(url);
     
     switch(data.statusCode){
       case 200:
         recibos = jsonDecode(data.body)["recibos"];
-        _docsFuncionario = DocsFuncionarioRV(nif: widget.nif, lista: recibos, nifEmpresa: nifEmpresa);
+        _docsFuncionario = DocsFuncionarioRV(lista: recibos, nifEmpresa: nifEmpresa);
       return true;
       
       case 204:
