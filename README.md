@@ -1,8 +1,6 @@
 <p align="center">
   <h1 align= "center">
-    <img width="130" align= "left" src="https://raw.githubusercontent.com/gist/theAdityaNVS/f5b585d1082da2dffffea32434f37956/raw/7f9552d0a179b4f84059259fa878199e369b069c/GitHub-logo.gif"> 
-     🌳 ✵ &nbsp; DRH_PROJECT &nbsp; ✵ 🌳
-    <img width="130" align= "right" src="https://raw.githubusercontent.com/gist/theAdityaNVS/f5b585d1082da2dffffea32434f37956/raw/7f9552d0a179b4f84059259fa878199e369b069c/GitHub-logo.gif"> 
+     DRH_PROJECT
   </h1> 
 </p>
 
@@ -94,14 +92,30 @@ Neste projeto encontrarás as seguintes funções:
 
 <br>
 
+<img width="130" align= "right" src="https://www.patriciapilar.pt/images/logo.png"> 
+
 ## 3. DESCRIÇÃO DO PROJETO
 
 <p align="justify">
-  Este foi o meu <b>Primeiro Projeto</b> realizado em flutter/dart com o objetivo de otimizar os serviços dos recursos humanos da Patrícia Pilar. Este projeto tem desde o mais básico ao avançado que o meu conhecimento pelo flutter chegou.
+  Este projeto teve como intuito melhorar a flexibilidade e a organização gerida pelos Recursos Humanos na empresa "Patrícia Pilar", portanto, esta aplicação foi distribuída por todos os colaboradores que lá pertenciam numa forma de acabar com o papel e tornar a empresa mais tecnológica. Este foi distribuído em 2 categorias com as seguintes funções:
 </p>
-
-<img width="130" align= "left" src="https://www.patriciapilar.pt/images/logo.png"> 
-
+   
+ - Aplicação mobile (Android e Ios)
+   - Marcação de Férias e Ausências
+   - Histórico de marcações realizadas (Sucedidas, pendentes e recusadas)
+   - Aprovações dos mesmos
+   - Exibição de documentos (Recibos de vencimento e IRS)
+   - Feed de Notícias / Eventos
+   - Visualização de parcerias
+   - Ementa do refeitória da firma
+   - Modo de Suspensão (Token temporário)
+     
+  - Software para os recursos humanos (Windows)
+    - Visualização de funcionários
+    - Manuseamento de conteúdo (Feed)
+    - Controle de parcerias
+    - Sistemas de aprovação (Férias e Ausências)
+    
 <br>
 
 ## 4. BASE DE DADOS
@@ -128,6 +142,8 @@ A linguagem de consulta estruturada que usei foi o "SQL" com o ambiente integrad
 <br>
 
 ## 6. TAREFAS EM ABERTO
+
+<img width="130" align= "right" src="https://www.laboiteverte.fr/wp-content/uploads/2014/06/gif-code-programme-03.gif"> 
 
 Se for o caso, liste tarefas/funcionalidades que ainda precisam ser implementadas na sua aplicação
 
