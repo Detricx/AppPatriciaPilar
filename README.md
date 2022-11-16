@@ -100,6 +100,8 @@ Neste projeto encontrarás as seguintes funções:
   Este foi o meu <b>Primeiro Projeto</b> realizado em flutter/dart com o objetivo de otimizar os serviços dos recursos humanos da Patrícia Pilar. Este projeto tem desde o mais básico ao avançado que o meu conhecimento pelo flutter chegou.
 </p>
 
+<img width="130" align= "left" src="https://www.patriciapilar.pt/images/logo.png"> 
+
 <br>
 
 ## 4. BASE DE DADOS
