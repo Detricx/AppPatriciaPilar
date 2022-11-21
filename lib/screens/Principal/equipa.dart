@@ -123,7 +123,7 @@ class _EquipaScreenState extends State<EquipaScreen > {
     );
   }
   
-  Future<bool> descarregaEquipaFuncionarios() async{
+  Future<bool> descarregaEquipaFuncionarios() async {
     colaboradores.clear();
     Uri url = definirUriGET('recursosHumanos/utilizador/equipa.php');
     http.Response data = await http.get(url);
@@ -138,14 +138,12 @@ class _EquipaScreenState extends State<EquipaScreen > {
         String nome = dados[i][1];
         colaboradores.add(Funcionario(nif, nome)); 
       }
-
       _datafuncionario = ListagemFuncionarios(lista: colaboradores);
       return true;
     }
     else{
       return false;
     }
-  
   }
 }
 

@@ -6,11 +6,11 @@ import 'package:drh_project/screens/Utilizador/parcerias.dart';
 import 'package:flutter/material.dart';
 
 class Routes {
-  static Map<String, Widget Function(BuildContext)> roteamentoDeTelas(String ctbEmpresa, String nome, String nFuncionario){ 
+  static Map<String, Widget Function(BuildContext)> roteamentoDeTelas(String ctbEmpresa, String nome, String nFuncionario, String lingua){ 
     Map<String, Widget Function(BuildContext)> list = <String, WidgetBuilder>{
       '/login': (context) => const LoginScreen(), //Primeiro tem de ser sempre o (home)
       '/help': (context) => const HelpScreen(),
-      '/feed': (context) => const FeedScreen(),
+      '/feed': (context) => FeedScreen(lingua: lingua),
       '/parcerias': (context) => ParceriasScreen(ctbEmpresa, nome: nome, numeroFuncionario: nFuncionario),
       '/docs': (context) => DocsScreen(ctbEmpresa),
       //home: condicao ? HomeScreen(nif: contribuinte) : const LoginScreen()

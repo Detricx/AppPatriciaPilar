@@ -53,7 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool? valido = false;
   CryptKey keyGen = CryptKey();
   late AesCrypt aes;
-  late Map<String, dynamic> resposta;
+  Map<String, dynamic> resposta = {};
   late http.Response data;
   late dynamic snDispositivo;
   late List dados;
@@ -660,6 +660,7 @@ class _LoginScreenState extends State<LoginScreen> {
       )
     );
   }
+  
   void userStayAssign(bool condicao) async{
     if(condicao){
       utilizador = [globals.nif, 'true'];
@@ -679,7 +680,7 @@ class _LoginScreenState extends State<LoginScreen> {
           if(data[3] == '516303147' || data[3] == '517151561' || data[3] == '516911023' || data[3] == '517188848' || data[3] == '517040387' || data[3] == '517021358'){
             data[3] = 'null';
           }
-          return HomeScreen(info: RequestHttp(data[0], data[1], data[2], data[3], data[4], data[5]), textAppBar: t.labelMenuPerfil);
+          return HomeScreen(info: RequestHttp(data[0], data[1], data[2], data[3], data[4], data[5]), textAppBar: t.labelMenuPerfil, lingua: t.localeName);
         }
       )
     );
@@ -752,8 +753,8 @@ class _LoginScreenState extends State<LoginScreen> {
     }
     catch(e){
 
-      tituloDialog = resposta['type'];
-      msg = resposta['message'];
+      tituloDialog = resposta['type'] ?? 'Error';
+      msg = resposta['message'] ?? 'Unexpected error';
 
       showDialog(barrierDismissible: true, context: context, builder: (context){
         List<String> erro = definirErroPhp(tituloDialog, msg, t);

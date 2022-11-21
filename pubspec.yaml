@@ -51,12 +51,12 @@ dependencies:
   path: any
 
 #Definições do ecrã splash
-#flutter_native_splash:
-#  background_image: assets/fundos/inicial.png
-#  image: assets/icons/logo.png
-#  ios: true
-#  android: true
-#  web: false
+flutter_native_splash:
+  background_image: assets/fundos/inicial.png
+  image: assets/icons/logo.png
+  ios: true
+  android: true
+  web: false
 
 dev_dependencies:
   image: ^3.2.2

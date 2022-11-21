@@ -43,7 +43,7 @@ class HttpServicesProject{
   }
 
   //Armazeno o token do dispositivo
-  static void saveDataFromDevice(String idDispositivo, bool permissao, AppLocalizations t) async{
+  static void saveDataFromDevice(String idDispositivo, bool permissao, String lingua) async{
     final FirebaseMessaging messaging = FirebaseMessaging.instance;
 
     String? token = await messaging.getToken();
@@ -56,7 +56,7 @@ class HttpServicesProject{
       "ctb" : globals.nif,
       "serialNumber" : idDispositivo,
       "token" : token ?? '',
-      "lingua" : t.localeName,
+      "lingua" : lingua,
       "not" : permissao ? '1' : '0',
     };
 
@@ -185,7 +185,7 @@ class HttpServicesProject{
 
   static Future<bool> storeFeedbackInDataBase(String nif, String msg, int ranking, String categoria, bool condicao) async{
     try{
-      var url = Uri.parse("http://192.168.26.146/projects/flutter/drh_project/feedback/feedback_add.php");
+      var url = Uri.parse("http://${globals.ip}/projects/flutter/drh_project/feedback/feedback_add.php");
       var headers = {'Content-Type': 'application/x-www-form-urlencoded'};
       var request = http.Request('POST', url);
       

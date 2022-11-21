@@ -18,7 +18,7 @@ Future main() async{
   await Firebase.initializeApp();
   await GuardarPreferences.init();
   AwesomeNotificationService.initialize;
-
+  
   /*?
   bool condicao = (utilizador[1] == 'true') ? true : false;
   //Caso o Utilizador tenha deixado guardar as suas credênciais ele faz refresh ao token
@@ -52,7 +52,7 @@ Future main() async{
       GlobalCupertinoLocalizations.delegate,
     ],
 
-    routes: Routes.roteamentoDeTelas('', '', ''),
+    routes: Routes.roteamentoDeTelas('', '', '', 'pt'),
     initialRoute: Routes.initial,
     navigatorKey: Routes.navigatorKey,
   )));

@@ -63,9 +63,11 @@
     "labelMenuEventos" : "Events",
     "labelMenuAjuda" : "Help",
     "labelMenuFeedback" : "Feedback",
+    "labelMenuLogout" : "Logout",
     "labelMenuSairApp" : "Close the app",
 
     "avisLogOut" : "Exit Account",
+    "avisExit" : "Exit the app",
     "avisPasswordIncorreta" : "Incorrect Password...",
     "avisPasswordPorPreencher" : "Fill the password field to continue",
 
@@ -92,7 +94,7 @@
     "txtPass" : "The key you entered does not match the saved key",
     "tituloMenu" : "Menu",
     "txtCertezaLogOut" : "Are you really sure you want to close your account?",
-
+    "txtCertezaExit" : "You want to exit the app?",
 
 
     "txtDefinicaoFotografia" : "Photo Settings",

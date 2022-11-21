@@ -63,13 +63,13 @@
     "labelMenuEventos" : "Eventos",
     "labelMenuAjuda" : "Ajuda",
     "labelMenuFeedback" : "Feedback",
+    "labelMenuLogout" : "Sair da Conta",
     "labelMenuSairApp" : "Sair da App",
     
     "avisLogOut" : "Sair da Conta",
+    "avisExit" : "Sair da Aplicação",
     "avisPasswordIncorreta" : "Password Incorreta...",
     "avisPasswordPorPreencher" : "Preencha o campo da password para continuar",
-
-
 
     "lbtitulo" : "Página Principal",
     "lbDificuldades" : "Dificuldades a entrar ? ",
@@ -93,8 +93,7 @@
     "txtPass" : "A chave que inseriu não coincide com a chave guardada",
     "tituloMenu" : "Menu",
     "txtCertezaLogOut" : "Tem mesmo a a certeza que deseja encerrar a sua conta?",
-
-
+    "txtCertezaExit" : "Quer sair da aplicação?",
 
     "txtDefinicaoFotografia" : "Definições de Fotografia",
     "txtAcaoFotografia" : "Escolha uma ação para ser executada na sua fotografia",

@@ -8,10 +8,10 @@ import 'package:drh_project/widgets/fundo_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FeedScreen extends StatefulWidget {
-  const FeedScreen({ Key? key }) : super(key: key);
+  final String lingua;
+  const FeedScreen({ Key? key, required this.lingua}) : super(key: key);
   
   @override
   State<FeedScreen> createState() => _FeedScreenState();
@@ -80,14 +80,10 @@ class _FeedScreenState extends State<FeedScreen> {
     http.Response data = await http.get(url);
     Map<String, dynamic> resposta = jsonDecode(data.body);
 
-    String recolherLinguaTeclado(){
-      return AppLocalizations.of(context)!.localeName;
-    }
-
     //Retornou uma lista de noticias
     if(data.statusCode == 200){
       List noticia = resposta["data"];
-      String lingua = recolherLinguaTeclado();
+      String lingua = widget.lingua;
       
       //Recolher os dados todos e coloca-lo numa listagem
       if(lingua == 'pt'){
@@ -157,6 +153,7 @@ class _FeedScreenState extends State<FeedScreen> {
                     children: <Widget>[
                       Align(
                         child: Text(
+                          textAlign: TextAlign.center,
                           noticias[i].titulo,
                           style: const TextStyle(
                             fontSize: 20.0,

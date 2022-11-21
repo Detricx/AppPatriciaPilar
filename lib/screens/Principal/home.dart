@@ -42,8 +42,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeScreen extends StatefulWidget {
   final RequestHttp info; 
-  final String textAppBar;
-  const HomeScreen({Key? key, required this.textAppBar, required this.info}) : super(key: key);
+  final String textAppBar, lingua;
+  const HomeScreen({Key? key, required this.textAppBar, required this.lingua, required this.info}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -116,6 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
     //Icons.event_note,
     //Icons.help,
     Icons.question_answer,
+    Icons.arrow_back,
     Icons.exit_to_app,
   ];
 
@@ -147,6 +148,7 @@ class _HomeScreenState extends State<HomeScreen> {
       //t.labelMenuEventos,
       //t.labelMenuAjuda,
       t.labelMenuFeedback,
+      t.labelMenuLogout,
       t.labelMenuSairApp,
     ];
 
@@ -373,7 +375,7 @@ class _HomeScreenState extends State<HomeScreen> {
           PerfilScreen(info.empresa, nome: info.nome, cargo: info.area, profissao: info.profissao),
           MenuScreen(cargo: info.area),
           DocsScreen(info.empresa),
-          const FeedScreen(),
+          FeedScreen(lingua: widget.lingua,),
           ParceriasScreen(info.empresa, nome: info.nome, numeroFuncionario: info.no.toString()),
           const RefeitorioScreen(),
         ].elementAt(index);
@@ -608,6 +610,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       break;
                                     }
                                     */
+
                                     case 1: {
                                       List categorias = await HttpServicesProject.capturarCategorias(t);
                                       showDialog(barrierDismissible: true, context: context, useRootNavigator: true, builder: (tela){
@@ -625,9 +628,23 @@ class _HomeScreenState extends State<HomeScreen> {
                                     });
                                       break;
                                     }
+
                                     case 2:{
                                       showDialog(barrierDismissible: true, context: context, builder: (context){
                                         return decisionBox(context, t.avisLogOut, t.txtCertezaLogOut,  240, Icons.help, decisionBoxsim(), decisionBoxnao());
+                                      });
+                                      break;
+                                    }
+
+                                    case 3:{
+                                      showDialog(barrierDismissible: true, context: context, builder: (context){
+                                        return decisionBox(context, t.avisExit, t.txtCertezaExit,  240, Icons.help, (){
+                                        Navigator.of(context).pop();
+                                        if (Platform.isAndroid) {
+                                          SystemNavigator.pop();
+                                        } else if (Platform.isIOS) {
+                                          exit(0);
+                                        }}, decisionBoxnao());
                                       });
                                       break;
                                     }
@@ -743,27 +760,31 @@ class _HomeScreenState extends State<HomeScreen> {
                               borderRadius: BorderRadius.circular(5),
                               border: Border.all(color: const Color.fromARGB(255, 78, 52, 46))
                             ),
-                            child: TextFormField(
-                              controller: controllerPassword,
-                              textAlign: TextAlign.center,
-                              //Esconder o texto da password
-                              obscureText: true,
-                              style: const TextStyle(
-                                color:Colors.black,
-                                fontSize: 17.0,  
-                              ),
-                              decoration: const InputDecoration(
-                                isDense: true,
-              
-                                hintText: "Password",
-                                hintStyle: TextStyle(
-                                  color: Colors.black,
-                                ),
-                                border: InputBorder.none,
-                              ),
-                              onChanged: (value){
-                                password = value;
-                              },
+                            child: StatefulBuilder(
+                              builder: (BuildContext context, StateSetter setState) {
+                                return TextFormField(
+                                  controller: controllerPassword,
+                                  textAlign: TextAlign.center,
+                                  //Esconder o texto da password
+                                  obscureText: true,
+                                  style: const TextStyle(
+                                    color:Colors.black,
+                                    fontSize: 17.0,  
+                                  ),
+                                  decoration: const InputDecoration(
+                                    isDense: true,
+                                            
+                                    hintText: "Password",
+                                    hintStyle: TextStyle(
+                                      color: Colors.black,
+                                    ),
+                                    border: InputBorder.none,
+                                  ),
+                                  onChanged: (value){
+                                    password = value;
+                                  },
+                                );
+                              }
                             ),
                           ),
                         ),
@@ -979,10 +1000,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
   
   void definicoesFirebase(String idDispositivo, bool permissao) {
-    var t = AppLocalizations.of(context)!;
-
     //Salvar token e ID do dispositivo na BD
-    HttpServicesProject.saveDataFromDevice(idDispositivo, permissao, t);
+    HttpServicesProject.saveDataFromDevice(idDispositivo, permissao, widget.lingua);
 
     //Criação dos canais caso não os tenha
     AwesomeNotificationService.initialize();
@@ -1018,7 +1037,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     FirebaseMessaging.instance.onTokenRefresh
     .listen((fcmToken) {
-      HttpServicesProject.saveDataFromDevice(idDispositivo, permissao, t);
+      HttpServicesProject.saveDataFromDevice(idDispositivo, permissao, widget.lingua);
     })
     .onError((err) {
       debugPrint(err);
