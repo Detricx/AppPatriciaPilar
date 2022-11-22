@@ -626,7 +626,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       onPressed: (){
                         if (Platform.isAndroid) {
                           SystemNavigator.pop();
-                        } else if (Platform.isIOS) {
+                        } 
+                        else if (Platform.isIOS) {
                           exit(0);
                         }
                       }
@@ -654,8 +655,6 @@ class _LoginScreenState extends State<LoginScreen> {
               )
             ],
           )
-          
-          
         )
       )
     );
