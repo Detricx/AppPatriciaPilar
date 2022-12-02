@@ -8,7 +8,7 @@
     "nao" : "Não",
     "escolhaVoltarLogin" : "Voltar para o Login",
 
-    "errCampoVazio": "{count,plural, =0{Campo Vazio} other{Campos Vazios}",
+    "errCampoVazio": "{count,plural, =0{Empty Field} other{Empty Fields}",
     "@errCampoVazio": {
         "placeholders": {
             "count": {}
