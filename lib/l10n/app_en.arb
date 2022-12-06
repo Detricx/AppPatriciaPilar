@@ -160,7 +160,7 @@
     "ausCondicao" : "Select your Condition",
     "ausDescontar" : "Where do you want to cash in this time?",
     "ausMotivo" : "Tell us your Reason (Optional)",
-    "ausIntervalo" : "Set Range",
+    "ausIntervalo" : "Save Dates",
     "ausIncompleto" : "Set Incomplete Time Period",
     "ausDefina" : "Set the dates correctly to move forward",
     "ausAprovacao" : "Your absence was for approval!",
@@ -275,5 +275,6 @@
     "loginIncorrServr" : "Make sure your membership number is valid",
 
     "reciboVenc" : "Salary Receipt",
-    "reciboIRS" : "IRS Documents"
+    "reciboIRS" : "IRS Documents",
+    "scaffoldSelection" : "Selection Cancelled"
 }

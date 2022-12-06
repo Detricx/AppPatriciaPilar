@@ -631,14 +631,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                     case 2:{
                                       showDialog(barrierDismissible: true, context: context, builder: (context){
-                                        return decisionBox(context, t.avisLogOut, t.txtCertezaLogOut,  240, Icons.help, decisionBoxsim(), decisionBoxnao());
+                                        return decisionBox(context, t.avisLogOut, t.txtCertezaLogOut,  300, Icons.help, decisionBoxsim(), decisionBoxnao());
                                       });
                                       break;
                                     }
 
                                     case 3:{
                                       showDialog(barrierDismissible: true, context: context, builder: (context){
-                                        return decisionBox(context, t.avisExit, t.txtCertezaExit,  240, Icons.help, (){
+                                        return decisionBox(context, t.avisExit, t.txtCertezaExit,  300, Icons.help, (){
                                         Navigator.of(context).pop();
                                         if (Platform.isAndroid) {
                                           SystemNavigator.pop();

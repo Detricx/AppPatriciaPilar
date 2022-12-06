@@ -24,8 +24,6 @@ class HistoricoScreen extends StatefulWidget {
 
 class _HistoricoScreenState extends State<HistoricoScreen> {
   
-  
-
   //Conta tanto para férias como para as ausências
   late List<Ausencia> ausencias = [];
   List<String> meses = ['JAN', 'FEV', 'MAR', 'ABR', 'MAI', 'JUN', 'JUL', 'AGO', 'SET', 'OUT', 'NOV', 'DEZ'];
@@ -70,11 +68,11 @@ class _HistoricoScreenState extends State<HistoricoScreen> {
                             children: [
                               //!Explicação de níveis
                               /// 1- Ausência por aprovar pelo coordenador
-                              /// 2- Ausência por aprovar pelos RH
+                              //? 2- Ausência por aprovar pelos RH
                               /// 3- Ausência Aprovada
-                              /// 4- Recusamento pelo coordenador
-                              /// 5- Recusamento pelos RH
-                              /// 6- Recusamento Aprovado
+                              /// 4- Aprovação de Recusamento pelo coordenador
+                              //? 5- Aprovação de Recusamento pelos RH
+                              /// 6- Aprovação de Recusamento Aprovado
 
                               //Aprovações em Espera no nível para os coordenadores
                               estadoHistorico(ausencias.where((element) => (element.nivel == 1 || element.nivel == 4 )).toList(), t),
@@ -417,7 +415,7 @@ class _HistoricoScreenState extends State<HistoricoScreen> {
                               child: Column(
                                 children: [
                                   Text(
-                                    meses[ausencia.periodo.startDate!.month],
+                                    meses[ausencia.periodo.startDate!.month - 1],
                                     style: const TextStyle(
                                       fontFamily: 'Gantari',
                                       fontSize: 12,
@@ -454,7 +452,7 @@ class _HistoricoScreenState extends State<HistoricoScreen> {
                                     child: Column(
                                       children: [
                                         Text(
-                                          meses[ausencia.periodo.endDate!.month],
+                                          meses[ausencia.periodo.endDate!.month - 1],
                                           style: const TextStyle(
                                             fontFamily: 'Gantari',
                                             fontSize: 12,

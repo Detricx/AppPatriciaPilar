@@ -1,3 +1,5 @@
+import 'package:drh_project/controllers/locale_provider.dart';
+import 'package:drh_project/l10n/l10n.dart';
 import 'package:drh_project/services/awesome_notification.dart';
 import 'package:flutter/material.dart';
 import 'package:drh_project/services/routes.dart';
@@ -5,6 +7,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'firebase_options.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:drh_project/services/shared_preferences.dart';
@@ -35,28 +38,37 @@ Future main() async {
   */
 
   //Colocar por defeito a orientação na horizontal
-  SystemChrome.setPreferredOrientations(
-          [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
-      .then((value) => runApp(MaterialApp(
-            theme: ThemeData(
-              primaryColor: const Color.fromARGB(255, 209, 209, 209),
-              //primarySwatch: Colors.black,
-            ),
-            //Remover o banner do debug que aparece
-            debugShowCheckedModeBanner: false,
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
+  .then(
+    (value) => runApp(
+      //Widget que funciona como base para mudar valores
+      ChangeNotifierProvider(
+        create: (context) => LocaleProvider(),
+        builder: (context, child){
+          final provider = Provider.of<LocaleProvider>(context);
+          return MaterialApp(
+            theme: ThemeData(primaryColor: const Color.fromARGB(255, 209, 209, 209)),
+            debugShowCheckedModeBanner: false, //Remover o banner do debug que aparece
+        
+            //Línguagens suportadas
+            supportedLocales: L10n.all,
+            
+            //Serve para definir localemente a língua do projeto
+            locale: provider.locale,
 
-            //Após ter colocado o código de baixo, coloca-se este para ele começar a usar a língua predefinida
-            supportedLocales: AppLocalizations.supportedLocales,
             localizationsDelegates: const [
-              //_Define a forma de leitura (Esquerda -> Direita ou Direita -> Esquerda)
               AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,   //Traduz línguas de vários widgets (Material) no package que vem no flutter
+              GlobalCupertinoLocalizations.delegate,  //Traduz línguas de vários widgets (Cupertino) no package que vem no flutter
+              GlobalWidgetsLocalizations.delegate,    //_Define a forma de leitura (Esquerda -> Direita ou Direita -> Esquerda)
             ],
-
+        
             routes: Routes.roteamentoDeTelas('', '', '', 'pt'),
             initialRoute: Routes.initial,
             navigatorKey: Routes.navigatorKey,
-          )));
+          );
+        },
+      )
+    )
+  );
 }

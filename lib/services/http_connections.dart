@@ -167,6 +167,8 @@ class HttpServicesProject{
         return dialogBox(context, t.avisInesperado, 'Detahes: $e',500, Icons.warning);
       });
     }
+
+    //! TODO retirar dias de algum lado na base de dados
   }
 
   static Future<bool> recusaAusencia(Ausencia ausencia, AppLocalizations t, int nivel) async{

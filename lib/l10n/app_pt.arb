@@ -163,7 +163,7 @@
     "ausCondicao" : "Selecione a sua Condição",
     "ausDescontar" : "Onde quer descontar este tempo?",
     "ausMotivo" : "Diga-nos o seu Motivo (Opcional)",
-    "ausIntervalo" : "Definir Intervalo",
+    "ausIntervalo" : "Gravar Datas",
     "ausIncompleto" : "Período de Tempo Incompleto",
     "ausDefina" : "Defina as datas corretamente para avançar",
     "ausAprovacao" : "A sua ausência foi para a aprovação!",
@@ -281,5 +281,6 @@
     "loginIncorrServr" : "Certifique-se que o seu contribuinte está válido",
 
     "reciboVenc" : "R. Vencimento",
-    "reciboIRS" : "Documentos IRS"
+    "reciboIRS" : "Documentos IRS",
+    "scaffoldSelection" : "Seleção Cancelada"
 }

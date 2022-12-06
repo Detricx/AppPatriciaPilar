@@ -62,8 +62,8 @@ class _ParceriasScreenState extends State<ParceriasScreen> {
                       return Scaffold(
                         resizeToAvoidBottomInset: false,
                         extendBodyBehindAppBar: true,
-                        appBar: CustomAppBar(t.parCartao, 25, false, 200, explicacao: t.explicCartao),
-                        body: fundoApp('assets/fundos/fundo_parceria.png', 40, 
+                        appBar: CustomAppBar(t.parCartao, 20, false, 200, explicacao: t.explicCartao),
+                        body: fundoApp('assets/fundos/fundo_parceria.png', 20, 
                           Expanded(
                             child: Stack(
                               children: [

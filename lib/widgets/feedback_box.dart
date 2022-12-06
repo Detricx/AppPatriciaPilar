@@ -51,7 +51,8 @@ Widget feedbackBox(BuildContext context, String ctb, List items){
                     ),
                     Padding(
                       padding: const EdgeInsets.all(10),
-                      child: Text(t.feedBackTexto, 
+                      child: Text(
+                        t.feedBackTexto, 
                         textAlign: TextAlign.center, 
                         style: const TextStyle(
                           fontFamily: 'Gantari',
@@ -90,7 +91,7 @@ Widget feedbackBox(BuildContext context, String ctb, List items){
                           ),
                           child: SingleChildScrollView(
                             child: TextFormField(
-                              keyboardType: TextInputType.multiline,
+                              keyboardType: TextInputType.text,
                               maxLines: null,
                               focusNode: focus,
                               controller: controllerFeedback,

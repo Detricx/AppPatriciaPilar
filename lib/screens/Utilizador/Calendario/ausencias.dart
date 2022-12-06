@@ -98,441 +98,447 @@ class _AusenciasScreenState extends State<AusenciasScreen> {
         'assets/fundos/fundo_calendario.png',
         60,
         Expanded(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Expanded(
-                flex: 0,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                      child: Text(
-                        t.ausCondicao,
-                        style: const TextStyle(
-                          fontFamily: 'Gantari',
-                          fontSize: 16, 
-                          color: Colors.black
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Expanded(
+                  flex: 0,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        child: Text(
+                          t.ausCondicao,
+                          style: const TextStyle(
+                            fontFamily: 'Gantari',
+                            fontSize: 16, 
+                            color: Colors.black
+                          ),
                         ),
                       ),
-                    ),
-                  
-                    //! COMBO-BOX de selecionar uma categoria
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: Container(
-                            //Espaçamento dentro da caixa
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 10.0, 
-                            ),
-                            decoration: BoxDecoration( 
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(20),
-                              boxShadow: const <BoxShadow>[ 
-                                BoxShadow(
-                                  color: Color.fromRGBO(0, 0, 0, 0.57), 
-                                  blurRadius: 5
-                                ) 
-                              ]
-                            ),
-                            child: DropdownButton<String>(
-                              value: categoria.isEmpty ? opcoesAusencia[0] : categoria,
-                              items: opcoesAusencia.map((String value){
-                                return DropdownMenuItem<String>(
-                                  alignment: AlignmentDirectional.centerStart,
-                                  value: value,
-                                  child: Text(
-                                    value,
-                                    style: const TextStyle(
-                                      fontFamily: 'Gantari',
-                                      fontSize: 15, 
-                                      color: Colors.black
-                                    ),
-                                  ),
-
-                                  //Substitui o valor alterado pela chave selecionada
-                                  onTap: (){
-                                    setState(() {
-                                      categoria = value;
-                                    });
-                                  },
-                                );
-                              }).toList(),
-
-                              underline: Container(),
-                              icon: const Icon(
-                                Icons.keyboard_arrow_down,
-                                color: Colors.black,
-                              ),
-
-                              isExpanded: true,           
-
-                              //Muda conforme a categoria seleciona
-                              onChanged: (String? newValue) {
-                                condicaoCategoria(newValue!, t);
-                              },    
-                            ),
-                          ),
-                        ),
-                        
-                        const SizedBox(width: 10),
-
-                        SizedBox(
-                          width: 30,
-                          height: 30,
-                          child: FloatingActionButton(
-                            heroTag: null,
-                            backgroundColor: Colors.brown[700],
-                            child: const Icon(
-                              Icons.info
-                            ),
-                            onPressed: (){
-                              condicaoCategoria(categoria, t);
-                            },
-                          ),
-                        )
-                      ],
-                    ),
-
-                    const SizedBox(height: 20),
-
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                      child: Text(
-                        t.ausDescontar,
-                        style: const TextStyle(
-                          fontFamily: 'Gantari',
-                          fontSize: 16, 
-                          color: Colors.black
-                        ),
-                      ),
-                    ),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: Container(
-                            //Espaçamento dentro da caixa
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 10.0, 
-                            ),
-                            decoration: BoxDecoration( 
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(20),
-                              boxShadow: const <BoxShadow>[ 
-                                BoxShadow(
-                                  color: Color.fromRGBO(0, 0, 0, 0.57), 
-                                  blurRadius: 5
-                                ) 
-                              ]
-                            ),
-                            child: DropdownButton<String>(
-                              value: descontoString.isEmpty ? descontos[0] : descontoString,
-                              items: descontos.map((item) => 
-                                DropdownMenuItem<String>(
-                                  value: item,
-                                  alignment: AlignmentDirectional.centerStart,
-                                  child: Text(
-                                    item,
-                                    style: const TextStyle(
-                                      fontFamily: 'Gantari',
-                                      fontSize: 15, 
-                                      color: Colors.black
-                                    ),
-                                  ),
-                                )
-                              ).toList(),
-
-                              underline: Container(),
-                              icon: const Icon(
-                                Icons.keyboard_arrow_down,
-                                color: Colors.black,
-                              ),
-
-                              isExpanded: true,           
-
-                              //Muda conforme a categoria seleciona
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  traduzDesconto(newValue, t);
-                                  descontoString = newValue!;    
-                                  if(descontoString == t.menuFeria || descontoString == 'Férias'){
-                                    condicaoMostrarRelogio = false;
-                                    if(dataF.contains("(")){
-                                      dataF = dataI;
-                                    }
-                                  }
-                                  else{
-                                    condicaoMostrarRelogio = true;
-                                    if(dataI == dataF){
-                                      dataF = '(00:00 - 00:00)';
-                                    }
-                                  }                 
-                                });
-                              },    
-                            )
-                          ),
-                        ),
-                        
-                        const SizedBox(width: 10),
-
-                        Badge(
-                          badgeColor: (documento.isNotEmpty ? Colors.white : Colors.red),
-                          toAnimate: true,
-                          position: BadgePosition.topStart(top: -10, start: 30),
-                          badgeContent: Text(
-                            ficheirosAnexados.toString(),
-                            style: const TextStyle(
-                              fontFamily: 'Gantari',
-                              fontSize: 18, 
-                              color: Colors.black
-                            ),
-                          ),
-                      
-                          child: FloatingActionButton.small(
-                            heroTag: null,
-                            backgroundColor: Colors.brown[800],
-                            child: const Icon(
-                              Icons.description,
-                              color: Colors.white,
-                            ),
-                            onPressed: () {
-                              focus.unfocus();
-                              galeriaFotos(context).then((value) {setState(() {});});
-                            }
-                          ),
-                        )
-                      ],
-                    ),
-
-                    const SizedBox(height: 10),
-                    //Caixa de Texto para o motivo da
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10, left: 10),
-                      child: Text(
-                        t.ausMotivo,
-                        style: const TextStyle(
-                          fontFamily: 'Gantari',
-                          fontSize: 16, 
-                          color: Colors.black
-                        ),
-                      ),
-                    ),
-                    Padding(  
-                      padding: const EdgeInsets.symmetric(vertical: 5),
-                      child: InkWell(
-                        child: Container(
-                          height: 150.0,
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-                          decoration: BoxDecoration( 
-                            border: Border.all(color: const Color.fromARGB(255, 102, 69, 62)),
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: SingleChildScrollView(
-                            child: TextFormField(
-                              keyboardType: TextInputType.multiline,
-                              maxLines: null,
-                              focusNode: focus,
-                              controller: _controllerMotivo,
-                              style: const TextStyle(
-                                color:Colors.black,
-                                fontSize: 17.0,  
-                              ),
-                              decoration: const InputDecoration(
-                                isDense: true,
-                                border: InputBorder.none,
-                              ),
-                              onChanged: (value){
-                                motivo = value;
-                              },
-                            ), 
-                          )
-                        ),
-                        onTap: (){
-                          focus.requestFocus();
-                        }
-                      ),
-                    ),
-                    const SizedBox(height: 5),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: Row(
+                    
+                      //! COMBO-BOX de selecionar uma categoria
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          FloatingActionButton.extended(
-                            heroTag: null,
-                            backgroundColor: Colors.brown[800], 
-                            label: const Icon(Icons.date_range),
-                            onPressed: () {
-                              focus.unfocus();
-                              mostrarCalendario(context).then((value) {setState(() {});});
-                            }
-                          ),
-
-                          const SizedBox(width: 10),
-
-                          Visibility(
-                            visible: condicaoMostrarRelogio,
-                            child: FloatingActionButton.extended(
-                              heroTag: null,
-                              backgroundColor: Colors.brown[800], 
-                              label: const Icon(Icons.schedule),
-                              onPressed: () async{
-                                focus.unfocus();
-                                await showTimePicker(
-                                  context: context, 
-                                  initialTime: tempoI
-                                ).then((tempoInicial) async{
-                                  if(tempoInicial != null) {
-                                    await showTimePicker(
-                                      context: context, 
-                                      initialTime: tempoF
-                                    ).then((tempoFinal){
-                                      if(tempoFinal != null){
-                                        tempoI = tempoInicial;
-                                        tempoF = tempoFinal;
-                                        
-                                        //Marcação de horas iniciais
-                                        String horaI = tempoI.hour.toString();
-                                        String minutoI = tempoI.minute.toString();
-
-                                        //Marcação de horas finais
-                                        String horaF = tempoF.hour.toString();
-                                        String minutoF = tempoF.minute.toString();
-
-                                        horaI = horaI.length == 2 ? horaI : horaI.padLeft(2, '0');
-                                        minutoI = minutoI.length == 2 ? minutoI : minutoI.padLeft(2, '0');
-
-                                        horaF = horaF.length == 2 ? horaF : horaF.padLeft(2, '0');
-                                        minutoF = minutoF.length == 2 ? minutoF : minutoF.padLeft(2, '0');
-
-                                        setState(() => dataF = '($horaI:$minutoI - $horaF:$minutoF)');
-                                      }
-                                      else{ 
-                                        setState(() => dataF = '(00:09 - 18:00)');
-                                      }
-                                    });
-                                  }
-                                  else{
-                                    setState(() => dataF = '(00:09 - 18:00)');
-                                  }
-                                });
-                              }
+                          Expanded(
+                            child: Container(
+                              //Espaçamento dentro da caixa
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10.0, 
+                              ),
+                              decoration: BoxDecoration( 
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(20),
+                                boxShadow: const <BoxShadow>[ 
+                                  BoxShadow(
+                                    color: Color.fromRGBO(0, 0, 0, 0.57), 
+                                    blurRadius: 5
+                                  ) 
+                                ]
+                              ),
+                              child: DropdownButton<String>(
+                                value: categoria.isEmpty ? opcoesAusencia[0] : categoria,
+                                items: opcoesAusencia.map((String value){
+                                  return DropdownMenuItem<String>(
+                                    alignment: AlignmentDirectional.centerStart,
+                                    value: value,
+                                    child: Text(
+                                      value,
+                                      style: const TextStyle(
+                                        fontFamily: 'Gantari',
+                                        fontSize: 15, 
+                                        color: Colors.black
+                                      ),
+                                    ),
+          
+                                    //Substitui o valor alterado pela chave selecionada
+                                    onTap: (){
+                                      setState(() {
+                                        categoria = value;
+                                      });
+                                    },
+                                  );
+                                }).toList(),
+          
+                                underline: Container(),
+                                icon: const Icon(
+                                  Icons.keyboard_arrow_down,
+                                  color: Colors.black,
+                                ),
+          
+                                isExpanded: true,           
+          
+                                //Muda conforme a categoria seleciona
+                                onChanged: (String? newValue) {
+                                  condicaoCategoria(newValue!, t);
+                                },    
+                              ),
                             ),
                           ),
-
+                          
                           const SizedBox(width: 10),
-
-                          Expanded(
-                            child: FloatingActionButton.extended(
+          
+                          SizedBox(
+                            width: 30,
+                            height: 30,
+                            child: FloatingActionButton(
                               heroTag: null,
-                              backgroundColor: Colors.brown[800], 
-                              label: Text(t.ausIntervalo,
-                                style: const TextStyle(
-                                  fontFamily: 'Gantari',
-                                  fontSize: 15, 
-                                  color: Colors.white
-                                ),
+                              backgroundColor: Colors.brown[700],
+                              child: const Icon(
+                                Icons.info
                               ),
-                              onPressed: () async{
-                                focus.unfocus();
-                                //Verifico se o horário é válido
-                                if(periodoAusencia.startDate == null && periodoAusencia.endDate == null){
-                                  showDialog(barrierDismissible: true, context: context, builder: (context){
-                                    return dialogBox(context, t.ausIncompleto, t.ausDefina, 230, Icons.warning);
-                                  });
-                                }
-                                else{
-                                  //Verifico se a data inicial == data finalfinal
-                                  if(periodoAusencia.startDate!.compareTo(periodoAusencia.endDate ?? periodoAusencia.startDate!) == 0){
-                                    //! Guardar com horário
-                                    String relogio = dataF.substring(1, dataF.length-1); //00:00 - 00:00
-                                    String data = '${periodoAusencia.startDate!.year}-${periodoAusencia.startDate!.month}-${periodoAusencia.startDate!.day}';
-                                    dataFinal = '$data $relogio'; // ano-mes-dia 00:00 - 00:00
-                                  }
-                                  else{
-                                    //! Apenas Guardar com Datas
-                                    String dataI = '${periodoAusencia.startDate!.year}-${periodoAusencia.startDate!.month.toString().padLeft(2, '0')}-${periodoAusencia.startDate!.day.toString().padLeft(2, '0')}';
-                                    String dataF = '${periodoAusencia.endDate!.year}-${periodoAusencia.endDate!.month.toString().padLeft(2, '0')}-${periodoAusencia.endDate!.day.toString().padLeft(2, '0')}'; 
-                                    dataFinal = '$dataI $dataF'; // ano-mes-dia ano-mes-dia
-                                  }
-                                  if(documento.isNotEmpty){
-                                    List<String> caminhoDocumentos = [];
-                                    for(int i = 0; i < documento.length; i++){
-                                      caminhoDocumentos.add(documento[i].path);
-                                    }
-                                    if(await guardarDadosBaseDados(dataFinal, caminhoDocumentos, ausencia: (widget.ausencia))){
-                                      showDialog(barrierDismissible: true, context: context, builder: (context){
-                                        return dialogBox(context, t.errPHP7, t.ausAprovacao, 180, Icons.thumb_up);
-                                      }).then((value) => Navigator.pop(context));
+                              onPressed: (){
+                                condicaoCategoria(categoria, t);
+                              },
+                            ),
+                          )
+                        ],
+                      ),
+          
+                      const SizedBox(height: 20),
+          
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        child: Text(
+                          t.ausDescontar,
+                          style: const TextStyle(
+                            fontFamily: 'Gantari',
+                            fontSize: 16, 
+                            color: Colors.black
+                          ),
+                        ),
+                      ),
+          
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Container(
+                              //Espaçamento dentro da caixa
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10.0, 
+                              ),
+                              decoration: BoxDecoration( 
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(20),
+                                boxShadow: const <BoxShadow>[ 
+                                  BoxShadow(
+                                    color: Color.fromRGBO(0, 0, 0, 0.57), 
+                                    blurRadius: 5
+                                  ) 
+                                ]
+                              ),
+                              child: DropdownButton<String>(
+                                value: descontoString.isEmpty ? descontos[0] : descontoString,
+                                items: descontos.map((item) => 
+                                  DropdownMenuItem<String>(
+                                    value: item,
+                                    alignment: AlignmentDirectional.centerStart,
+                                    child: Text(
+                                      item,
+                                      style: const TextStyle(
+                                        fontFamily: 'Gantari',
+                                        fontSize: 15, 
+                                        color: Colors.black
+                                      ),
+                                    ),
+                                  )
+                                ).toList(),
+          
+                                underline: Container(),
+                                icon: const Icon(
+                                  Icons.keyboard_arrow_down,
+                                  color: Colors.black,
+                                ),
+          
+                                isExpanded: true,           
+          
+                                //Muda conforme a categoria seleciona
+                                onChanged: (String? newValue) {
+                                  setState(() {
+                                    traduzDesconto(newValue, t);
+                                    descontoString = newValue!;    
+                                    if(descontoString == t.menuFeria || descontoString == 'Férias'){
+                                      condicaoMostrarRelogio = false;
+                                      if(dataF.contains("(")){
+                                        dataF = dataI;
+                                      }
                                     }
                                     else{
-                                      showDialog(barrierDismissible: true, context: context, builder: (context){
-                                        return dialogBox(context, erroTitulo, erroBody, 500, Icons.warning);
+                                      condicaoMostrarRelogio = true;
+                                      if(dataI == dataF){
+                                        dataF = '(00:00 - 00:00)';
+                                      }
+                                    }                 
+                                  });
+                                },    
+                              )
+                            ),
+                          ),
+                          
+                          const SizedBox(width: 10),
+          
+                          Badge(
+                            badgeColor: (documento.isNotEmpty ? Colors.white : Colors.red),
+                            toAnimate: true,
+                            position: BadgePosition.topStart(top: -10, start: 30),
+                            badgeContent: Text(
+                              ficheirosAnexados.toString(),
+                              style: const TextStyle(
+                                fontFamily: 'Gantari',
+                                fontSize: 18, 
+                                color: Colors.black
+                              ),
+                            ),
+                        
+                            child: FloatingActionButton.small(
+                              heroTag: null,
+                              backgroundColor: Colors.brown[800],
+                              child: const Icon(
+                                Icons.description,
+                                color: Colors.white,
+                              ),
+                              onPressed: () {
+                                focus.unfocus();
+                                galeriaFotos(context).then((value) {setState(() {});});
+                              }
+                            ),
+                          )
+                        ],
+                      ),
+          
+                      const SizedBox(height: 10),
+                      //Caixa de Texto para o motivo da
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10, left: 10),
+                        child: Text(
+                          t.ausMotivo,
+                          style: const TextStyle(
+                            fontFamily: 'Gantari',
+                            fontSize: 16, 
+                            color: Colors.black
+                          ),
+                        ),
+                      ),
+                      Padding(  
+                        padding: const EdgeInsets.symmetric(vertical: 5),
+                        child: InkWell(
+                          child: Container(
+                            height: 150.0,
+                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+                            decoration: BoxDecoration( 
+                              border: Border.all(color: const Color.fromARGB(255, 102, 69, 62)),
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: SingleChildScrollView(
+                              child: TextFormField(
+                                keyboardType: TextInputType.multiline,
+                                maxLines: null,
+                                focusNode: focus,
+                                controller: _controllerMotivo,
+                                style: const TextStyle(
+                                  color:Colors.black,
+                                  fontSize: 17.0,  
+                                ),
+                                decoration: const InputDecoration(
+                                  isDense: true,
+                                  border: InputBorder.none,
+                                ),
+                                onChanged: (value){
+                                  motivo = value;
+                                },
+                              ), 
+                            )
+                          ),
+                          onTap: (){
+                            focus.requestFocus();
+                          }
+                        ),
+                      ),
+                      const SizedBox(height: 5),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: Row(
+                          children: [
+                            FloatingActionButton.extended(
+                              heroTag: null,
+                              backgroundColor: Colors.brown[800], 
+                              label: const Icon(Icons.date_range),
+                              onPressed: () {
+                                focus.unfocus();
+                                mostrarCalendario(context).then((value) {setState(() {});});
+                              }
+                            ),
+          
+                            const SizedBox(width: 10),
+          
+                            Visibility(
+                              visible: condicaoMostrarRelogio,
+                              child: FloatingActionButton.extended(
+                                heroTag: null,
+                                backgroundColor: Colors.brown[800], 
+                                label: const Icon(Icons.schedule),
+                                onPressed: () async{
+                                  focus.unfocus();
+                                  await showTimePicker(
+                                    context: context, 
+                                    initialTime: tempoI
+                                  ).then((tempoInicial) async{
+                                    if(tempoInicial != null) {
+                                      await showTimePicker(
+                                        context: context, 
+                                        initialTime: tempoF
+                                      ).then((tempoFinal){
+                                        if(tempoFinal != null){
+                                          tempoI = tempoInicial;
+                                          tempoF = tempoFinal;
+                                          
+                                          //Marcação de horas iniciais
+                                          String horaI = tempoI.hour.toString();
+                                          String minutoI = tempoI.minute.toString();
+          
+                                          //Marcação de horas finais
+                                          String horaF = tempoF.hour.toString();
+                                          String minutoF = tempoF.minute.toString();
+          
+                                          horaI = horaI.length == 2 ? horaI : horaI.padLeft(2, '0');
+                                          minutoI = minutoI.length == 2 ? minutoI : minutoI.padLeft(2, '0');
+          
+                                          horaF = horaF.length == 2 ? horaF : horaF.padLeft(2, '0');
+                                          minutoF = minutoF.length == 2 ? minutoF : minutoF.padLeft(2, '0');
+          
+                                          setState(() => dataF = '($horaI:$minutoI - $horaF:$minutoF)');
+                                        }
+                                        else{ 
+                                          setState(() => dataF = '(00:09 - 18:00)');
+                                        }
+                                      });
+                                    }
+                                    else{
+                                      setState(() => dataF = '(00:09 - 18:00)');
+                                    }
+                                  });
+                                }
+                              ),
+                            ),
+          
+                            const SizedBox(width: 10),
+          
+                            Expanded(
+                              child: FloatingActionButton.extended(
+                                heroTag: null,
+                                backgroundColor: Colors.brown[800], 
+                                label: Text(t.ausIntervalo,
+                                  style: const TextStyle(
+                                    fontFamily: 'Gantari',
+                                    fontSize: 15, 
+                                    color: Colors.white
+                                  ),
+                                ),
+                                onPressed: () async{
+                                  focus.unfocus();
+                                  //Verifico se o horário é válido
+                                  if(periodoAusencia.startDate == null && periodoAusencia.endDate == null){
+                                    showDialog(barrierDismissible: true, context: context, builder: (context){
+                                      return dialogBox(context, t.ausIncompleto, t.ausDefina, 230, Icons.warning);
+                                    });
+                                  }
+                                  else{
+                                    //Verifico se a data inicial == data finalfinal
+                                    if(periodoAusencia.startDate!.compareTo(periodoAusencia.endDate ?? periodoAusencia.startDate!) == 0){
+                                      //! Guardar com horário
+                                      String relogio = dataF.substring(1, dataF.length-1); //00:00 - 00:00
+                                      String data = '${periodoAusencia.startDate!.year}-${periodoAusencia.startDate!.month}-${periodoAusencia.startDate!.day}';
+                                      dataFinal = '$data $relogio'; // ano-mes-dia 00:00 - 00:00
+                                    }
+                                    else{
+                                      //! Apenas Guardar com Datas
+                                      String dataI = '${periodoAusencia.startDate!.year}-${periodoAusencia.startDate!.month.toString().padLeft(2, '0')}-${periodoAusencia.startDate!.day.toString().padLeft(2, '0')}';
+                                      String dataF = '${periodoAusencia.endDate!.year}-${periodoAusencia.endDate!.month.toString().padLeft(2, '0')}-${periodoAusencia.endDate!.day.toString().padLeft(2, '0')}'; 
+                                      dataFinal = '$dataI $dataF'; // ano-mes-dia ano-mes-dia
+                                    }
+                                    if(documento.isNotEmpty){
+                                      List<String> caminhoDocumentos = [];
+                                      for(int i = 0; i < documento.length; i++){
+                                        caminhoDocumentos.add(documento[i].path);
+                                      }
+                                      if(await guardarDadosBaseDados(dataFinal, caminhoDocumentos, ausencia: (widget.ausencia))){
+                                        showDialog(barrierDismissible: true, context: context, builder: (context){
+                                          return dialogBox(context, t.errPHP7, t.ausAprovacao, 180, Icons.thumb_up);
+                                        }).then((value) => Navigator.pop(context));
+                                      }
+                                      else{
+                                        showDialog(barrierDismissible: true, context: context, builder: (context){
+                                          return dialogBox(context, erroTitulo, erroBody, 500, Icons.warning);
+                                        });
+                                      }
+                                    }
+                                    else{
+                                      showDialog(barrierDismissible: false, context: context, builder: (primeiraTela){
+                                        return decisionBox(primeiraTela, t.ausDocuments, t.ausDeseja, 350, Icons.warning, repondeuSim(primeiraTela, t, ausencia: widget.ausencia), respondeuNao(primeiraTela));
                                       });
                                     }
                                   }
-                                  else{
-                                    showDialog(barrierDismissible: false, context: context, builder: (primeiraTela){
-                                      return decisionBox(primeiraTela, t.ausDocuments, t.ausDeseja, 350, Icons.warning, repondeuSim(primeiraTela, t, ausencia: widget.ausencia), respondeuNao(primeiraTela));
-                                    });
-                                  }
                                 }
-                              }
+                              ),
+                            ),
+                          ],
+                        )
+                      ),
+                      const SizedBox(height: 5),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          RichText(
+                            text: TextSpan(
+                                text: t.ausPeriodo,
+                                style: const TextStyle(
+                                  fontFamily: 'DaysOne',
+                                  fontSize: 20, 
+                                  color: Colors.black
+                                ),
+                                children: <TextSpan>[
+                                  TextSpan(
+                                    text: dataI.isEmpty ? t.ausPeriodoInicial : dataI,
+                                    style: const TextStyle(
+                                      fontFamily: 'Gantari',
+                                      fontSize: 17, 
+                                      color: Colors.black
+                                    ),
+                                  ),
+                                  const TextSpan(
+                                    text: ' - ',
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: dataF.isEmpty ? t.ausPeriodoFinal : dataF,
+                                    style: const TextStyle(
+                                      fontFamily: 'Gantari',
+                                      fontSize: 17, 
+                                      color: Colors.black
+                                    ),
+                                  )
+                                ]
                             ),
                           ),
                         ],
                       )
-                    ),
-                    const SizedBox(height: 5),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        RichText(
-                          text: TextSpan(
-                              text: t.ausPeriodo,
-                              style: const TextStyle(
-                                fontFamily: 'DaysOne',
-                                fontSize: 20, 
-                                color: Colors.black
-                              ),
-                              children: <TextSpan>[
-                                TextSpan(
-                                  text: dataI.isEmpty ? t.ausPeriodoInicial : dataI,
-                                  style: const TextStyle(
-                                    fontFamily: 'Gantari',
-                                    fontSize: 17, 
-                                    color: Colors.black
-                                  ),
-                                ),
-                                const TextSpan(
-                                  text: ' - ',
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text: dataF.isEmpty ? t.ausPeriodoFinal : dataF,
-                                  style: const TextStyle(
-                                    fontFamily: 'Gantari',
-                                    fontSize: 17, 
-                                    color: Colors.black
-                                  ),
-                                )
-                              ]
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
+                    ],
+                  )
+                ),
+                const SizedBox(
+                  height: 150,
+                  width: 10
                 )
-              ),
-            ],
+              ],
+            ),
           ),
         )
       )
@@ -807,7 +813,7 @@ class _AusenciasScreenState extends State<AusenciasScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            //! Sacar da drive qualquer tipo de documento
+                            //! TODO Sacar da drive qualquer tipo de documento
                             FloatingActionButton(
                               backgroundColor: Colors.brown[800], 
                               heroTag: null,
@@ -829,7 +835,7 @@ class _AusenciasScreenState extends State<AusenciasScreen> {
                               }
                             ),
 
-                            //! Capturar uma fotografia
+                            //! TODO Capturar uma fotografia
                             FloatingActionButton(
                               backgroundColor: Colors.brown[800], 
                               heroTag: null,

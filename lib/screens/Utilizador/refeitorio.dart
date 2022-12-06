@@ -39,7 +39,7 @@ class _RefeitorioScreenState extends State<RefeitorioScreen> {
   @override
   Widget build(BuildContext context) {
     var t = AppLocalizations.of(context)!;
-
+    
     List<String> diasSemana = [
       t.smnSegunda,
       t.smnTerca,

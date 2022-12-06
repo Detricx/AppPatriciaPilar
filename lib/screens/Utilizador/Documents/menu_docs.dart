@@ -20,7 +20,7 @@ class _DocsScreenState extends State<DocsScreen> {
 
     return DefaultTabController(
       length: 2,
-      initialIndex: 1,
+
       child: Scaffold(
         extendBodyBehindAppBar: true,
         body: fundoApp(

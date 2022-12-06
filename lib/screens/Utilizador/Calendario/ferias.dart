@@ -8,7 +8,6 @@ import 'package:drh_project/widgets/dialog_box.dart';
 import 'package:drh_project/widgets/fundo_app.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:syncfusion_flutter_core/core.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:http/http.dart' as http;
@@ -35,7 +34,7 @@ class _FeriasScreenState extends State<FeriasScreen> {
     DateTime(2022, 06, 14)
   ];
 
-  final DateRangePickerController datePickerController = DateRangePickerController();
+  DateRangePickerController datePickerController = DateRangePickerController();
   
   bool validacao = false;
   String msgErro= '', titulo = '', dataI = '', dataF = '';
@@ -152,17 +151,26 @@ class _FeriasScreenState extends State<FeriasScreen> {
                   child: SfDateRangePickerTheme(
                     data: SfDateRangePickerThemeData(),
                     child: Container(
-                      color: Colors.white,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(
+                          color: const Color.fromARGB(255, 65, 43, 39),
+                          width: 1.2
+                        ),
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(10.0) 
+                        ),
+                      ),
+                      padding: const EdgeInsets.all(5),
                       child: AbsorbPointer(
                         absorbing: totalDisponiveis == 0 ? true : false,
                         child: SfDateRangePicker(
                           
                           selectionMode: DateRangePickerSelectionMode.range,
                           
-                          showActionButtons: false,
+                          showActionButtons: true,
                           enablePastDates: true,
-                          enableMultiView: true,
-                          
+                          enableMultiView: false,
                           
                           navigationDirection:DateRangePickerNavigationDirection.vertical,
                           navigationMode: DateRangePickerNavigationMode.scroll,
@@ -206,6 +214,41 @@ class _FeriasScreenState extends State<FeriasScreen> {
                               dataF = (fim != null ? '${fim.day.toString().padLeft(2, '0')}/${fim.month.toString().padLeft(2, '0')}/${fim.year.toString().padLeft(2, '0')}' : dataI);
                             });
                           },
+
+                          onCancel: (){
+                            //periodo.startDate = null
+                            setState((){
+                              dataI = "";
+                              dataF = "";
+                              datePickerController.dispose();
+                            });
+                            
+                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                              content: Text(
+                                'Selection Cancelled',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontFamily: 'Gantari',
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                )
+                              ),
+                              duration: Duration(milliseconds: 700),
+                            ));
+                          },
+
+                          onSubmit: (Object? value){
+                            if(periodo.startDate == null && periodo.endDate == null || dataI == "" && dataF == ""){
+                              showDialog(barrierDismissible: true, context: context, builder: (context){
+                                return dialogBox(context, t.feriasInsuficiente, t.feriasInsufExplicao, 200, Icons.warning);
+                              });
+                            }
+                            else{
+                              //Verifica os pormenores dos dados
+                              statusError(periodo, totalDisponiveis, datePickerController, t);
+                            }
+                          },
                         ),
                       )
                     )
@@ -217,7 +260,7 @@ class _FeriasScreenState extends State<FeriasScreen> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       RichText(
                         text: TextSpan(
@@ -255,24 +298,6 @@ class _FeriasScreenState extends State<FeriasScreen> {
                           ]
                         ),
                       ),
-                      FloatingActionButton(
-                        backgroundColor: Colors.brown[800],
-                        heroTag: null,
-                        onPressed: (){
-                          if(periodo.startDate == null && periodo.endDate == null){
-                            showDialog(barrierDismissible: true, context: context, builder: (context){
-                              return dialogBox(context, t.feriasInsuficiente, t.feriasInsufExplicao, 200, Icons.warning);
-                            });
-                          }
-                          else{
-                            //Verifica os pormenores dos dados
-                            statusError(periodo, totalDisponiveis, datePickerController, t);
-                          }
-                        },
-                        child: Icon(
-                          (dataI != '' && dataF != '') ? Icons.done : Icons.error
-                        )
-                      )
                     ],
                   ),
                 )
@@ -289,25 +314,21 @@ class _FeriasScreenState extends State<FeriasScreen> {
     //Data inicial e final
     DateTime inicio = ranges.startDate!;
     DateTime fim = ranges.endDate ?? ranges.startDate!;
-  
-    int total = 0; //Diferença entre uma data e a outra
+    int diasFolga = retornaFinsSemana(inicio, fim) + retornaFeriados(inicio, fim), total = 0; //Diferença entre uma data e a outra
+    double tamanho = 240;
 
     if(inicio.compareTo(fim) != 0){
-      //Capturo a diferença entre as datas
-      Duration diferenca = (fim.difference(inicio));
+      //Capturo a diferença entre as datas + Recolho os dias + 1 porque por defeito não agarra o selecionado
+      int diferencaDias = (fim.difference(inicio)).inDays + 1;
 
-      //Recolho os dias + 1 porque por defeito não agarra o selecionado
-      int diferencaDias = diferenca.inDays + 1;
-
-      //Recolho fins de semana e feriados e retiro nos dias selecionados
-      total = diferencaDias - retornaFinsSemana(inicio, fim) - retornaFeriados(inicio, fim);
+      //Recolho o total de dias selecionados menos os fins de semana e Feriados
+      total = diferencaDias - diasFolga;
     }
-  
+
     //Verifico se o total de dias selecinados é <= que os dias que tem direito
     if(total <= tirarDias) {
       titulo = t.escolhaSubmeter;
-      msgErro = t.feriasSubmeterExplic;
-      mostrarShowDialog(inicio, fim, 240, Icons.help, );
+      msgErro = "${t.feriasSubmeterExplic} ${DateFormat('dd-MM-yyyy').format(inicio).toString()} - ${DateFormat('dd-MM-yyyy').format(fim).toString()}";      
     }
     else {
       //Coloco dentro de outra variável para não o afetar
@@ -315,16 +336,22 @@ class _FeriasScreenState extends State<FeriasScreen> {
         fim = inicio;
       }
       else{
-        fim = addDuration(inicio, Duration(days: tirarDias + 1));
+        fim = inicio.add(Duration(days: (tirarDias - 1) + diasFolga));
+        for(int i = fim.day; (fim.weekday != DateTime.saturday && fim.weekday == DateTime.sunday) || fim.weekday != DateTime.sunday && fim.weekday == DateTime.saturday || (feriados.contains(fim) && fim.weekday != DateTime.saturday && fim.weekday != DateTime.sunday); i++){
+          fim = fim.subtract(const Duration(days: 1));
+          if(i == 50){
+            return;
+          }
+        }
       }
       
       String fimFormat = DateFormat('dd-MM-yyyy').format(fim).toString();
-
+      tamanho = 330;
       msgErro = t.feriasUltrapassou(total, tirarDias, fimFormat);
       titulo = t.feriasTotalUltrapassado;
-
-      mostrarShowDialog(inicio, fim, 330, Icons.help);
     }
+
+    mostrarShowDialog(inicio, fim, tamanho, Icons.help);
   }
 
   void mostrarShowDialog(DateTime inicio, DateTime fim, double tamanhoLayout, IconData icon){
@@ -354,18 +381,17 @@ class _FeriasScreenState extends State<FeriasScreen> {
 
   //Função que retornará o número de fins de semana selecionados
   int retornaFinsSemana(DateTime inicio, DateTime fim) {
-    //2022/06/24 -> 2022/06/27 -> 4
     int result = 0;
     int diaInicial = inicio.day;
-    int diaFinal = fim.day;
     
-    //Faço um ciclo que correrá a quantidade de vezes que a diferença de dias entre eles
-    for (int i = diaInicial; i <= diaFinal; i++) {
-      fim = DateTime(fim.year, fim.month, i);
-      if (fim.weekday == DateTime.saturday || fim.weekday == DateTime.sunday) {
+    //Ciclo que vai percorrer até o inicio ser igual ao fim
+    for(int i = diaInicial; inicio.compareTo(fim) != 0; i++){
+      inicio = inicio.add(const Duration(days: 1));
+      if(inicio.weekday == DateTime.saturday || inicio.weekday == DateTime.sunday){
         result++;
       }
     }
+
     return result;
   }
 
@@ -374,15 +400,14 @@ class _FeriasScreenState extends State<FeriasScreen> {
     //2022/06/24 -> 2022/06/27 -> 4
     int result = 0;
     int diaInicial = inicio.day;
-    int diaFinal = fim.day;
-    
-    //Faço um ciclo que correrá a quantidade de vezes que a diferença de dias entre eles
-    for (int i = diaInicial; i <= diaFinal; i++) {
-      fim = DateTime(fim.year, fim.month, i);
-      if (feriados.contains(fim) && (fim.weekday != DateTime.saturday && fim.weekday != DateTime.sunday)) {
+
+    for(int i = diaInicial; inicio.compareTo(fim) != 0; i++){
+      inicio = inicio.add(const Duration(days: 1));
+      if (feriados.contains(inicio) && (inicio.weekday != DateTime.saturday && inicio.weekday != DateTime.sunday)) {
         result++;
       }
     }
+
     return result;
   }
   
