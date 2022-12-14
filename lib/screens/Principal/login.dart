@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io' show Platform, exit;
+import 'package:drh_project/controllers/locale_provider.dart';
 import 'package:drh_project/models/request_http.dart';
 import 'package:drh_project/services/auth_bio.dart';
 import 'package:drh_project/services/define_error_php.dart';
@@ -16,7 +17,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:drh_project/services/globals.dart' as globals;
 import 'package:local_auth/local_auth.dart';
-import 'package:platform_device_id/platform_device_id.dart';
+import 'package:provider/provider.dart';
 import 'package:steel_crypt/steel_crypt.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -48,38 +49,31 @@ class _LoginScreenState extends State<LoginScreen> {
   List<String> utilizador = [];
 
   //Variáveis para a comunicação http
-  String? encrypt, iv16, chave, token, sn, chefe;
+  String? encrypt, iv16, chave, token, sn, chefe, lingua;
   bool? valido = false;
   CryptKey keyGen = CryptKey();
   late AesCrypt aes;
   Map<String, dynamic> resposta = {};
   late http.Response data;
-  late dynamic snDispositivo;
   late List dados;
 
   //Variáveis para o design
-  Color corCastanha = const Color.fromARGB(255, 72, 55, 41);
+  Color corCastanha = const Color.fromARGB(255, 62, 39, 35);
   Color corVerde = const Color.fromARGB(255, 0, 155, 62);
 
   List<String> listagemErros = List.generate(22, (int i) => i.toString());
 
   @override
   void initState() {
-    //Agarra nos valores guardados caso o tenha e coloca dentro de variáveis (nif e se colocou para guardar as credênciais)
-    List<String> utilizador = GuardarPreferences.getValues() ?? ['', 'false'];
-
-    //Inserir por defeito o último contribuinte inserido
-    globals.nif = utilizador[0];
+    
     _controllerContribuinte.text = globals.nif;
 
     //Guardo se o Utilizador inserir para guardar os dados
-    stayAssign = (utilizador[1] == 'true') ? true : false;
+    stayAssign = globals.sharedPreferences;
     keepCredenciais = stayAssign;
 
     //Verifico se suporta impressão digital
     biometriaCompativel().then((value) => suportaBio = value);
-
-    snDispositivo = agarraIdDispositivo();
 
     super.initState();
   }
@@ -91,8 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     debugInvertOversizedImages = false;
     //Mudar a interface do Sistema Operativo
-    SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(statusBarColor: corCastanha));
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: corCastanha));
 
     //Este Widget serve para a app não fechar de uma vez e sim dizer ao utilizador se quer realmente sair
     return WillPopScope(
@@ -195,10 +188,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   caixapassword = false;
                                   _controllerPassword.text = '';
                                   _controllerConfirmPassowrd.text = '';
-                                  password =
-                                      _controllerConfirmPassowrd.text;
-                                  confirmacao =
-                                      _controllerConfirmPassowrd.text;
+                                  password = _controllerConfirmPassowrd.text;
+                                  confirmacao = _controllerConfirmPassowrd.text;
                                 });
                               },
                             ),
@@ -214,7 +205,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           height: 40.0,
                           width: 220.0,
                           child: FloatingActionButton.extended(
-                            backgroundColor: corCastanha,
+                            backgroundColor: Colors.brown[800],
                             heroTag: null,
                             label: Text(
                               t.btValidar,
@@ -226,15 +217,20 @@ class _LoginScreenState extends State<LoginScreen> {
                             onPressed: () async {
                                 if (globals.nif.isNotEmpty && globals.nif.length == 9) {
                                   //Recolhe as variáveis necessárias para o Login
-                                  Uri url = definirUriGET('ctb_func.php');
+                                  Uri url = definirUriGET('ctb_func.php', campo1: globals.id);
                                   data = await http.get(url);
+                                  
+                                  //Verifica se suporta dados biométricos
+                                  globals.bio = await AuthService.isSupported();
 
                                   switch (data.statusCode) {
                                     case 200:
                                       //O token está válido, logo avança para as próximas páginas
                                       resposta = jsonDecode(data.body);
                                       dados = resposta['data'];
-                                      return telaSeguinte(dados, t);
+                                      lingua = resposta['lingua'];
+
+                                      return telaSeguinte(dados, lingua, t);
 
                                     case 401:
                                       resposta = jsonDecode(data.body);
@@ -248,10 +244,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                       //Desencripto a senha
                                       aes = AesCrypt(key: chave!,padding:PaddingAES.pkcs7);
                                       senha = aes.gcm.decrypt(enc: encrypt!, iv: iv16!);
-                                      setState(() =>caixapassword = true);
+                                      setState(() => caixapassword = true);
 
                                       //Verifica se o serial number que usou para se registar é igual ao atual
-                                      if (sn == snDispositivo) {
+                                      if (sn == globals.id) {
                                         //Selecinou que queria ficar logado?
                                         if (stayAssign) {
                                           //Suporta Biodados?
@@ -504,86 +500,56 @@ class _LoginScreenState extends State<LoginScreen> {
                                 Visibility(
                                   visible: caixaConfirm,
                                   child: Padding(
-                                    padding:
-                                        const EdgeInsetsDirectional.all(
-                                            10),
+                                    padding: const EdgeInsetsDirectional.all(10),
                                     child: SizedBox(
-                                        height: 40.0,
-                                        width: 220.0,
-                                        child:
-                                            FloatingActionButton.extended(
-                                          heroTag: null,
-                                          backgroundColor: corCastanha,
-                                          label: Text(t.btConfirmar,
-                                              style: const TextStyle(
-                                                  fontSize: 20,
-                                                  color: Colors.white)),
-                                          onPressed: () async {
-                                            if (password.isNotEmpty &&
-                                                confirmacao.isNotEmpty) {
-                                              if (password ==
-                                                  confirmacao) {
-                                                String key32 =
-                                                    keyGen.genFortuna(
-                                                        len:
-                                                            32); //Gera uma chave com 32 bytes
-                                                iv16 = keyGen.genDart(
-                                                    len:
-                                                        16); //Gero um IV para a criptografia AES
-                                                aes = AesCrypt(
-                                                    key: key32,
-                                                    padding: PaddingAES
-                                                        .pkcs7); //Gero tipo AES de criptografia (chave + padding)
-                                                encrypt = aes.gcm.encrypt(
-                                                    inp: password,
-                                                    iv: iv16!); //Encriptar a password para a guardar
+                                      height: 40.0,
+                                      width: 220.0,
+                                      child:
+                                          FloatingActionButton.extended(
+                                        heroTag: null,
+                                        backgroundColor: corCastanha,
+                                        label: Text(t.btConfirmar,
+                                            style: const TextStyle(
+                                                fontSize: 20,
+                                                color: Colors.white)),
+                                        onPressed: () async {
+                                          if (password.isNotEmpty && confirmacao.isNotEmpty) {
+                                            if (password == confirmacao) {
+                                              //Gera uma chave com 32 bytes
+                                              String key32 = keyGen.genFortuna(len:32); 
+                                              
+                                              //Gero um IV para a criptografia AES
+                                              iv16 = keyGen.genDart(len:16); 
 
-                                                //Cria um novo token
-                                                if (await refreshToken(
-                                                    encrypt!,
-                                                    iv16!,
-                                                    key32,
-                                                    snDispositivo,
-                                                    t)) {
-                                                  //Verifica se quer guardar as credênciais
-                                                  userStayAssign(
-                                                      keepCredenciais);
+                                              //Gero tipo AES de criptografia (chave + padding)
+                                              aes = AesCrypt(key: key32,padding: PaddingAES.pkcs7); 
 
-                                                  //Avança porque correu tudo como esperado
-                                                  telaSeguinte(dados, t);
-                                                }
-                                              } else {
-                                                showDialog(
-                                                    barrierDismissible:
-                                                        true,
-                                                    context: context,
-                                                    builder: (context) {
-                                                      return dialogBox(
-                                                          context,
-                                                          t.errErro,
-                                                          t.txtErroChave,
-                                                          210,
-                                                          Icons.warning);
-                                                    });
+                                              //Encriptar a password para a guardar
+                                              encrypt = aes.gcm.encrypt(inp: password,iv: iv16!); 
+
+                                              //Cria um novo token
+                                              if (await refreshToken(encrypt!,iv16!,key32,globals.id ?? '',t)) {
+                                                //Verifica se quer guardar as credênciais
+                                                userStayAssign(keepCredenciais);
+
+                                                //Avança porque correu tudo como esperado
+                                                telaSeguinte(dados, lingua, t);
                                               }
-                                            } else {
-                                              showDialog(
-                                                  barrierDismissible:
-                                                      true,
-                                                  context: context,
-                                                  builder: (context) {
-                                                    return dialogBox(
-                                                        context,
-                                                        t.errCampoVazio(
-                                                            1),
-                                                        t.txtCampoVazio(
-                                                            1),
-                                                        210,
-                                                        Icons.warning);
-                                                  });
+                                            } 
+                                            else {
+                                              showDialog(barrierDismissible: true, context: context, builder: (context) {
+                                                return dialogBox(context, t.errErro, t.txtErroChave, 210, Icons.warning);
+                                              });
                                             }
-                                          },
-                                        )),
+                                          } 
+                                          else {
+                                            showDialog( barrierDismissible: true, context: context, builder: (context) {
+                                              return dialogBox(context, t.errCampoVazio(1), t.txtCampoVazio(1),210, Icons.warning);
+                                            });
+                                          }
+                                        },
+                                      )
+                                    ),
                                   ),
                                 ),
 
@@ -616,25 +582,15 @@ class _LoginScreenState extends State<LoginScreen> {
                                                                     .white)),
                                                         onPressed:
                                                             () async {
-                                                          if (password
-                                                              .isNotEmpty) {
-                                                            if (senha ==
-                                                                password) {
+                                                          if (password.isNotEmpty) {
+                                                            if (senha == password) {
                                                               //Refresh ao token
-                                                              if (await refreshToken(
-                                                                  encrypt!,
-                                                                  iv16!,
-                                                                  chave!,
-                                                                  sn!,
-                                                                  t)) {
+                                                              if (await refreshToken(encrypt!,iv16!,chave!,sn!,t)) {
                                                                 //Verifica se quer guardar as credênciais
-                                                                userStayAssign(
-                                                                    keepCredenciais);
+                                                                userStayAssign(keepCredenciais);
 
                                                                 //Avança porque correu tudo como esperado
-                                                                telaSeguinte(
-                                                                    dados,
-                                                                    t);
+                                                                telaSeguinte(dados, lingua, t);
                                                               }
                                                             } else {
                                                               showDialog(
@@ -671,11 +627,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                                         }
                                                         )
                                                         ),
-                                  ),
+                                    ),
 
                                     //Apenas aparecerá caso consiga usar a impressão digital e anteriormente tenha guardado
                                     Visibility(
-                                      visible: (suportaBio && stayAssign && sn == snDispositivo) ? true : false,
+                                      visible: (suportaBio && stayAssign && sn == globals.id) ? true : false,
                                       child: Padding(
                                         padding:const EdgeInsetsDirectional.all(10),
                                         child: SizedBox(
@@ -753,43 +709,50 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  Future<dynamic> telaSeguinte(List data, AppLocalizations t) {
-    return Navigator.pushReplacement(context,
+  Future<dynamic> telaSeguinte(List data, String? lingua, AppLocalizations t) {
+    
+    //Definir lingua do projeto
+    lingua = lingua != null ? lingua.replaceAll(" ", "") : t.localeName;
+    globals.linguaProjeto = lingua;
+    final provider = Provider.of<LocaleProvider>(context, listen: false);
+    final local = Locale(lingua);
+    provider.setLocale(local);
+    
+    return Navigator.pushReplacement(
+      context, 
       MaterialPageRoute(builder: (context) {
-      //Verifica se a empresa tem logotipo
-      if (data[3] == '516303147' || data[3] == '517151561' || data[3] == '516911023' || data[3] == '517188848' || data[3] == '517040387' || data[3] == '517021358') {
-        data[3] = 'null';
-      }
-      return HomeScreen(
-        info: RequestHttp(data[0], data[1], data[2], data[3], data[4], data[5]),
-        textAppBar: t.labelMenuPerfil,
-        lingua: t.localeName);
-    }));
+        //Verifica se das empresas disponíveis existe o logo delas inserido
+        if (data[3] == '516303147' || data[3] == '517151561' || data[3] == '516911023' || data[3] == '517188848' || data[3] == '517040387' || data[3] == '517021358') {
+          data[3] = 'null';
+        }
+  
+        return HomeScreen(
+          info: RequestHttp(data[0], data[1], data[2], data[3], data[4], data[5]),
+          textAppBar: t.labelMenuPerfil,
+        );
+      })
+    );
   }
 
   //Verifico se o hardware do dispositivo aceita dados biométricos
   Future<bool> biometriaCompativel() async {
     final bool canAuthenticateWithBiometrics = await auth.canCheckBiometrics;
-    final bool canAuthenticate =
-        canAuthenticateWithBiometrics || await auth.isDeviceSupported();
+    final bool canAuthenticate = canAuthenticateWithBiometrics || await auth.isDeviceSupported();
     return canAuthenticate;
-  }
-
-  Future<String?> agarraIdDispositivo() async {
-    return snDispositivo = await PlatformDeviceId.getDeviceId;
   }
 
   //Desenrasque para aparecer um layout de erro
   void displayDialog(BuildContext context, String title, String text) {
     showDialog(
       context: context,
-      builder: (context) =>
-          AlertDialog(title: Text(title), content: Text(text)),
+      builder: (context) => AlertDialog(
+        title: Text(title), content: Text(text)
+      ),
     );
   }
 
   void impressaoDigital(AppLocalizations t) async {
-    bool isAuthenticated = await AuthService.authenticateUser();
+    bool isAuthenticated = await AuthService.authenticateUser(context);
 
     void mostrarErroScaffold() {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -804,46 +767,45 @@ class _LoginScreenState extends State<LoginScreen> {
       //Refresh ao token de acesso
       if (await refreshToken(encrypt!, iv16!, chave!, sn!, t)) {
         //Segue para a tela seguinte após fazer o login
-        telaSeguinte(dados, t);
+        telaSeguinte(dados, lingua, t);
       } else {
         resposta = jsonDecode(data.body);
         tituloDialog = resposta['type'];
         msg = resposta['message'];
 
         showDialog(
-            barrierDismissible: true,
-            context: context,
-            builder: (context) {
-              List<String> erro = definirErroPhp(tituloDialog, msg, t);
-              return dialogBox(context, erro[0], erro[1], 230, Icons.warning);
-            });
-      }
-    } else {
-      mostrarErroScaffold();
-    }
-  }
-
-  Future<bool> refreshToken(String encrypt, String iv16, String chave,
-      String sn, AppLocalizations t) async {
-    try {
-      Uri url = definirUriGET('save_key.php',
-          campo1: encrypt, campo2: iv16, campo3: chave, campo4: sn);
-      data = await http.put(url);
-      resposta = jsonDecode(data.body);
-
-      dados = resposta["data"];
-      return data.statusCode == 200 ? true : false;
-    } catch (e) {
-      tituloDialog = resposta['type'] ?? 'Error';
-      msg = resposta['message'] ?? 'Unexpected error';
-
-      showDialog(
           barrierDismissible: true,
           context: context,
           builder: (context) {
             List<String> erro = definirErroPhp(tituloDialog, msg, t);
             return dialogBox(context, erro[0], erro[1], 230, Icons.warning);
-          });
+          }
+        );
+      }
+    }
+    else {
+      mostrarErroScaffold();
+    }
+  }
+
+  Future<bool> refreshToken(String encrypt, String iv16, String chave, String sn, AppLocalizations t) async {
+    try{
+      Uri url = definirUriGET('save_key.php', campo1: encrypt, campo2: iv16, campo3: chave, campo4: sn);
+      data = await http.put(url);
+      resposta = jsonDecode(data.body);
+
+      dados = resposta["data"];
+      lingua = resposta["lingua"];
+      return data.statusCode == 200 ? true : false;
+
+    } catch (e) {
+      tituloDialog = resposta['type'] ?? 'Error';
+      msg = resposta['message'] ?? 'Unexpected error';
+
+      showDialog( barrierDismissible: true, context: context, builder: (context) {
+        List<String> erro = definirErroPhp(tituloDialog, msg, t);
+        return dialogBox(context, erro[0], erro[1], 230, Icons.warning);
+      });
 
       return false;
     }

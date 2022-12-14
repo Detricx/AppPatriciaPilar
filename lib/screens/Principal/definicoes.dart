@@ -21,7 +21,7 @@ class _DefinicoesScreenState extends State<DefinicoesScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
-      appBar: CustomAppBar('Definições', 25, true, 300, explicacao: explicacao),
+      appBar: CustomAppBar(appBarText: 'Definições', tamanho: 25, condicao: true, tamanhoCaixa: 300, explicacao: explicacao),
       
       //Fundo
       body: fundoApp(

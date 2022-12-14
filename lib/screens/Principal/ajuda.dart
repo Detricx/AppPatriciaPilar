@@ -23,7 +23,7 @@ class _HelpScreenState extends State<HelpScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
-      appBar: CustomAppBar('Atendimento Geral', 25, true, 300, explicacao: explicacao),
+      appBar: CustomAppBar(appBarText: 'Atendimento Geral', tamanho: 25, condicao: true, tamanhoCaixa: 300, explicacao: explicacao),
       
       //Fundo
       body: fundoApp(

@@ -1,19 +1,18 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-
 import 'dart:ui';
+
+import 'package:drh_project/services/auth_bio.dart';
 import 'package:drh_project/services/globals.dart' as globals;
 import 'package:another_flushbar/flushbar.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:badges/badges.dart';
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:drh_project/main.dart';
 import 'package:drh_project/models/request_http.dart';
 import 'package:drh_project/screens/Principal/equipa.dart';
 import 'package:drh_project/screens/Principal/login.dart';
 import 'package:drh_project/screens/Utilizador/Documents/menu_docs.dart';
-import 'package:drh_project/services/auth_bio.dart';
 import 'package:drh_project/services/awesome_notification.dart';
 import 'package:drh_project/services/http_connections.dart';
 import 'package:drh_project/services/shared_preferences.dart';
@@ -42,8 +41,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeScreen extends StatefulWidget {
   final RequestHttp info; 
-  final String textAppBar, lingua;
-  const HomeScreen({Key? key, required this.textAppBar, required this.lingua, required this.info}) : super(key: key);
+  final String textAppBar;
+  const HomeScreen({Key? key, required this.textAppBar, required this.info}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -57,9 +56,8 @@ class _HomeScreenState extends State<HomeScreen> {
   bool iconLogOut = true;
 
   //Desincriptação de password
-  late String encrypt, iv16, chave, senha,textAppBar;
+  late String encrypt, iv16, chave, senha, textAppBar;
   late AesCrypt aes;
-  late bool isAuthenticated;
 
   late Timer tempo;
   final TextEditingController controllerPassword = TextEditingController();
@@ -74,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
     nif = widget.info.ctb;
     textAppBar = widget.textAppBar;
     myFuture = recolherDadosUtilizador();
-
+  
     //Incorporo os serviços de notificação no dispositivo
     requestAndRegisterNotification();
 
@@ -282,13 +280,13 @@ class _HomeScreenState extends State<HomeScreen> {
     });
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: CustomAppBar(textAppBar, 30, true, 300),
+      appBar: CustomAppBar(appBarText: textAppBar, tamanho: 30, condicao: true, tamanhoCaixa: 300),
       extendBody: true,
       body: Stack(
         //Ao invés de repetir o processo 6 vezes uso uma lista que fará a geração de todos os layouts
         children: List.generate(6,(index){
-          var routeBuilders = _rotaSeleciona(context, index);
-          
+          var routeBuilders = _rotaSeleciona(context, index, t);
+
           //Retorna o layout selecionado no menu em baixo
           return Offstage(
             offstage: _currentIndex != index,
@@ -313,13 +311,14 @@ class _HomeScreenState extends State<HomeScreen> {
       drawer: menuEsquerda(nif, widget.info.nome, widget.info.profissao, t),
       drawerEnableOpenDragGesture: true,
       bottomNavigationBar: menuBaixo(menu, t)
+      
     );
   }
 
   //Recolher os dados do Utilizador associados ao contribuinte
   Future<bool> recolherDadosUtilizador() async {
     try{
-      Uri url = definirUriGET('ctb_func.php');
+      Uri url = definirUriGET('ctb_func.php', campo1: globals.id);
       http.Response data = await http.get(url);
 
       //Apenas verifico se está tudo a correr bem com o token
@@ -329,7 +328,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
         //Sessão expirada, deve dar refresh ao token
         case 401:
-        //!VALIDAR TOKEN
         return false;
 
         //Qualquer outro tipo de erro é suspeito e deve voltar para a tela de login
@@ -365,7 +363,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   //Criar uma mapeamento de listas das páginas
-  Map<String, WidgetBuilder> _rotaSeleciona(BuildContext context, int index) {
+  Map<String, WidgetBuilder> _rotaSeleciona(BuildContext context, int index, AppLocalizations t) {
     RequestHttp info = widget.info;
 
     return {
@@ -375,7 +373,7 @@ class _HomeScreenState extends State<HomeScreen> {
           PerfilScreen(info.empresa, nome: info.nome, cargo: info.area, profissao: info.profissao),
           MenuScreen(cargo: info.area),
           DocsScreen(info.empresa),
-          FeedScreen(lingua: widget.lingua,),
+          const FeedScreen(),
           ParceriasScreen(info.empresa, nome: info.nome, numeroFuncionario: info.no.toString()),
           const RefeitorioScreen(),
         ].elementAt(index);
@@ -385,10 +383,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget menuBaixo(List<BottomNavigationBarItem> menu, AppLocalizations t) {
     return BottomNavigationBar(
-      //! VERIFICAR O TOKEN AQUI!!!
       onTap: (index) async{
         //Verifica se o token está atualizado
         if(await verificarToken(nif)){
+          autoRefreshToken(senha);
           setState(() {
             textAppBar = labelMenu[index];
             _currentIndex = index;
@@ -396,7 +394,7 @@ class _HomeScreenState extends State<HomeScreen> {
           });
         }
         else{
-          validarImpressaoDigital();
+          validarImpressaoDigital(senha);
           refreshToken(senha);
         }
       },
@@ -665,16 +663,30 @@ class _HomeScreenState extends State<HomeScreen> {
       )
     );
   }
-  
-  void validarImpressaoDigital() async {
+
+  void autoRefreshToken(String senha) async {
     var t = AppLocalizations.of(context)!;
-    isAuthenticated = await AuthService.authenticateUser();
-    //Verifico se correu tudo bem
-    if (isAuthenticated) {
-      //Refresh ao token de acesso 
-      Uri url = definirUriGET('token/refresh_token.php');
+    
+    //Refresh ao token de acesso
+    Uri url = definirUriGET('token/refresh_token.php', campo1: senha);
+    http.Response data = await http.get(url);
+
+    if(data.statusCode != 200){                                                  
+      retornarErro(t.avisInesperado);
+    }
+  }
+  
+  void validarImpressaoDigital(String senha) async {
+    var t = AppLocalizations.of(context)!;
+
+    //Verifica se os dados biométricos estão registados no computador
+    bool isAuthenticated = await AuthService.authenticateUser(context);
+
+    if(isAuthenticated){
+      
+      //Refresh ao token de acesso
+      Uri url = definirUriGET('token/refresh_token.php', campo1: senha);
       http.Response data = await http.get(url);
-      Map<String, dynamic> resposta = jsonDecode(data.body);
 
       if(data.statusCode == 200){                                                  
         setState(() {
@@ -685,18 +697,13 @@ class _HomeScreenState extends State<HomeScreen> {
         sairDialog();
       }
       else{
-        String msg = resposta['message'];
-        retornarErro(msg);
+        retornarErro(t.avisInesperado);
       }
-    }
-    else {
-      retornarErro(t.avisImpressaoDigital);
     }
   }
   
   void refreshToken(String senha, {Timer? timer}) async{
     var t = AppLocalizations.of(context)!;
-    isAuthenticated = await AuthService.authenticateUser();
     timer?.cancel();
     
     //Mostra uma janela para o Utilizador colocar a password
@@ -799,7 +806,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 backgroundColor: MaterialStateProperty.all(const Color.fromARGB(255, 78, 52, 46)),
                                 enableFeedback: true,
                                 shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
-                                minimumSize: MaterialStateProperty.all(Size(isAuthenticated ? 200 : 250, 35)),
+                                minimumSize: MaterialStateProperty.all(Size(globals.bio ? 200 : 250, 35)),
                               ),
                                         
                               child: const Text('Ok', 
@@ -812,7 +819,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 if(password.isNotEmpty){
                                   if(senha == password){
                                     //Refresh ao token de acesso 
-                                    Uri url = Uri.parse("http://${globals.ip}/projects/flutter/drh_project/token/refresh_token.php?ctb=$nif&key=$password");
+                                    Uri url = Uri.parse("http://${globals.ip}:${globals.porta}/drh_project/token/refresh_token.php?ctb=$nif&campo1=$password");
                                     http.Response data = await http.get(url);
                                     if(data.statusCode == 200){
                                       setState((){
@@ -839,7 +846,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               },
                             ),
                             Visibility(
-                              visible: isAuthenticated,
+                              visible: globals.bio,
                               child: Padding(
                                 padding: const EdgeInsetsDirectional.all(10),
                                 child: SizedBox(
@@ -853,7 +860,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       color: Colors.white,
                                     ),
                                     onPressed: () async{
-                                      validarImpressaoDigital();
+                                      validarImpressaoDigital(senha);
                                     }
                                   )
                                 ),
@@ -932,27 +939,7 @@ class _HomeScreenState extends State<HomeScreen> {
       sound: true,
     );
 
-    var deviceInfo = DeviceInfoPlugin();
-    late String? idDispositivo;
-
-    //Capturo o serial number do dispositivo
-    switch(Platform.operatingSystem){
-      case "ios":
-        var iosDeviceInfo = await deviceInfo.iosInfo;
-        idDispositivo = iosDeviceInfo.identifierForVendor; // ID para Ios
-      break;
-
-      case "android":
-        var androidDeviceInfo = await deviceInfo.androidInfo;
-        idDispositivo = androidDeviceInfo.id; // ID para Android
-      break;
-
-      default:
-        idDispositivo = null;
-      break;
-    }
-
-    Uri url = definirUriGET("state_notification.php", campo1: idDispositivo ?? '');
+    Uri url = definirUriGET("state_notification.php", campo1: globals.id);
     http.Response data = await http.get(url);
     bool displayNotification = (data.statusCode == 204);
 
@@ -963,7 +950,7 @@ class _HomeScreenState extends State<HomeScreen> {
     //Verifica o estado da notificação
     switch(settings.authorizationStatus){
       case AuthorizationStatus.authorized:
-      definicoesFirebase(idDispositivo ?? '', true);
+      definicoesFirebase(globals.id ?? '', true);
       debugPrint("Concedeu permissão");
       break;
 
@@ -971,11 +958,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
       if(displayNotification){
         bool condicao = condicaoMostrarNotificacoes();
-        definicoesFirebase(idDispositivo ?? '', condicao);
+        definicoesFirebase(globals.id ?? '', condicao);
       }
       else{
         debugPrint("Permissão negada");
-        definicoesFirebase(idDispositivo ?? '', false);
+        definicoesFirebase(globals.id ?? '', false);
       }
       break;
 
@@ -984,24 +971,24 @@ class _HomeScreenState extends State<HomeScreen> {
 
       if(displayNotification){
         bool condicao = condicaoMostrarNotificacoes();
-        definicoesFirebase(idDispositivo ?? '', condicao);
+        definicoesFirebase(globals.id ?? '', condicao);
       }
       else{
         debugPrint("Não está determinado a permissão");
-        definicoesFirebase(idDispositivo ?? '', false);
+        definicoesFirebase(globals.id ?? '', false);
       }
       break;
 
       case AuthorizationStatus.provisional:
-      definicoesFirebase(idDispositivo ?? '', true);
+      definicoesFirebase(globals.id ?? '', true);
       debugPrint("Concedeu permissão provisória");
       break;
     }
   }
   
   void definicoesFirebase(String idDispositivo, bool permissao) {
-    //Salvar token e ID do dispositivo na BD
-    HttpServicesProject.saveDataFromDevice(idDispositivo, permissao, widget.lingua);
+    //Salvar token e ID do dispositivo na BD + Línguagem do dispositivo
+    HttpServicesProject.saveDataFromDevice(idDispositivo, permissao);
 
     //Criação dos canais caso não os tenha
     AwesomeNotificationService.initialize();
@@ -1035,11 +1022,9 @@ class _HomeScreenState extends State<HomeScreen> {
       AwesomeNotificationService.onSelectedNotification(message, context);
     });
 
-    FirebaseMessaging.instance.onTokenRefresh
-    .listen((fcmToken) {
-      HttpServicesProject.saveDataFromDevice(idDispositivo, permissao, widget.lingua);
-    })
-    .onError((err) {
+    FirebaseMessaging.instance.onTokenRefresh.listen((fcmToken) {
+      HttpServicesProject.saveDataFromDevice(idDispositivo, permissao);
+    }).onError((err) {
       debugPrint(err);
     });
   }
@@ -1071,30 +1056,31 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<bool> verificarToken(String nif, {String? key}) async{
-    Uri url = Uri.parse("http://${globals.ip}/projects/flutter/drh_project/token/refresh_token.php?ctb=$nif&key=");
+    Uri url = Uri.parse("http://${globals.ip}:${globals.porta}/drh_project/token/refresh_token.php?ctb=$nif");
     http.Response data = await http.get(url);
+
+    Map<String, dynamic> resposta = jsonDecode(data.body);
+    encrypt = resposta['encript'];
+    iv16 = resposta['iv'];
+    chave = resposta['chave'];
+
+    //Desencripto a senha
+    aes = AesCrypt(key: chave, padding: PaddingAES.pkcs7);
+    senha = aes.gcm.decrypt(enc: encrypt, iv: iv16);
     
-    if(data.statusCode == 200){
+    if(data.statusCode == 200) {
+      //Token ainda está válido, então segue apenas para um refresh
       return true;
-    }
-    else{
-      Map<String, dynamic> resposta = jsonDecode(data.body);
-      encrypt = resposta['encript'];
-      iv16 = resposta['iv'];
-      chave = resposta['chave'];
-
-      //Desencripto a senha
-      aes = AesCrypt(key: chave, padding: PaddingAES.pkcs7);
-      senha = aes.gcm.decrypt(enc: encrypt, iv: iv16);
-
+    } else{
+      //Token expirado, deve inserir novamente uma validação
       return false;
     }
   }
   
   void refreshTimerToken(String nif) {
-    tempo = Timer.periodic(const Duration(minutes: 3), (timer) async{
+    tempo = Timer.periodic(const Duration(minutes: 10), (timer) async{
       if(!(await verificarToken(nif))){
-        validarImpressaoDigital();
+        validarImpressaoDigital(senha);
         refreshToken(senha, timer: timer);
       }
       //mytimer.cancel() //Para cancelar este timer

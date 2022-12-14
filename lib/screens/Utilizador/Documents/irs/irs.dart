@@ -542,7 +542,7 @@ class _IrsScreenState extends State<IrsScreen> {
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: false,
       
-      appBar: const CustomAppBar('R. IRS', 25, false, 300),
+      appBar: const CustomAppBar(appBarText: 'R. IRS', tamanho: 25, condicao: false, tamanhoCaixa: 300),
       body: MediaQuery.removeViewPadding(
         context: context,
         removeTop: false,

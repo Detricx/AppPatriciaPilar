@@ -62,240 +62,246 @@ class _ParceriasScreenState extends State<ParceriasScreen> {
                       return Scaffold(
                         resizeToAvoidBottomInset: false,
                         extendBodyBehindAppBar: true,
-                        appBar: CustomAppBar(t.parCartao, 20, false, 200, explicacao: t.explicCartao),
+                        appBar: CustomAppBar(appBarText: t.parCartao, tamanho: 20, condicao: false, tamanhoCaixa: 200, explicacao: t.explicCartao),
                         body: fundoApp('assets/fundos/fundo_parceria.png', 20, 
                           Expanded(
-                            child: Stack(
+                            child: Column(
                               children: [
-                                RotatedBox(
-                                  quarterTurns: 1,
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(vertical: 35, horizontal: 50),
-                                    child: FlipCard(
-                                      direction: FlipDirection.HORIZONTAL,
-                                      front: Container(
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          border: Border.all(
-                                            width: 0.8,
-                                            color: Colors.black,
-                                          )
-                                        ),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                              height: 80,
-                                              decoration: const BoxDecoration(
-                                                gradient: LinearGradient(
-                                                  begin: Alignment.centerLeft,
-                                                  end: Alignment.centerRight,
-                                                  colors: [
-                                                    Color.fromARGB(255, 149, 203, 73),
-                                                    Color.fromARGB(255, 11, 76, 32),
-                                                  ],
-                                                ),
-                                                borderRadius: BorderRadius.all(
-                                                  Radius.circular(20)
-                                                ),
-                                              ),
-                                              margin: const EdgeInsets.all(20),
-                                              
-                                              child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                children: [
-                                                  Padding(
-                                                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                                                    child: Column(
-                                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                                      mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: [
-                                                        Text(
-                                                          '${nomes.first} ${nomes.last}',
-                                                          overflow: TextOverflow.ellipsis,
-                                                          style: const TextStyle(
-                                                            fontSize: 12, 
-                                                            color: Colors.white,
-                                                            fontWeight: FontWeight.bold,
-                                                            fontFamily: 'DaysOne'
-                                                          ),
-                                                        ),
-                                                        
-                                                        const SizedBox(height: 3),
-
-                                                        const Text(
-                                                          'Frutas Patricia Pilar',
-                                                          style: TextStyle(
-                                                            fontSize: 12, 
-                                                            color: Colors.white,
-                                                            fontWeight: FontWeight.bold,
-                                                            fontFamily: 'Gantari'
-                                                          ),
-                                                        ),
+                                Expanded(
+                                  child: RotatedBox(
+                                    quarterTurns: 1,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 40),
+                                      child: FlipCard(
+                                        direction: FlipDirection.HORIZONTAL,
+                                        front: Container(
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            border: Border.all(
+                                              width: 0.8,
+                                              color: Colors.black,
+                                            )
+                                          ),
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Expanded(
+                                                child: Container(
+                                                  height: 80,
+                                                  decoration: const BoxDecoration(
+                                                    gradient: LinearGradient(
+                                                      begin: Alignment.centerLeft,
+                                                      end: Alignment.centerRight,
+                                                      colors: [
+                                                        Color.fromARGB(255, 149, 203, 73),
+                                                        Color.fromARGB(255, 11, 76, 32),
                                                       ],
                                                     ),
+                                                    borderRadius: BorderRadius.all(
+                                                      Radius.circular(20)
+                                                    ),
                                                   ),
+                                                  margin: const EdgeInsets.all(20),
                                                   
-                                                  Padding(
-                                                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                                    child: Image.asset(
-                                                      height: 80,
-                                                      width: 80,
-                                                      "assets/icons/logos/logos_pb/${widget.nifEmpresa}.png",
-                                                      fit: BoxFit.contain,
-                                                      alignment: Alignment.center,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-                                              child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  Text.rich(
-                                                    TextSpan(
-                                                      text: t.parColaborador,
-                                                      style: TextStyle(
-                                                        fontSize: 15, 
-                                                        color: Colors.green[600],
-                                                        fontFamily: 'DaysOne'
-                                                      ),
-                                                      children: [
-                                                        TextSpan(
-                                                          text: widget.numeroFuncionario,
-                                                          style: TextStyle(
-                                                            fontSize: 15, 
-                                                            color: Colors.green[600],
-                                                            fontFamily: 'DaysOne'
-                                                          ),
-                                                        )
-                                                      ]
-                                                    ),
-                                                  ),
-                                                  Text.rich(
-                                                    TextSpan(
-                                                      text: t.parContribuinte,
-                                                      style: TextStyle(
-                                                        fontSize: 15, 
-                                                        color: Colors.green[600],
-                                                        fontFamily: 'DaysOne'
-                                                      ),
-                                                      children: [
-                                                        TextSpan(
-                                                          text: globals.nif,
-                                                          style: TextStyle(
-                                                            fontSize: 15, 
-                                                            color: Colors.green[600],
-                                                            fontFamily: 'DaysOne'
-                                                          ),
-                                                        )
-                                                      ]
-                                                    ),
-                                                  ),
-                                                  const SizedBox(height: 5),
-
-                                                  Text(
-                                                    t.parCondicao,
-                                                    style: TextStyle(
-                                                      fontSize: 10, 
-                                                      color: Colors.green[600],
-                                                      fontFamily: 'DaysOne'
-                                                    ),
-                                                  ),
-
-                                                  const SizedBox(height: 20),
-                                                  
-                                                  Text(
-                                                    'Grupo Patricia Pilar',
-                                                    style: TextStyle(
-                                                      fontSize: 15, 
-                                                      color: Colors.brown[900],
-                                                      fontFamily: 'DaysOne'
-                                                    ),
-                                                  ),
-
-                                                  const SizedBox(height: 5),
-
-                                                  Row(
+                                                  child: Row(
+                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                     children: [
-                                                      Expanded(
+                                                      Padding(
+                                                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
                                                         child: Column(
                                                           crossAxisAlignment: CrossAxisAlignment.start,
+                                                          mainAxisAlignment: MainAxisAlignment.center,
                                                           children: [
                                                             Text(
-                                                              'Rua Poço de Arroz, nº2, Casal da Lapa',
-                                                              style: TextStyle(
-                                                                fontSize: 10, 
-                                                                color: Colors.brown[900],
-                                                                fontFamily: 'Gantari'
+                                                              '${nomes.first} ${nomes.last}',
+                                                              overflow: TextOverflow.ellipsis,
+                                                              style: const TextStyle(
+                                                                fontSize: 12, 
+                                                                color: Colors.white,
+                                                                fontWeight: FontWeight.bold,
+                                                                fontFamily: 'DaysOne'
                                                               ),
                                                             ),
-                                                            Text(
-                                                              '2560-030 A-dos-Cunhados, Torres Vedras',
+                                                            
+                                                            const SizedBox(height: 3),
+                                              
+                                                            const Text(
+                                                              'Frutas Patricia Pilar',
                                                               style: TextStyle(
-                                                                fontSize: 10, 
-                                                                color: Colors.brown[900],
-                                                                fontFamily: 'Gantari'
-                                                              ),
-                                                            ),
-                                                            Text(
-                                                              'geral@patriciapilar.pt | +351 261 982 465',
-                                                              style: TextStyle(
-                                                                fontSize: 10, 
-                                                                color: Colors.brown[900],
+                                                                fontSize: 12, 
+                                                                color: Colors.white,
+                                                                fontWeight: FontWeight.bold,
                                                                 fontFamily: 'Gantari'
                                                               ),
                                                             ),
                                                           ],
                                                         ),
                                                       ),
-                                                      Expanded(
-                                                        child: Column(
-                                                          crossAxisAlignment: CrossAxisAlignment.end,
-                                                          children: [
-                                                            Text(
-                                                              'geral@patriciapilar.pt',
-                                                              style: TextStyle(
-                                                                fontSize: 15, 
-                                                                color: Colors.brown[900],
-                                                                fontFamily: 'Gantari'
-                                                              ),
-                                                            ),
-                                                            Text(
-                                                              'www.patriciapilar.pt',
-                                                              style: TextStyle(
-                                                                fontSize: 15, 
-                                                                color: Colors.brown[900],
-                                                                fontFamily: 'Gantari'
-                                                              ),
-                                                            ),
-                                                          ],
+                                                      
+                                                      Padding(
+                                                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                                        child: Image.asset(
+                                                          height: 80,
+                                                          width: 80,
+                                                          "assets/icons/logos/logos_pb/${widget.nifEmpresa}.png",
+                                                          fit: BoxFit.contain,
+                                                          alignment: Alignment.center,
                                                         ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                child: Padding(
+                                                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                                                  child: Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Text.rich(
+                                                        TextSpan(
+                                                          text: t.parColaborador,
+                                                          style: TextStyle(
+                                                            fontSize: 15, 
+                                                            color: Colors.green[600],
+                                                            fontFamily: 'DaysOne'
+                                                          ),
+                                                          children: [
+                                                            TextSpan(
+                                                              text: widget.numeroFuncionario,
+                                                              style: TextStyle(
+                                                                fontSize: 15, 
+                                                                color: Colors.green[600],
+                                                                fontFamily: 'DaysOne'
+                                                              ),
+                                                            )
+                                                          ]
+                                                        ),
+                                                      ),
+                                                      Text.rich(
+                                                        TextSpan(
+                                                          text: t.parContribuinte,
+                                                          style: TextStyle(
+                                                            fontSize: 15, 
+                                                            color: Colors.green[600],
+                                                            fontFamily: 'DaysOne'
+                                                          ),
+                                                          children: [
+                                                            TextSpan(
+                                                              text: globals.nif,
+                                                              style: TextStyle(
+                                                                fontSize: 15, 
+                                                                color: Colors.green[600],
+                                                                fontFamily: 'DaysOne'
+                                                              ),
+                                                            )
+                                                          ]
+                                                        ),
+                                                      ),
+                                                      const SizedBox(height: 5),
+                                              
+                                                      Text(
+                                                        t.parCondicao,
+                                                        style: TextStyle(
+                                                          fontSize: 10, 
+                                                          color: Colors.green[600],
+                                                          fontFamily: 'DaysOne'
+                                                        ),
+                                                      ),
+                                              
+                                                      const SizedBox(height: 20),
+                                                      
+                                                      Text(
+                                                        'Grupo Patricia Pilar',
+                                                        style: TextStyle(
+                                                          fontSize: 15, 
+                                                          color: Colors.brown[900],
+                                                          fontFamily: 'DaysOne'
+                                                        ),
+                                                      ),
+                                              
+                                                      const SizedBox(height: 5),
+                                              
+                                                      Row(
+                                                        children: [
+                                                          Expanded(
+                                                            child: Column(
+                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                              children: [
+                                                                Text(
+                                                                  'Rua Poço de Arroz, nº2, Casal da Lapa',
+                                                                  style: TextStyle(
+                                                                    fontSize: 10, 
+                                                                    color: Colors.brown[900],
+                                                                    fontFamily: 'Gantari'
+                                                                  ),
+                                                                ),
+                                                                Text(
+                                                                  '2560-030 A-dos-Cunhados, Torres Vedras',
+                                                                  style: TextStyle(
+                                                                    fontSize: 10, 
+                                                                    color: Colors.brown[900],
+                                                                    fontFamily: 'Gantari'
+                                                                  ),
+                                                                ),
+                                                                Text(
+                                                                  'geral@patriciapilar.pt | +351 261 982 465',
+                                                                  style: TextStyle(
+                                                                    fontSize: 10, 
+                                                                    color: Colors.brown[900],
+                                                                    fontFamily: 'Gantari'
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          Expanded(
+                                                            child: Column(
+                                                              crossAxisAlignment: CrossAxisAlignment.end,
+                                                              children: [
+                                                                Text(
+                                                                  'geral@patriciapilar.pt',
+                                                                  style: TextStyle(
+                                                                    fontSize: 15, 
+                                                                    color: Colors.brown[900],
+                                                                    fontFamily: 'Gantari'
+                                                                  ),
+                                                                ),
+                                                                Text(
+                                                                  'www.patriciapilar.pt',
+                                                                  style: TextStyle(
+                                                                    fontSize: 15, 
+                                                                    color: Colors.brown[900],
+                                                                    fontFamily: 'Gantari'
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          )
+                                                        ],
                                                       )
                                                     ],
-                                                  )
-                                                ],
+                                                  ),
+                                                ),
                                               ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      back: Container(
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          border: Border.all(
-                                            width: 0.8,
-                                            color: Colors.black,
-                                          )
-                                        ),
-                                        child:Image.asset(
-                                          "assets/fundos/cartaoColaborador.png",
-                                          fit: BoxFit.cover,
-                                          height: double.infinity,
-                                          width: double.infinity,
-                                          alignment: Alignment.center,
+                                        back: Container(
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            border: Border.all(
+                                              width: 0.8,
+                                              color: Colors.black,
+                                            )
+                                          ),
+                                          child:Image.asset(
+                                            "assets/fundos/cartaoColaborador.png",
+                                            fit: BoxFit.cover,
+                                            height: double.infinity,
+                                            width: double.infinity,
+                                            alignment: Alignment.center,
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -376,7 +382,7 @@ class _ParceriasScreenState extends State<ParceriasScreen> {
     parcerias.clear();
 
     //Vai buscar dados das parcerias
-    Uri urlParceria = Uri.parse("http://${globals.ip}/projects/flutter/drh_project/recursosHumanos/parceria/parcerias.php?ctb=${globals.nif}");
+    Uri urlParceria = Uri.parse("http://${globals.ip}:${globals.porta}/drh_project/recursosHumanos/parceria/parcerias.php?ctb=${globals.nif}");
     http.Response dataParceria = await http.get(urlParceria);
     Map<String, dynamic> respostaParceria = jsonDecode(dataParceria.body);
     
@@ -393,7 +399,7 @@ class _ParceriasScreenState extends State<ParceriasScreen> {
         dadosParceria = respostaParceria["data"];
         for(int i = 0; i <= dadosParceria.length - 1; i++){
           int id = respostaParceria["data"][i][0];
-          String? logo = 'http://${globals.ip}/projects/flutter/drh_project/images/app/feed/parcerias/${respostaParceria["data"][i][1]}';
+          String? logo = 'http://${globals.ip}:${globals.porta}/drh_project/images/app/feed/parcerias/${respostaParceria["data"][i][1]}';
           bool estado = (respostaParceria["data"][i][2] == 1);
           String nome = respostaParceria["data"][i][3];
           String morada = respostaParceria["data"][i][4];
@@ -412,7 +418,7 @@ class _ParceriasScreenState extends State<ParceriasScreen> {
           }
           
           //Faz outro ciclo para capturar todos os descontos das parcerias
-          Uri urlDesconto = Uri.parse("http://${globals.ip}/projects/flutter/drh_project/recursosHumanos/parceria/descontos.php?ctb=${globals.nif}&id=$id");
+          Uri urlDesconto = Uri.parse("http://${globals.ip}:${globals.porta}/drh_project/recursosHumanos/parceria/descontos.php?ctb=${globals.nif}&id=$id");
           http.Response dataDesconto = await http.get(urlDesconto);
 
           switch(dataDesconto.statusCode){

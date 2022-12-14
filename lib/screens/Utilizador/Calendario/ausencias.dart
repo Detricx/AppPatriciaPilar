@@ -93,7 +93,7 @@ class _AusenciasScreenState extends State<AusenciasScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
-      appBar: CustomAppBar(t.menuAusencia, 25, false, 300, explicacao: t.explicAusec),
+      appBar: CustomAppBar(appBarText: t.menuAusencia, tamanho: 25, condicao:false, tamanhoCaixa: 300, explicacao: t.explicAusec),
       body: fundoApp(
         'assets/fundos/fundo_calendario.png',
         60,
@@ -996,7 +996,7 @@ class _AusenciasScreenState extends State<AusenciasScreen> {
       if(ausencia != null){
         data.addAll({"idAusencia": '${ausencia.id}'});
 
-        var url = Uri.parse("http://${globals.ip}/projects/flutter/drh_project/ausencias/change_ausencia.php");
+        var url = Uri.parse("http://${globals.ip}:${globals.porta}/drh_project/ausencias/change_ausencia.php");
         http.Response response = await http.post(url, body:data);
         Map<String, dynamic> resposta = jsonDecode(response.body);
         
@@ -1006,7 +1006,7 @@ class _AusenciasScreenState extends State<AusenciasScreen> {
         return response.statusCode == 200 ? true : false;
       }
       else{
-        var url = Uri.parse("http://${globals.ip}/projects/flutter/drh_project/ausencias/save_ausencia.php");
+        var url = Uri.parse("http://${globals.ip}:${globals.porta}/drh_project/ausencias/save_ausencia.php");
         http.Response response = await http.post(url, body:data);
         Map<String, dynamic> resposta = jsonDecode(response.body);
         

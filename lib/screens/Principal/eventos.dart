@@ -20,7 +20,7 @@ class _EventoScreenState extends State<EventoScreen> {
       //Os Widgets que estiverem presentes não serão alterados conforme o teclado
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
-      appBar: CustomAppBar('Eventos', 25, true, 300, explicacao: explicacao),
+      appBar: CustomAppBar(appBarText: 'Eventos', tamanho: 25, condicao:true, tamanhoCaixa: 300, explicacao: explicacao),
       //Fundo
       body: fundoApp(
         'assets/fundos/fundo_evento.png',

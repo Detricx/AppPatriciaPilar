@@ -48,7 +48,7 @@ class _AprovacoesScreenState extends State<AprovacoesScreen> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         extendBodyBehindAppBar: true,
-        appBar: CustomAppBar(t.menuAprovacoes, 25, false, 260, explicacao: t.explicAprov),
+        appBar: CustomAppBar(appBarText: t.menuAprovacoes, tamanho: 25, condicao:false, tamanhoCaixa: 260, explicacao:t.explicAprov),
         body: fundoApp(
           'assets/fundos/fundo_calendario.png',
           60,

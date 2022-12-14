@@ -11,12 +11,12 @@ import 'package:http/http.dart' as http;
 
 class HttpServicesProject{
 
-  static String urlNif = 'http://${globals.ip}/projects/flutter/drh_project/images/app/pessoal/${globals.nif}.jpg';
+  static String urlNif = 'http://${globals.ip}:${globals.porta}/drh_project/images/app/pessoal/${globals.nif}.jpg';
 
   //Captura as categorias do feedback
   static Future<List> capturarCategorias(AppLocalizations t) async{
     List categorias = [];
-    Uri url = Uri.parse("http://${globals.ip}/projects/flutter/drh_project/feedback/feedback_cat.php");
+    Uri url = Uri.parse("http://${globals.ip}:${globals.porta}/drh_project/feedback/feedback_cat.php");
     http.Response data = await http.get(url);
     Map<String, dynamic> resposta = jsonDecode(data.body);
 
@@ -43,12 +43,12 @@ class HttpServicesProject{
   }
 
   //Armazeno o token do dispositivo
-  static void saveDataFromDevice(String idDispositivo, bool permissao, String lingua) async{
+  static void saveDataFromDevice(String idDispositivo, bool permissao) async{
     final FirebaseMessaging messaging = FirebaseMessaging.instance;
 
     String? token = await messaging.getToken();
 
-    Uri url = Uri.parse("http://${globals.ip}/projects/flutter/drh_project/save_serial_number.php");
+    Uri url = Uri.parse("http://${globals.ip}:${globals.porta}/drh_project/save_serial_number.php");
     var headers = {'Content-Type': 'application/x-www-form-urlencoded'};
     var request = http.Request('POST', url);
     
@@ -56,7 +56,7 @@ class HttpServicesProject{
       "ctb" : globals.nif,
       "serialNumber" : idDispositivo,
       "token" : token ?? '',
-      "lingua" : lingua,
+      "lingua" : globals.linguaProjeto,
       "not" : permissao ? '1' : '0',
     };
 
@@ -69,7 +69,7 @@ class HttpServicesProject{
   static Future<bool> updateEmenta(DateTime diasMes, List<String> ementa) async{
     String dia = diasMes.toIso8601String();
 
-    Uri url = Uri.parse("http://${globals.ip}/projects/flutter/drh_project/rf/update_ementa.php");
+    Uri url = Uri.parse("http://${globals.ip}:${globals.porta}/drh_project/rf/update_ementa.php");
     var headers = {'Content-Type': 'application/x-www-form-urlencoded'};
     var request = http.Request('POST', url);
     
@@ -102,7 +102,7 @@ class HttpServicesProject{
     String baseImage = base64Encode(imageBytes);
     
     try{
-      var url = Uri.parse("http://${globals.ip}/projects/flutter/drh_project/recursosHumanos/files/simple_image.php");
+      var url = Uri.parse("http://${globals.ip}:${globals.porta}/drh_project/recursosHumanos/files/simple_image.php");
       var headers = {'Content-Type': 'application/x-www-form-urlencoded'};
       var request = http.Request('POST', url);
 
@@ -124,7 +124,7 @@ class HttpServicesProject{
   static Future<bool> deleteImageSystem(String titulo) async{ 
     DefaultCacheManager().emptyCache();
     try{
-      var url = Uri.parse("http://${globals.ip}/projects/flutter/drh_project/recursosHumanos/files/delete_image.php?ctb=${globals.nif}");
+      var url = Uri.parse("http://${globals.ip}:${globals.porta}/drh_project/recursosHumanos/files/delete_image.php?ctb=${globals.nif}");
       var request = http.Request('DELETE', url);
 
       http.StreamedResponse response = await request.send();
@@ -139,7 +139,7 @@ class HttpServicesProject{
   static void armazenarDadosFerias(String periodo, BuildContext context) async{
     var t = AppLocalizations.of(context)!;
     try{
-      var url = Uri.parse("http://${globals.ip}/projects/flutter/drh_project/ausencias/save_ferias.php");
+      var url = Uri.parse("http://${globals.ip}:${globals.porta}/drh_project/ausencias/save_ferias.php");
 
       Map<String, String> data = {
         "ctb" : globals.nif,
@@ -173,7 +173,7 @@ class HttpServicesProject{
 
   static Future<bool> recusaAusencia(Ausencia ausencia, AppLocalizations t, int nivel) async{
     try{
-      var url = Uri.parse("http://${globals.ip}/projects/flutter/drh_project/ausencias/delete_ausencia.php?ctb=${globals.nif}&idAusencia=${ausencia.id}&nivel=$nivel");
+      var url = Uri.parse("http://${globals.ip}:${globals.porta}/drh_project/ausencias/delete_ausencia.php?ctb=${globals.nif}&idAusencia=${ausencia.id}&nivel=$nivel");
       var request = http.Request('DELETE', url);
 
       http.StreamedResponse response = await request.send();
@@ -187,12 +187,11 @@ class HttpServicesProject{
 
   static Future<bool> storeFeedbackInDataBase(String nif, String msg, int ranking, String categoria, bool condicao) async{
     try{
-      var url = Uri.parse("http://${globals.ip}/projects/flutter/drh_project/feedback/feedback_add.php");
+      var url = Uri.parse("http://${globals.ip}:${globals.porta}/drh_project/feedback/feedback_add.php");
       var headers = {'Content-Type': 'application/x-www-form-urlencoded'};
       var request = http.Request('POST', url);
       
       request.bodyFields = {
-        "ctb" : nif,
         "campo1" : msg,
         "campo2" : ranking.toString(),
         "campo3": categoria,

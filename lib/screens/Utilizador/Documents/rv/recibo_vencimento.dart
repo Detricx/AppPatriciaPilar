@@ -779,7 +779,7 @@ class _ReciboVencimentoScreenState extends State<ReciboVencimentoScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: false,
-      appBar: const CustomAppBar('R. Vencimento', 25, false, 300),
+      appBar: const CustomAppBar(appBarText: 'R. Vencimento', tamanho: 25, condicao: false, tamanhoCaixa: 300),
       body: MediaQuery.removeViewPadding(
         context: context,
         removeTop: false,
@@ -788,7 +788,7 @@ class _ReciboVencimentoScreenState extends State<ReciboVencimentoScreen> {
           maxPageWidth: 700,
           canChangePageFormat: false,
           //! Remover após finalizar esta secção
-          canDebug: true,
+          canDebug: false,
           build: (format) => gerarDocument(format, recibo, widget.nifEmpresa),
           //actions: actions,
           onPrinted: _showPrintedToast,

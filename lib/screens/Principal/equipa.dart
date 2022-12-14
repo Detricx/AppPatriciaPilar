@@ -38,7 +38,7 @@ class _EquipaScreenState extends State<EquipaScreen > {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
-      appBar: CustomAppBar('Equipa', 25, widget.condicaoAppBar, 220),
+      appBar: CustomAppBar(appBarText: 'Equipa', tamanho: 25, condicao: widget.condicaoAppBar, tamanhoCaixa: 220),
       body: fundoApp(
         'assets/fundos/fundo_calendario.png',
         (widget.condicaoAppBar ? 60 : 40),

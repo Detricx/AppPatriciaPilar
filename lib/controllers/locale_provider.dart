@@ -12,8 +12,6 @@ class LocaleProvider extends ChangeNotifier{
     
     _locale = locale;
     notifyListeners();
-
-    //! TODO Guardar na base de dados a última língua inserida
   }
 
   void clearLocale(){

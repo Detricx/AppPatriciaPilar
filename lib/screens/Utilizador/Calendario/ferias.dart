@@ -49,7 +49,7 @@ class _FeriasScreenState extends State<FeriasScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
-      appBar: CustomAppBar(t.menuFeria, 25, false, 300, explicacao: t.explicFerias),
+      appBar: CustomAppBar(appBarText: t.menuFeria, tamanho: 25, condicao:false, tamanhoCaixa: 300, explicacao: t.explicFerias),
       body: fundoApp(
         'assets/fundos/fundo_calendario.png',
         65,
@@ -223,25 +223,25 @@ class _FeriasScreenState extends State<FeriasScreen> {
                               datePickerController.dispose();
                             });
                             
-                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               content: Text(
-                                'Selection Cancelled',
+                                t.scaffoldSelection,
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontFamily: 'Gantari',
                                   fontWeight: FontWeight.bold,
                                   fontSize: 20,
                                   color: Colors.white,
                                 )
                               ),
-                              duration: Duration(milliseconds: 700),
+                              duration: const Duration(milliseconds: 700),
                             ));
                           },
 
                           onSubmit: (Object? value){
                             if(periodo.startDate == null && periodo.endDate == null || dataI == "" && dataF == ""){
                               showDialog(barrierDismissible: true, context: context, builder: (context){
-                                return dialogBox(context, t.feriasInsuficiente, t.feriasInsufExplicao, 200, Icons.warning);
+                                return dialogBox(context, t.feriasInsuficiente, t.feriasInsufExplicao, 210, Icons.warning);
                               });
                             }
                             else{
@@ -315,7 +315,7 @@ class _FeriasScreenState extends State<FeriasScreen> {
     DateTime inicio = ranges.startDate!;
     DateTime fim = ranges.endDate ?? ranges.startDate!;
     int diasFolga = retornaFinsSemana(inicio, fim) + retornaFeriados(inicio, fim), total = 0; //Diferença entre uma data e a outra
-    double tamanho = 240;
+    double tamanho = 250;
 
     if(inicio.compareTo(fim) != 0){
       //Capturo a diferença entre as datas + Recolho os dias + 1 porque por defeito não agarra o selecionado
@@ -346,7 +346,7 @@ class _FeriasScreenState extends State<FeriasScreen> {
       }
       
       String fimFormat = DateFormat('dd-MM-yyyy').format(fim).toString();
-      tamanho = 330;
+      tamanho = 340;
       msgErro = t.feriasUltrapassou(total, tirarDias, fimFormat);
       titulo = t.feriasTotalUltrapassado;
     }

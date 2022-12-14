@@ -1,9 +1,20 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AuthService {
-  static Future<bool> authenticateUser() async {
+
+  static Future<bool> isSupported() async{
+    //Inicializo uma variável local 
+    final LocalAuthentication auth = LocalAuthentication();
+
+    //Verifico se o dispositivo suporta Biometrica
+    return await auth.isDeviceSupported();
+  }
+
+  static Future<bool> authenticateUser(context) async {
+    var t = AppLocalizations.of(context)!;
     
     //Inicializo uma variável local 
     final LocalAuthentication auth = LocalAuthentication();
@@ -21,7 +32,7 @@ class AuthService {
     if (isBiometricSupported && canCheckBiometrics) {
       try {
         isAuthenticated = await auth.authenticate(
-          localizedReason: 'Faça uma impressão digital para se conectar',
+          localizedReason: t.impressDig,
           options : const AuthenticationOptions(
             useErrorDialogs: true,      //Verfica se existe algum finger_print registado no dispositivo
             stickyAuth: true,           //Não pede novamente caso feche a aplicação

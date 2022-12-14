@@ -46,7 +46,7 @@ class _RegrasScreenState extends State<RegrasScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
-      appBar: CustomAppBar('Regras', 25, false, 300, explicacao: explicacao),
+      appBar: CustomAppBar(appBarText: 'Regras', tamanho: 25, condicao:false, tamanhoCaixa: 300, explicacao: explicacao),
       body: fundoApp(
         'assets/fundos/fundo_calendario.png',
         70,

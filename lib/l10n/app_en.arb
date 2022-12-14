@@ -7,6 +7,7 @@
     "sim" : "Yes",
     "nao" : "No",
     "escolhaVoltarLogin" : "Return to Login",
+    "impressDig" : "Take a fingerprint to connect",
 
     "errCampoVazio": "{count,plural, =0{Empty Field} other{Empty Fields}",
     "@errCampoVazio": {
@@ -151,7 +152,7 @@
     "ausSaude" : "Health",
     "ausAcidente" : "Accident",
     "ausMotivosPessoais" : "Personal Motives",
-    "ausReuniao" : "Meeting with Enc.",
+    "ausReuniao" : "Meeting of Enc.",
     "ausOutro" : "Another",
 
     "ausBanco" : "Bank of Hours",

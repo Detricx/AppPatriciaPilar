@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:drh_project/services/globals.dart' as globals;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:drh_project/models/noticia.dart';
@@ -10,8 +10,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
 
 class FeedScreen extends StatefulWidget {
-  final String lingua;
-  const FeedScreen({ Key? key, required this.lingua}) : super(key: key);
+  const FeedScreen({ Key? key}) : super(key: key);
   
   @override
   State<FeedScreen> createState() => _FeedScreenState();
@@ -42,32 +41,28 @@ class _FeedScreenState extends State<FeedScreen> {
       10,
       Expanded(
         child: FutureBuilder(
-          future: dataFuture,
+          future: retornarNoticias(),
           builder: (context, snapshot) {
-            switch (snapshot.connectionState){
-              case ConnectionState.waiting:
-                return Center(
-                  child: SpinKitCircle(
-                    size: 180,
-                    duration: const Duration(seconds: 3),
-                    itemBuilder: (context, index){
-                      final colors = [Colors.white, Colors.brown];
-                      final color = colors[index % colors.length];
-                      return DecoratedBox(
-                        decoration: BoxDecoration(
-                          color: color,
-                          shape: BoxShape.circle,
-                        )
-                      );
-                    },
-                  )
-                );
-              case ConnectionState.done:{
-                return displayNoticias();
-              }
-              default:{
-                return Container();
-              }
+            if(snapshot.hasData){
+              return displayNoticias();
+            }
+            else{
+              return Center(
+                child: SpinKitCircle(
+                  size: 180,
+                  duration: const Duration(seconds: 3),
+                  itemBuilder: (context, index){
+                    final colors = [Colors.white, Colors.brown];
+                    final color = colors[index % colors.length];
+                    return DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: color,
+                        shape: BoxShape.circle,
+                      )
+                    );
+                  },
+                )
+              );
             }
           }
         ),
@@ -83,7 +78,7 @@ class _FeedScreenState extends State<FeedScreen> {
     //Retornou uma lista de noticias
     if(data.statusCode == 200){
       List noticia = resposta["data"];
-      String lingua = widget.lingua;
+      String lingua = globals.linguaProjeto;
       
       //Recolher os dados todos e coloca-lo numa listagem
       if(lingua == 'pt'){

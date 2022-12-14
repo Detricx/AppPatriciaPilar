@@ -185,9 +185,9 @@ class _IrsMenuScreenState extends State<IrsMenuScreen> {
     );
   }
 
-  //Sacar ID's e recibos que o Utilizador tenha
+  //TODO Trocar os recibos.php por irs.php
   Future<bool> getDocuments(String lingua, AppLocalizations t, String nifEmpresa) async{
-    Uri url = definirUriGET('rv/recibos.php', campo1: (lingua == 'pt') ? 'pt-pt' : 'en-us');
+    Uri url = definirUriGET('rv/irs.php', campo1: (lingua == 'pt') ? 'pt-pt' : 'en-us');
     http.Response data = await http.get(url);
     
     switch(data.statusCode){

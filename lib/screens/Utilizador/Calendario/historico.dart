@@ -42,7 +42,7 @@ class _HistoricoScreenState extends State<HistoricoScreen> {
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           extendBodyBehindAppBar: true,
-          appBar: CustomAppBar(t.menuHistorico, 25, false, 300, explicacao: t.explicHist),
+          appBar: CustomAppBar(appBarText: t.menuHistorico, tamanho: 25, condicao:false, tamanhoCaixa: 300, explicacao: t.explicHist),
           body: fundoApp(
             'assets/fundos/fundo_calendario.png',
             60,

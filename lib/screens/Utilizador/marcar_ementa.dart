@@ -80,7 +80,7 @@ class _MarcarEmentaScreenState extends State<MarcarEmentaScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
-      appBar: const CustomAppBar('Ementa', 25, false, 300),
+      appBar: const CustomAppBar(appBarText: 'Ementa', tamanho: 25, condicao: false, tamanhoCaixa: 300),
       body: fundoApp(
         'assets/fundos/fundo_calendario.png',
         60,
