@@ -36,7 +36,7 @@ class ListagemFuncionarios extends DataGridSource{
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Image.network(
-                      'http://${globals.ip}/projects/flutter/drh_project/images/app/pessoal/${dataCell.value}.jpg',
+                      'http://${globals.ip}:${globals.porta}/drh_project/images/app/pessoal/${dataCell.value}.jpg',
                       key: UniqueKey(),
                       fit: BoxFit.cover,
                       width: 200.0,
