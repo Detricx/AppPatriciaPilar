@@ -13,6 +13,6 @@ class RequestHttp{
     this.area, 
     this.empresa, 
     this.no, 
-    this.ctb,
+    this.ctb
   );
 }

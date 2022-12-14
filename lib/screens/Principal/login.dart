@@ -267,86 +267,63 @@ class _LoginScreenState extends State<LoginScreen> {
                                       });
 
                                       //Dispõem um dialog de boas vindas
-                                      showDialog(
-                                        barrierDismissible: true,
-                                        context: context,
-                                        builder: (context) {
-                                          return dialogBox(
-                                            context,
-                                            t.errBemVindo,
-                                            t.txtBemVindo,
-                                            220,
-                                            Icons.waving_hand
-                                          );
-                                        }
-                                      );
+                                      showDialog(barrierDismissible: true, context: context, builder: (context) {
+                                        return dialogBox(
+                                          context,
+                                          t.errBemVindo,
+                                          t.txtBemVindo,
+                                          220,
+                                          Icons.waving_hand
+                                        );
+                                      });
                                     break;
 
                                     case 502:
-                                    return showDialog(
-                                      barrierDismissible: true,
-                                      context: context,
-                                      builder: (context) {
-                                        return dialogBox(
-                                          context,
-                                          t.loginServidor,
-                                          t.loginExpliServ,
-                                          230,
-                                          Icons.warning);
-                                      }
-                                    );
+                                    return showDialog(barrierDismissible: true, context: context, builder: (context) {
+                                      return dialogBox(
+                                        context,
+                                        t.loginServidor,
+                                        t.loginExpliServ,
+                                        230,
+                                        Icons.warning
+                                      );
+                                    });
 
                                     case 403:
-                                    return showDialog(
-                                      barrierDismissible: true,
-                                      context: context,
-                                      builder: (context) {
-                                        return dialogBox(
-                                            context,
-                                            t.loginPermissao,
-                                            t.loginPermisServ,
-                                            230,
-                                            Icons.warning);
-                                      }
-                                    );
+                                    return showDialog(barrierDismissible: true, context: context, builder: (context) {
+                                      return dialogBox(
+                                        context,
+                                        t.loginPermissao,
+                                        t.loginPermisServ,
+                                        230,
+                                        Icons.warning
+                                      );
+                                    });
 
                                     //Deu algum tipo de erro inesperado
                                     default:
                                       setState(() => caixapassword = false);
+                                      
                                       resposta = jsonDecode(data.body);
                                       tituloDialog = resposta['type'];
                                       msg = resposta['message'];
 
                                       List<String> erro = definirErroPhp(tituloDialog, msg, t);
-                                      return showDialog(
-                                        barrierDismissible: true,
-                                        context: context,
-                                        builder: (context) {
-                                          return dialogBox(
-                                            context,
-                                            erro[0],
-                                            erro[1],
-                                            230,
-                                            Icons.warning
-                                          );
-                                        }
-                                      );
+                                      return showDialog(barrierDismissible: true, context: context, builder: (context) {
+                                        return dialogBox(context, erro[0], erro[1], 230, Icons.warning);
+                                      });
                                     }
                                   } 
                                   else {
-                                    return showDialog(
-                                      barrierDismissible: true,
-                                      context: context,
-                                      builder: (context) {
-                                        return dialogBox(
-                                          context,
-                                          t.loginIncorreto,
-                                          t.loginIncorrServr,
-                                          230,
-                                          Icons.warning
-                                        );
-                                      }
-                                    );
+                                    return showDialog(barrierDismissible: true, context: context, builder: (context) {
+                                      return dialogBox(
+                                        context,
+                                        t.loginIncorreto,
+                                        t.loginIncorrServr,
+                                        230,
+                                        Icons.warning
+                                      );
+                                    });
                                   }
                                 }
                               )
@@ -360,52 +337,52 @@ class _LoginScreenState extends State<LoginScreen> {
                               children: [
                                 //! Caixa de Texto da Password
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 5),
+                                  padding: const EdgeInsets.symmetric(vertical: 5),
                                   child: Container(
                                     height: 40.0,
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10, vertical: 2),
+                                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
                                     decoration: BoxDecoration(
                                       color: Colors.white,
-                                      borderRadius:
-                                          BorderRadius.circular(5),
+                                      borderRadius: BorderRadius.circular(5),
                                     ),
                                     child: TextFormField(
-                                      keyboardType:
-                                          TextInputType.visiblePassword,
+                                      keyboardType: TextInputType.visiblePassword,
                                       controller: _controllerPassword,
+
                                       //Esconder o texto da password
                                       obscureText: isHiddenPassword,
+
                                       style: const TextStyle(
                                         color: Colors.black,
                                         fontSize: 17.0,
                                       ),
+
                                       decoration: InputDecoration(
-                                          isDense: true,
-                                          icon: Icon(
-                                            Icons.lock_outline,
+                                        isDense: true,
+                                        icon: Icon(
+                                          Icons.lock_outline,
+                                          color: corVerde,
+                                          size: 30,
+                                        ),
+                                        hintText: "Password",
+                                        border: InputBorder.none,
+                                        suffixIcon: InkWell(
+                                          onTap: () {
+                                            setState(() {
+                                              isHiddenPassword =
+                                                  !isHiddenPassword;
+                                            });
+                                          },
+                                          child: Icon(
+                                            //Condição que mudará o icon
+                                            (isHiddenPassword == false)
+                                                ? Icons.visibility
+                                                : Icons.visibility_off,
                                             color: corVerde,
                                             size: 30,
                                           ),
-                                          hintText: "Password",
-                                          border: InputBorder.none,
-                                          suffixIcon: InkWell(
-                                            onTap: () {
-                                              setState(() {
-                                                isHiddenPassword =
-                                                    !isHiddenPassword;
-                                              });
-                                            },
-                                            child: Icon(
-                                              //Condição que mudará o icon
-                                              (isHiddenPassword == false)
-                                                  ? Icons.visibility
-                                                  : Icons.visibility_off,
-                                              color: corVerde,
-                                              size: 30,
-                                            ),
-                                          )),
+                                        )
+                                      ),
                                       onChanged: (value) {
                                         password = value;
                                       },
@@ -418,32 +395,25 @@ class _LoginScreenState extends State<LoginScreen> {
                                     visible: caixaConfirm,
                                     child: Column(children: [
                                       Padding(
-                                        padding:
-                                            const EdgeInsets.symmetric(
-                                                vertical: 5),
+                                        padding: const EdgeInsets.symmetric(vertical: 5),
                                         child: Container(
                                           height: 40.0,
-                                          padding:
-                                              const EdgeInsets.symmetric(
-                                                  horizontal: 10,
-                                                  vertical: 2),
+                                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
                                           decoration: BoxDecoration(
                                             color: Colors.white,
-                                            borderRadius:
-                                                BorderRadius.circular(5),
+                                            borderRadius: BorderRadius.circular(5),
                                           ),
                                           child: TextFormField(
-                                            keyboardType: TextInputType
-                                                .visiblePassword,
-                                            controller:
-                                                _controllerConfirmPassowrd,
-                                            //Esconder o texto da password
+                                            keyboardType: TextInputType.visiblePassword,
+                                            controller: _controllerConfirmPassowrd,
                                             obscureText: isHiddenPassword,
+                                            
                                             //Desing do Texto
                                             style: const TextStyle(
                                               color: Colors.black,
                                               fontSize: 17.0,
                                             ),
+
                                             //Desing da caixa de texto
                                             decoration: InputDecoration(
                                               isDense: true,
@@ -462,14 +432,15 @@ class _LoginScreenState extends State<LoginScreen> {
                                           ),
                                         ),
                                       ),
-                                    ])),
+                                    ]
+                                  )
+                                ),
 
                                 //! Check para guardar as credênciais
                                 Visibility(
                                   visible: caixapassword,
                                   child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Transform.scale(
                                         scale: 1.5,
@@ -486,12 +457,15 @@ class _LoginScreenState extends State<LoginScreen> {
                                           },
                                         ),
                                       ),
-                                      Text(t.rbGuardar,
-                                          style: const TextStyle(
-                                              fontFamily: 'Quicksand',
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 17,
-                                              color: Colors.white)),
+                                      Text(
+                                        t.rbGuardar,
+                                        style: const TextStyle(
+                                          fontFamily: 'Quicksand',
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 17,
+                                          color: Colors.white
+                                        )
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -499,19 +473,20 @@ class _LoginScreenState extends State<LoginScreen> {
                                 //! Butão de validação de uma nova password
                                 Visibility(
                                   visible: caixaConfirm,
-                                  child: Padding(
-                                    padding: const EdgeInsetsDirectional.all(10),
+                                  child: Padding(padding: const EdgeInsetsDirectional.all(10),
                                     child: SizedBox(
                                       height: 40.0,
                                       width: 220.0,
-                                      child:
-                                          FloatingActionButton.extended(
+                                      child: FloatingActionButton.extended(
                                         heroTag: null,
                                         backgroundColor: corCastanha,
-                                        label: Text(t.btConfirmar,
-                                            style: const TextStyle(
-                                                fontSize: 20,
-                                                color: Colors.white)),
+                                        label: Text(
+                                          t.btConfirmar,
+                                        style: const TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.white
+                                          )
+                                        ),
                                         onPressed: () async {
                                           if (password.isNotEmpty && confirmacao.isNotEmpty) {
                                             if (password == confirmacao) {
@@ -556,22 +531,21 @@ class _LoginScreenState extends State<LoginScreen> {
                                 //! Butão de entrada na app
                                 Visibility(
                                     visible: !caixaConfirm,
-                                    child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets
-                                                    .symmetric(
-                                                horizontal: 10,
-                                                vertical: 10),
-                                            child: SizedBox(
-                                                height: 40.0,
-                                                width: 220.0,
-                                                child: FloatingActionButton
-                                                    .extended(
-                                                        heroTag: null,
-                                                        backgroundColor:
+                                    child: Row( 
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 10,
+                                            vertical: 10
+                                          ),
+
+                                          child: SizedBox(
+                                            height: 40.0,
+                                            width: 220.0,
+                                            child: FloatingActionButton.extended(
+                                              heroTag: null,
+                                              backgroundColor:
                                                             corCastanha,
                                                         label: Text(
                                                             t.btEntrar,
