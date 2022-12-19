@@ -31,14 +31,14 @@
   Como dito anteriormente, este software veio para melhorar a flexibilidade e a organização da empresa Patrícia Pilar, e, para isso, separei em categorias aquilo que a aplicação tem como função:
 </p>
 
- - Marcação de Férias e Ausências
- - Histórico de marcações realizadas (Sucedidas, pendentes e recusadas)
- - Aprovações dos mesmos
- - Exibição de documentos (Recibos de vencimento e IRS)
- - Feed de Notícias / Eventos
- - Visualização de parcerias
- - Ementa do refeitória da firma
- - Sistema de Feedback
+ - Marcação de [Férias](https://github.com/Detricx/drh_project/blob/main/lib/screens/Utilizador/Calendario/ferias.dart) e [Ausências](https://github.com/Detricx/drh_project/blob/main/lib/screens/Utilizador/Calendario/ausencias.dart)
+ - [Histórico](https://github.com/Detricx/drh_project/blob/main/lib/screens/Utilizador/Calendario/historico.dart) de marcações realizadas (Sucedidas, pendentes e recusadas)
+ - [Aprovações](https://github.com/Detricx/drh_project/blob/main/lib/screens/Utilizador/Calendario/Equipa/aprovacoes.dart) dos mesmos
+ - Exibição de documentos ([Recibos de vencimento](https://github.com/Detricx/drh_project/blob/main/lib/screens/Utilizador/Documents/rv/recibo_vencimento.dart) e [IRS](https://github.com/Detricx/drh_project/blob/main/lib/screens/Utilizador/Documents/irs/irs.dart))
+ - Feed de [Notícias / Eventos](https://github.com/Detricx/drh_project/blob/main/lib/screens/Utilizador/feed.dart)
+ - Visualização de [parcerias](https://github.com/Detricx/drh_project/blob/main/lib/screens/Utilizador/parcerias.dart)
+ - [Ementa](https://github.com/Detricx/drh_project/blob/main/lib/screens/Utilizador/refeitorio.dart) do refeitória da firma
+ - Sistema de [Feedback](https://github.com/Detricx/drh_project/blob/main/lib/widgets/feedback_box.dart)
  - Modo de Suspensão (Token temporário)
 
 <br>
